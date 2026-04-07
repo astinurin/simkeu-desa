@@ -1,61 +1,23 @@
-@extends('layouts.auth')
+<!DOCTYPE html>
+<html lang="en">
 
-@section('content')
-<div class="container">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <div class="row justify-content-center">
-        <div class="col-xl-10 col-lg-12 col-md-9">
+    <title>SIMKEU Desa</title>
 
-            <div class="card shadow-lg my-5">
-                <div class="card-body p-0">
+    <link href="{{ asset('sbadmin/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('sbadmin/css/sb-admin-2.min.css') }}" rel="stylesheet">
+</head>
 
-                    <div class="row">
-                        <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
+<body class="bg-gradient-primary">
 
-                        <div class="col-lg-6">
-                            <div class="p-5">
+    @yield('content')
 
-                                <div class="text-center">
-                                    <h1 class="h4 text-gray-900 mb-4">Login SIMKEU</h1>
-                                </div>
+    <script src="{{ asset('sbadmin/vendor/jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset('sbadmin/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('sbadmin/js/sb-admin-2.min.js') }}"></script>
 
-                                <form method="POST" action="#">
-                                    @csrf
-
-                                    <div class="form-group">
-                                        <input type="email" name="email"
-                                            class="form-control form-control-user"
-                                            placeholder="Email">
-                                    </div>
-
-                                    <div class="form-group">
-                                        <input type="password" name="password"
-                                            class="form-control form-control-user"
-                                            placeholder="Password">
-                                    </div>
-
-                                    <button type="submit"
-                                        class="btn btn-primary btn-user btn-block">
-                                        Login
-                                    </button>
-
-                                </form>
-
-                                <hr>
-
-                                <div class="text-center">
-                                    <a class="small" href="#">Forgot Password?</a>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-        </div>
-    </div>
-
-</div>
-@endsection
+</body>
+</html>
