@@ -7,22 +7,25 @@
 
     <title>SIMKEU</title>
 
+    <link rel="icon" type="image/png" href="{{ asset('assets/img/simkeu_logo2.png') }}">
+
     <link href="{{ asset('sbadmin/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet">
     <link href="{{ asset('sbadmin/css/sb-admin-2.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('sbadmin/vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
 </head>
+
 
 <body id="page-top">
 
     <div id="wrapper">
 
-        <!-- 🔥 SIDEBAR (SESUAI PROPOSAL, TIDAK NGACO) -->
+        <!-- SIDEBAR  -->
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
-                <div class="sidebar-brand-icon rotate-n-15">
-                    <i class="fas fa-coins"></i>
+                <div class="sidebar-brand-icon">
+                    <img src="{{ asset('assets/img/simkeu_logo3.png') }}" alt="logo" style="width: 160px;">
                 </div>
-                <div class="sidebar-brand-text mx-3">SIMKEU</div>
             </a>
 
             <hr class="sidebar-divider my-0">
@@ -245,6 +248,14 @@
     <script src="{{ asset('sbadmin/vendor/jquery-easing/jquery.easing.min.js') }}"></script>
     <script src="{{ asset('sbadmin/js/sb-admin-2.min.js') }}"></script>
 
+    <!-- DATATABLE -->
+    <script src="{{ asset('sbadmin/vendor/datatables/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('sbadmin/vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
+    {{--
+    <script src="{{ asset('sbadmin/js/demo/datatables-demo.js') }}"></script> --}}
+
+    <!-- INI WAJIB -->
+    @yield('scripts')
 </body>
 
 </html>
