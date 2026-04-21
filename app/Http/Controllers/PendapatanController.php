@@ -42,46 +42,50 @@ class PendapatanController extends Controller
 
         if ($request->hasFile('dokumen')) {
             $file = $request->file('dokumen');
-
-            // CEK TIPE
-            $ext = $file->getClientOriginalExtension();
+            $ext = strtolower($file->getClientOriginalExtension());
 
             if (in_array($ext, ['jpg', 'jpeg', 'png'])) {
 
-                $manager = new ImageManager(new Driver());
-                $img = $manager->read($file);
+                try {
+                    $manager = new ImageManager(new Driver());
+                    $img = $manager->read($file);
 
-                //  CEK RESOLUSI MINIMAL
-                if ($img->width() < 600 || $img->height() < 600) {
-                    return back()->with('error', 'Gambar terlalu kecil / burik 😭');
+                    // batas ukuran file (2MB)
+                    $maxBytes = 2 * 1024 * 1024;
+
+                    // hanya kompres/resize kalau file terlalu besar
+                    if ($file->getSize() > $maxBytes) {
+                        // jaga rasio, hanya mengecilkan jika melebihi batas
+                        $img->scaleDown(width: 1600);
+                    }
+
+                    // tolak kalau resolusi terlalu kecil (terlalu jelek)
+                    if ($img->width() < 400 || $img->height() < 400) {
+                        return back()->with('error', 'Resolusi gambar terlalu kecil');
+                    }
+                    $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+                    $originalName = str_replace(' ', '_', $originalName);
+
+                    $filename = $originalName . '_' . time() . '.jpg';
+                    $path = 'dokumen/' . $filename;
+
+                    Storage::disk('public')->put($path, (string) $img->toJpeg(80));
+
+                    $dokumenPath = $path;
+                } catch (\Exception $e) {
+                    return back()->with('error', 'Gagal membaca gambar 😭');
                 }
-
-                // RESIZE (biar konsisten & ringan)
-                $img->resize(1200, null, function ($constraint) {
-                    $constraint->aspectRatio();
-                });
-
-                $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-                $originalName = str_replace(' ', '_', $originalName); // biar rapi
-
-                $filename = $originalName . '_' . time() . '.jpg';
-                $path = 'dokumen/' . $filename;
-
-                Storage::put('public/' . $path, (string) $img->encode());
-
-                $dokumenPath = $path;
             } else {
-                // PDF langsung simpan
+                // PDF (biarin aja, ga usah diubah)
                 $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
                 $originalName = str_replace(' ', '_', $originalName);
 
                 $extension = $file->getClientOriginalExtension();
 
                 $filename = $originalName . '_' . time() . '.' . $extension;
-
                 $path = 'dokumen/' . $filename;
 
-                Storage::putFileAs('public/dokumen', $file, $filename);
+                Storage::disk('public')->putFileAs('dokumen', $file, $filename);
 
                 $dokumenPath = $path;
             }
@@ -140,10 +144,10 @@ class PendapatanController extends Controller
 
         $data = PendapatanModel::findOrFail($id);
 
-        // 🔥 DEFAULT: pakai dokumen lama
+        //  DEFAULT: pakai dokumen lama
         $dokumenPath = $data->dokumen;
 
-        // 🔥 CEK ADA UPLOAD BARU
+        //  CEK ADA UPLOAD BARU
         if ($request->hasFile('dokumen')) {
 
             // HAPUS FILE LAMA
@@ -160,14 +164,17 @@ class PendapatanController extends Controller
                 $img = $manager->read($file);
 
                 // VALIDASI RESOLUSI
-                if ($img->width() < 600 || $img->height() < 600) {
-                    return back()->with('error', 'Gambar terlalu kecil / burik 😭');
+                if ($img->width() < 400 || $img->height() < 400) {
+                    return back()->with('error', 'Resolusi gambar terlalu kecil');
                 }
 
-                // RESIZE
-                $img->resize(1200, null, function ($constraint) {
-                    $constraint->aspectRatio();
-                });
+                // BATAS UKURAN FILE (2MB)
+                $maxBytes = 2 * 1024 * 1024;
+
+                // HANYA RESIZE KALAU TERLALU BESAR (TANPA MERUSAK RASIO)
+                if ($file->getSize() > $maxBytes) {
+                    $img->scaleDown(width: 1600);
+                }
 
                 $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
                 $originalName = str_replace(' ', '_', $originalName); // biar rapi
@@ -175,7 +182,7 @@ class PendapatanController extends Controller
                 $filename = $originalName . '_' . time() . '.jpg';
                 $path = 'dokumen/' . $filename;
 
-                Storage::put('public/' . $path, (string) $img->encode());
+                Storage::disk('public')->put($path, (string) $img->encode());
 
                 $dokumenPath = $path;
             } else {
@@ -189,7 +196,7 @@ class PendapatanController extends Controller
 
                 $path = 'dokumen/' . $filename;
 
-                Storage::putFileAs('public/dokumen', $file, $filename);
+                Storage::disk('public')->putFileAs('dokumen', $file, $filename);
 
                 $dokumenPath = $path;
             }

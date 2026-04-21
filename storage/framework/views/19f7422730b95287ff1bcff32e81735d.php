@@ -1,6 +1,6 @@
-@extends('layouts.app')
 
-@section('content')
+
+<?php $__env->startSection('content'); ?>
 
     <div class="container-fluid">
 
@@ -9,23 +9,23 @@
         <div class="card shadow">
             <div class="card-body">
 
-                <form action="{{ route('pendapatan.update', $data->id) }}" method="POST" enctype="multipart/form-data">
-                    @csrf
-                    @method('PUT')
+                <form action="<?php echo e(route('pendapatan.update', $data->id)); ?>" method="POST" enctype="multipart/form-data">
+                    <?php echo csrf_field(); ?>
+                    <?php echo method_field('PUT'); ?>
 
                     <!-- TANGGAL -->
                     <div class="form-group">
                         <label>Tanggal</label>
-                        <input type="date" name="tanggal" class="form-control" value="{{ $data->tanggal }}">
+                        <input type="date" name="tanggal" class="form-control" value="<?php echo e($data->tanggal); ?>">
                     </div>
 
                     <!-- KATEGORI -->
                     <div class="form-group">
                         <label>Kategori</label>
                         <select name="kategori_pendapatan" id="kategori" class="form-control">
-                            <option value="Pendapatan Asli Desa" {{ $data->kategori_pendapatan == 'Pendapatan Asli Desa' ? 'selected' : '' }}>Pendapatan Asli Desa</option>
-                            <option value="Pendapatan Transfer" {{ $data->kategori_pendapatan == 'Pendapatan Transfer' ? 'selected' : '' }}>Pendapatan Transfer</option>
-                            <option value="Pendapatan Lain-lain" {{ $data->kategori_pendapatan == 'Pendapatan Lain-lain' ? 'selected' : '' }}>Pendapatan Lain-lain</option>
+                            <option value="Pendapatan Asli Desa" <?php echo e($data->kategori_pendapatan == 'Pendapatan Asli Desa' ? 'selected' : ''); ?>>Pendapatan Asli Desa</option>
+                            <option value="Pendapatan Transfer" <?php echo e($data->kategori_pendapatan == 'Pendapatan Transfer' ? 'selected' : ''); ?>>Pendapatan Transfer</option>
+                            <option value="Pendapatan Lain-lain" <?php echo e($data->kategori_pendapatan == 'Pendapatan Lain-lain' ? 'selected' : ''); ?>>Pendapatan Lain-lain</option>
                         </select>
                     </div>
 
@@ -38,13 +38,13 @@
                     <!-- PAGU -->
                     <div class="form-group">
                         <label>Pagu</label>
-                        <input type="number" name="pagu" value="{{ $data->pagu }}" class="form-control">
+                        <input type="number" name="pagu" value="<?php echo e($data->pagu); ?>" class="form-control">
                     </div>
 
-                    {{-- Realisasi --}}
+                    
                     <div class="form-group">
                         <label>Realisasi</label>
-                        <input type="number" name="realisasi" value="{{ optional($data->realisasi)->realisasi }}"
+                        <input type="number" name="realisasi" value="<?php echo e(optional($data->realisasi)->realisasi); ?>"
                             class="form-control">
                     </div>
 
@@ -56,41 +56,38 @@
                     <div class="form-group">
                         <label>Dokumen Pendukung</label>
 
-                        @if($data->dokumen)
+                        <?php if($data->dokumen): ?>
                             <div class="card border-left-info shadow-sm mb-3">
                                 <div class="card-body d-flex justify-content-between align-items-center">
 
                                     <div>
                                         <i class="fas fa-file-alt text-primary"></i>
-                                        <span class="ml-2">{{ basename($data->dokumen) }}</span>
+                                        <span class="ml-2"><?php echo e(basename($data->dokumen)); ?></span>
                                     </div>
 
                                     <div>
-                                        <a href="{{ asset('storage/' . $data->dokumen) }}" target="_blank"
+                                        <a href="<?php echo e(asset('storage/' . $data->dokumen)); ?>" target="_blank"
                                             class="btn btn-primary btn-sm">
                                             <i class="fas fa-eye"></i>
                                         </a>
 
-                                        <a href="{{ route('pendapatan.download', $data->id) }}" class="btn btn-success btn-sm">
+                                        <a href="<?php echo e(route('pendapatan.download', $data->id)); ?>" class="btn btn-success btn-sm">
                                             <i class="fas fa-download"></i>
                                         </a>
                                     </div>
 
                                 </div>
                             </div>
-                        @endif
+                        <?php endif; ?>
 
-                        {{-- INPUT BARU --}}
+                        
                         <input type="file" name="dokumen" id="dokumenInput" class="form-control" accept="image/*,.pdf">
-                        {{--
-                        <small class="text-muted">
-                            Kosongkan jika tidak ingin mengganti dokumen
-                        </small> --}}
+                        
                         <div id="previewDokumen" class="mt-2"></div>
                     </div>
 
                     <button class="btn btn-primary">Update</button>
-                    <a href="{{ route('pendapatan.index') }}" class="btn btn-secondary">Kembali</a>
+                    <a href="<?php echo e(route('pendapatan.index')); ?>" class="btn btn-secondary">Kembali</a>
 
                 </form>
 
@@ -121,14 +118,14 @@
         }
 
         // load awal
-        loadJenis("{{ $data->kategori_pendapatan }}", "{{ $data->jenis_pendapatan }}");
+        loadJenis("<?php echo e($data->kategori_pendapatan); ?>", "<?php echo e($data->jenis_pendapatan); ?>");
 
         kategoriSelect.addEventListener('change', function () {
             loadJenis(this.value);
         });
     </script>
 
-    {{-- PRESENTASE --}}
+    
     <script>
         const pagu = document.querySelector('input[name="pagu"]');
         const realisasi = document.querySelector('input[name="realisasi"]');
@@ -148,7 +145,7 @@
         hitung(); // load awal
     </script>
 
-    {{-- preview dokumen --}}
+    
     <script>
         document.getElementById('dokumenInput').addEventListener('change', function (e) {
             const file = e.target.files[0];
@@ -170,4 +167,5 @@
         `;
         });
     </script>
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Asti\Kuliah\SMT 8\skripsi\simkeu-desa\resources\views/pendapatan/edit.blade.php ENDPATH**/ ?>

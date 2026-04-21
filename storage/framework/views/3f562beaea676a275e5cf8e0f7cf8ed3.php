@@ -1,6 +1,6 @@
-@extends('layouts.app')
 
-@section('content')
+
+<?php $__env->startSection('content'); ?>
 
     <div class="container-fluid">
 
@@ -9,8 +9,8 @@
         <div class="card shadow">
             <div class="card-body">
 
-                <form action="{{ route('pendapatan.store') }}" method="POST" enctype="multipart/form-data">
-                    @csrf
+                <form action="<?php echo e(route('pendapatan.store')); ?>" method="POST" enctype="multipart/form-data">
+                    <?php echo csrf_field(); ?>
                     <!-- TANGGAL -->
                     <div class="form-group">
                         <label>Tanggal</label>
@@ -53,7 +53,7 @@
                         <input type="text" id="persentase_preview" class="form-control" readonly>
                     </div>
 
-                    {{-- DOKUMEN --}}
+                    
                     <div class="form-group">
                         <label>Unggah Dokumen Pendukung</label>
                         <input type="file" name="dokumen" id="dokumen" class="form-control" accept="image/*,.pdf">
@@ -65,7 +65,7 @@
                     </div>
 
                     <button type="submit" class="btn btn-success">Simpan</button>
-                    <a href="{{ route('pendapatan.index') }}" class="btn btn-secondary">Kembali</a>
+                    <a href="<?php echo e(route('pendapatan.index')); ?>" class="btn btn-secondary">Kembali</a>
 
                 </form>
 
@@ -110,7 +110,7 @@
         });
     </script>
 
-    {{-- presentase realisasi --}}
+    
     <script>
         const paguInput = document.getElementById('pagu');
         const realisasiInput = document.getElementById('realisasi');
@@ -129,7 +129,7 @@
         realisasiInput.addEventListener('input', hitung);
     </script>
 
-    {{-- kalender --}}
+    
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const tanggalInput = document.getElementById("tanggal");
@@ -178,4 +178,5 @@ document.getElementById('dokumen').addEventListener('change', function (e) {
     }
 });
 </script>
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Asti\Kuliah\SMT 8\skripsi\simkeu-desa\resources\views/pendapatan/create.blade.php ENDPATH**/ ?>
