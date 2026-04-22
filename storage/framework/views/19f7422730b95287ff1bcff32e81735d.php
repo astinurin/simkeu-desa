@@ -57,29 +57,37 @@
                         <label>Dokumen Pendukung</label>
 
                         <?php if($data->dokumen): ?>
-                            <div class="card border-left-info shadow-sm mb-3">
-                                <div class="card-body d-flex justify-content-between align-items-center">
+                            <?php
+                                $ext = pathinfo($data->dokumen, PATHINFO_EXTENSION);
+                            ?>
 
-                                    <div>
-                                        <i class="fas fa-file-alt text-primary"></i>
-                                        <span class="ml-2"><?php echo e(basename($data->dokumen)); ?></span>
+                            <?php if(in_array(strtolower($ext), ['jpg', 'jpeg', 'png'])): ?>
+                                <img src="<?php echo e(asset('storage/' . $data->dokumen)); ?>"
+                                    style="max-width:800px; margin:10px 0 20px 0; border-radius:8px; display:block;">
+                            <?php else: ?>
+                                <div class="card border-left-info shadow-sm mb-3">
+                                    <div class="card-body d-flex justify-content-between align-items-center">
+
+                                        <div>
+                                            <i class="fas fa-file-alt text-primary"></i>
+                                            <span class="ml-2"><?php echo e(basename($data->dokumen)); ?></span>
+                                        </div>
+
+                                        <div>
+                                            <a href="<?php echo e(asset('storage/' . $data->dokumen)); ?>" target="_blank"
+                                                class="btn btn-primary btn-sm">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+
+                                            <a href="<?php echo e(route('pendapatan.download', $data->id)); ?>" class="btn btn-success btn-sm">
+                                                <i class="fas fa-download"></i>
+                                            </a>
+                                        </div>
+
                                     </div>
-
-                                    <div>
-                                        <a href="<?php echo e(asset('storage/' . $data->dokumen)); ?>" target="_blank"
-                                            class="btn btn-primary btn-sm">
-                                            <i class="fas fa-eye"></i>
-                                        </a>
-
-                                        <a href="<?php echo e(route('pendapatan.download', $data->id)); ?>" class="btn btn-success btn-sm">
-                                            <i class="fas fa-download"></i>
-                                        </a>
-                                    </div>
-
                                 </div>
-                            </div>
+                            <?php endif; ?>
                         <?php endif; ?>
-
                         
                         <input type="file" name="dokumen" id="dokumenInput" class="form-control" accept="image/*,.pdf">
                         
@@ -156,15 +164,15 @@
             if (!file) return;
 
             preview.innerHTML = `
-            <div class="card border-left-secondary shadow-sm">
-                <div class="card-body d-flex justify-content-between align-items-center">
-                    <div>
-                        <i class="fas fa-file"></i>
-                        <span class="ml-2">${file.name}</span>
-                    </div>
-                </div>
-            </div>
-        `;
+                        <div class="card border-left-secondary shadow-sm">
+                            <div class="card-body d-flex justify-content-between align-items-center">
+                                <div>
+                                    <i class="fas fa-file"></i>
+                                    <span class="ml-2">${file.name}</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
         });
     </script>
 <?php $__env->stopSection(); ?>

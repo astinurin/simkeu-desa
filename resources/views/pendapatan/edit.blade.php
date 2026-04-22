@@ -57,29 +57,37 @@
                         <label>Dokumen Pendukung</label>
 
                         @if($data->dokumen)
-                            <div class="card border-left-info shadow-sm mb-3">
-                                <div class="card-body d-flex justify-content-between align-items-center">
+                            @php
+                                $ext = pathinfo($data->dokumen, PATHINFO_EXTENSION);
+                            @endphp
 
-                                    <div>
-                                        <i class="fas fa-file-alt text-primary"></i>
-                                        <span class="ml-2">{{ basename($data->dokumen) }}</span>
+                            @if(in_array(strtolower($ext), ['jpg', 'jpeg', 'png']))
+                                <img src="{{ asset('storage/' . $data->dokumen) }}"
+                                    style="max-width:800px; margin:10px 0 20px 0; border-radius:8px; display:block;">
+                            @else
+                                <div class="card border-left-info shadow-sm mb-3">
+                                    <div class="card-body d-flex justify-content-between align-items-center">
+
+                                        <div>
+                                            <i class="fas fa-file-alt text-primary"></i>
+                                            <span class="ml-2">{{ basename($data->dokumen) }}</span>
+                                        </div>
+
+                                        <div>
+                                            <a href="{{ asset('storage/' . $data->dokumen) }}" target="_blank"
+                                                class="btn btn-primary btn-sm">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+
+                                            <a href="{{ route('pendapatan.download', $data->id) }}" class="btn btn-success btn-sm">
+                                                <i class="fas fa-download"></i>
+                                            </a>
+                                        </div>
+
                                     </div>
-
-                                    <div>
-                                        <a href="{{ asset('storage/' . $data->dokumen) }}" target="_blank"
-                                            class="btn btn-primary btn-sm">
-                                            <i class="fas fa-eye"></i>
-                                        </a>
-
-                                        <a href="{{ route('pendapatan.download', $data->id) }}" class="btn btn-success btn-sm">
-                                            <i class="fas fa-download"></i>
-                                        </a>
-                                    </div>
-
                                 </div>
-                            </div>
+                            @endif
                         @endif
-
                         {{-- INPUT BARU --}}
                         <input type="file" name="dokumen" id="dokumenInput" class="form-control" accept="image/*,.pdf">
                         {{--
@@ -159,15 +167,15 @@
             if (!file) return;
 
             preview.innerHTML = `
-            <div class="card border-left-secondary shadow-sm">
-                <div class="card-body d-flex justify-content-between align-items-center">
-                    <div>
-                        <i class="fas fa-file"></i>
-                        <span class="ml-2">${file.name}</span>
-                    </div>
-                </div>
-            </div>
-        `;
+                        <div class="card border-left-secondary shadow-sm">
+                            <div class="card-body d-flex justify-content-between align-items-center">
+                                <div>
+                                    <i class="fas fa-file"></i>
+                                    <span class="ml-2">${file.name}</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
         });
     </script>
 @endsection

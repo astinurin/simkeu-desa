@@ -1,6 +1,6 @@
-@extends('layouts.app')
 
-@section('content')
+
+<?php $__env->startSection('content'); ?>
     <div class="container-fluid">
 
         <h1 class="h3 mb-4 text-gray-800">Edit Belanja</h1>
@@ -8,54 +8,54 @@
         <div class="card shadow">
             <div class="card-body">
 
-                <form action="{{ route('belanja.update', $data->id) }}" method="POST" enctype="multipart/form-data">
-                    @csrf @method('PUT')
+                <form action="<?php echo e(route('belanja.update', $data->id)); ?>" method="POST" enctype="multipart/form-data">
+                    <?php echo csrf_field(); ?> <?php echo method_field('PUT'); ?>
 
-                    {{-- TANGGAL --}}
+                    
                     <div class="form-group">
                         <label>Tanggal</label>
-                        <input type="date" name="tanggal" value="{{ $data->tanggal }}" class="form-control">
+                        <input type="date" name="tanggal" value="<?php echo e($data->tanggal); ?>" class="form-control">
                     </div>
 
-                    {{-- BIDANG --}}
+                    
                     <div class="form-group">
                         <label>Bidang</label>
                         <select name="bidang" id="bidang" class="form-control" required></select>
                     </div>
 
-                    {{-- KEGIATAN --}}
+                    
                     <div class="form-group">
                         <label>Jenis Kegiatan</label>
                         <select name="jenis_kegiatan" id="kegiatan" class="form-control" required></select>
                     </div>
 
-                    {{-- PAGU --}}
+                    
                     <div class="form-group">
                         <label>Pagu</label>
-                        <input type="number" name="pagu" value="{{ $data->pagu }}" class="form-control">
+                        <input type="number" name="pagu" value="<?php echo e($data->pagu); ?>" class="form-control">
                     </div>
 
-                    {{-- REALISASI --}}
+                    
                     <div class="form-group">
                         <label>Realisasi</label>
-                        <input type="number" name="realisasi_belanja" value="{{ optional($data->realisasi)->realisasi }}"
+                        <input type="number" name="realisasi_belanja" value="<?php echo e(optional($data->realisasi)->realisasi); ?>"
                             class="form-control">
                     </div>
 
-                    {{-- PREVIEW GAMBAR --}}
+                    
                     <div class="form-group">
                         <label>Dokumentasi</label><br>
 
-                        @foreach($data->dokumentasi as $doc)
-                            <img src="{{ asset('storage/' . $doc->file) }}"
+                        <?php $__currentLoopData = $data->dokumentasi; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $doc): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <img src="<?php echo e(asset('storage/' . $doc->file)); ?>"
                                 style="max-width:800px; margin:10px; border-radius:8px;">
-                        @endforeach
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
                         <input type="file" name="dokumentasi[]" multiple class="form-control mt-2">
                     </div>
 
                     <button class="btn btn-primary">Update</button>
-                    <a href="{{ route('belanja.index') }}" class="btn btn-secondary">Kembali</a>
+                    <a href="<?php echo e(route('belanja.index')); ?>" class="btn btn-secondary">Kembali</a>
 
                 </form>
 
@@ -65,7 +65,7 @@
     </div>
 
 
-    {{-- SCRIPT BIDANG + KEGIATAN --}}
+    
     <script>
         const kegiatanMap = {
 
@@ -126,8 +126,8 @@
         const bidangSelect = document.getElementById('bidang');
         const kegiatanSelect = document.getElementById('kegiatan');
 
-        const selectedBidang = @json($data->bidang);
-        const selectedKegiatan = @json($data->jenis_kegiatan);
+        const selectedBidang = <?php echo json_encode($data->bidang, 15, 512) ?>;
+        const selectedKegiatan = <?php echo json_encode($data->jenis_kegiatan, 15, 512) ?>;
 
         // isi bidang
         bidangSelect.innerHTML = `<option value="">-- Pilih Bidang --</option>`;
@@ -157,4 +157,5 @@
         });
     </script>
 
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Asti\Kuliah\SMT 8\skripsi\simkeu-desa\resources\views/belanja/edit.blade.php ENDPATH**/ ?>

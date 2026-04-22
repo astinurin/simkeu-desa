@@ -16,12 +16,18 @@
 
                 <table class="table table-bordered">
                     <tr>
+                        <th>Tanggal</th>
+                        <td>
+                            {{ $data->tanggal ? \Carbon\Carbon::parse($data->tanggal)->format('d-m-Y') : '-' }}
+                        </td>
+                    </tr>
+                    <tr>
                         <th>Bidang</th>
                         <td>{{ $data->bidang }}</td>
                     </tr>
                     <tr>
                         <th>Kegiatan</th>
-                        <td>{{ $data->nama_kegiatan }}</td>
+                        <td>{{ $data->jenis_kegiatan }}</td>
                     </tr>
                     <tr>
                         <th>Pagu</th>
@@ -41,10 +47,10 @@
                     </tr>
 
                     <tr>
-                        <th>Dokumentasi</th>
+                        <th>Dokumentasi Kegiatan</th>
                         <td>
                             @foreach($data->dokumentasi as $doc)
-                                <img src="{{ asset('storage/' . $doc->file) }}" style="max-width:100%;margin-bottom:10px;">
+                                <img src="{{ asset('storage/' . $doc->file) }}" style="max-width:100%; height:auto; border-radius:8px;">
                             @endforeach
                         </td>
                     </tr>

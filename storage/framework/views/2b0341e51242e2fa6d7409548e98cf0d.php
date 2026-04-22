@@ -16,12 +16,19 @@
 
                 <table class="table table-bordered">
                     <tr>
+                        <th>Tanggal</th>
+                        <td>
+                            <?php echo e($data->tanggal ? \Carbon\Carbon::parse($data->tanggal)->format('d-m-Y') : '-'); ?>
+
+                        </td>
+                    </tr>
+                    <tr>
                         <th>Bidang</th>
                         <td><?php echo e($data->bidang); ?></td>
                     </tr>
                     <tr>
                         <th>Kegiatan</th>
-                        <td><?php echo e($data->nama_kegiatan); ?></td>
+                        <td><?php echo e($data->jenis_kegiatan); ?></td>
                     </tr>
                     <tr>
                         <th>Pagu</th>
@@ -41,10 +48,10 @@
                     </tr>
 
                     <tr>
-                        <th>Dokumentasi</th>
+                        <th>Dokumentasi Kegiatan</th>
                         <td>
                             <?php $__currentLoopData = $data->dokumentasi; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $doc): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                <img src="<?php echo e(asset('storage/' . $doc->file)); ?>" style="max-width:100%;margin-bottom:10px;">
+                                <img src="<?php echo e(asset('storage/' . $doc->file)); ?>" style="max-width:100%; height:auto; border-radius:8px;">
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </td>
                     </tr>
