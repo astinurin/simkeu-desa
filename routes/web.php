@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PendapatanController;
+use App\Http\Controllers\BelanjaController;
 use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 
@@ -21,6 +22,9 @@ Route::middleware('auth')->group(function () {
 
     // PENDAPATAN
     Route::resource('pendapatan', PendapatanController::class);
+
+    // BELANJA
+    Route::resource('belanja', BelanjaController::class);
 });
 
 

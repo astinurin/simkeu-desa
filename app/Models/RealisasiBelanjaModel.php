@@ -11,8 +11,11 @@ class RealisasiBelanjaModel extends Model
     protected $fillable = [
         'belanja_id',
         'realisasi',
-        'sisa',
-        'persentase'
+        'sisa_belanja',
+        'total_pagu_belanja',
+        'total_sisa_belanja',
+        'persentase',
+        'total_persentase'
     ];
 
     public function belanja()

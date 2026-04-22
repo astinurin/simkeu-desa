@@ -10,9 +10,11 @@ class BelanjaModel extends Model
 
     protected $fillable = [
         'user_id',
-        'nama_kegiatan',
+        'tanggal',
+        'jenis_kegiatan',
         'bidang',
-        'pagu'
+        'pagu',
+        'realisasi_belanja',
     ];
 
     // relasi ke user
