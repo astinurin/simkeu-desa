@@ -1,13 +1,13 @@
-<form method="post" action="{{ route('profile.update') }}">
-    @csrf
-    @method('patch')
+<form method="post" action="<?php echo e(route('profile.update')); ?>">
+    <?php echo csrf_field(); ?>
+    <?php echo method_field('patch'); ?>
 
     <!-- PROFILE PHOTO -->
     <div class="text-center mb-4 position-relative">
 
-        <img id="preview-image" src="{{ $user->photo
+        <img id="preview-image" src="<?php echo e($user->photo
     ? asset('storage/' . $user->photo)
-    : asset('sbadmin/img/undraw_profile.svg') }}" class="rounded-circle border shadow" width="150" height="150"
+    : asset('sbadmin/img/undraw_profile.svg')); ?>" class="rounded-circle border shadow" width="150" height="150"
             style="object-fit: cover;">
 
         <label for="photo-input" class="btn btn-primary rounded-circle position-absolute" style="
@@ -81,14 +81,14 @@
     <!-- NAME -->
     <div class="form-group">
         <label>Nama</label>
-        <input type="text" name="name" class="form-control" value="{{ old('name', $user->name) }}">
+        <input type="text" name="name" class="form-control" value="<?php echo e(old('name', $user->name)); ?>">
     </div>
 
 
     <!-- EMAIL -->
     <div class="form-group">
         <label>Email</label>
-        <input type="email" name="email" class="form-control" value="{{ old('email', $user->email) }}">
+        <input type="email" name="email" class="form-control" value="<?php echo e(old('email', $user->email)); ?>">
     </div>
 
 
@@ -168,3 +168,4 @@
     }
 </style>
 
+<?php /**PATH C:\Asti\Kuliah\SMT 8\skripsi\simkeu-desa\resources\views/profile/partials/update-profile-information-form.blade.php ENDPATH**/ ?>

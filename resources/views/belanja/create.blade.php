@@ -148,7 +148,7 @@
             preview.innerHTML = '';
             [...e.target.files].forEach(f => {
                 let r = new FileReader();
-                r.onload = ev => preview.innerHTML += `<img src="${ev.target.result}" style="max-width:120px;margin:5px;">`;
+                r.onload = ev => preview.innerHTML += `<img src="${ev.target.result}"  style="max-width:800px; margin:10px; border-radius:8px;">`;
                 r.readAsDataURL(f);
             });
         });

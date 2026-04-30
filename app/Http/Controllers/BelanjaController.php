@@ -17,7 +17,15 @@ class BelanjaController extends Controller
     public function index()
     {
         $data = BelanjaModel::with('realisasi')->latest()->get();
-        return view('belanja.index', compact('data'));
+
+        // ini ambil tahun
+        $tahunList = BelanjaModel::selectRaw('YEAR(tanggal) as tahun')
+            ->whereNotNull('tanggal')
+            ->distinct()
+            ->orderBy('tahun', 'desc')
+            ->pluck('tahun');
+
+        return view('belanja.index', compact('data', 'tahunList'));
     }
 
     public function create()
@@ -80,8 +88,8 @@ class BelanjaController extends Controller
                     }
 
                     $name = Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME));
-                    $filename = $name.'_'.time().'_'.Str::random(4).'.jpg';
-                    $path = 'dokumentasi/'.$filename;
+                    $filename = $name . '_' . time() . '_' . Str::random(4) . '.jpg';
+                    $path = 'dokumentasi/' . $filename;
 
                     Storage::disk('public')->put($path, (string) $img->toJpeg(80));
 
@@ -113,6 +121,7 @@ class BelanjaController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
+            'tanggal' => 'nullable|date',
             'bidang' => 'required',
             'jenis_kegiatan' => 'required',
             'pagu' => 'required|numeric',
@@ -124,6 +133,7 @@ class BelanjaController extends Controller
 
         $data->update([
             'bidang' => $request->bidang,
+            'tanggal' => $request->tanggal ?? $data->tanggal,
             'jenis_kegiatan' => $request->jenis_kegiatan,
             'pagu' => $request->pagu,
             'realisasi_belanja' => $request->realisasi_belanja ?? 0,
@@ -161,9 +171,9 @@ class BelanjaController extends Controller
                     }
 
                     $filename = Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME))
-                        .'_'.time().'.jpg';
+                        . '_' . time() . '.jpg';
 
-                    $path = 'dokumentasi/'.$filename;
+                    $path = 'dokumentasi/' . $filename;
 
                     Storage::disk('public')->put($path, (string) $img->toJpeg(80));
 

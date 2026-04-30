@@ -64,10 +64,10 @@
                                     <td>Rp <?php echo e(number_format($sisa)); ?></td>
                                     <td class="text-center">
                                         <span class="badge
-                                                <?php if($persentase >= 80): ?> badge-success
-                                                <?php elseif($persentase >= 50): ?> badge-warning
-                                                <?php else: ?> badge-danger
-                                                <?php endif; ?>">
+                                                                <?php if($persentase >= 80): ?> badge-success
+                                                                <?php elseif($persentase >= 50): ?> badge-warning
+                                                                <?php else: ?> badge-danger
+                                                                <?php endif; ?>">
                                             <?php echo e(number_format($persentase, 2)); ?> %
                                         </span>
                                     </td>
@@ -114,26 +114,70 @@
 
     </div>
 <?php $__env->stopSection(); ?>
+
 <?php $__env->startSection('scripts'); ?>
-<script>
-$(document).ready(function() {
-    $('#dataTable').DataTable({
-        "pageLength": 10,
-        "ordering": true,
-        "responsive": true,
-        "language": {
-            "lengthMenu": "Tampilkan _MENU_ data",
-            "zeroRecords": "Data tidak ditemukan",
-            "info": "Menampilkan _START_ - _END_ dari _TOTAL_ data",
-            "infoEmpty": "Data kosong",
-            "search": "Cari:",
-            "paginate": {
-                "next": "Next",
-                "previous": "Prev"
-            }
-        }
-    });
-});
-</script>
+    <script>
+        $(document).ready(function () {
+
+            var table = $('#dataTable').DataTable({
+                pageLength: 5,
+                lengthMenu: [5, 10, 25, 50],
+                language: {
+                    search: "Cari:",
+                    lengthMenu: "Tampilkan _MENU_ data",
+                    info: "Menampilkan _START_ - _END_ dari _TOTAL_ data",
+                }
+            });
+
+            // 🔥 TAMBAH DROPDOWN TAHUN + BULAN
+            $('.dataTables_length').append(`
+            <select id="filterTahun" class="form-control form-control-sm ml-2" style="width:130px; display:inline-block;">
+                <option value="">Semua Tahun</option>
+                <?php $__currentLoopData = $tahunList; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $th): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <option value="<?php echo e($th); ?>"><?php echo e($th); ?></option>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+            </select>
+
+            <select id="filterBulan" class="form-control form-control-sm ml-2" style="width:130px; display:inline-block;">
+                <option value="">Semua Bulan</option>
+                <option value="01">Jan</option>
+                <option value="02">Feb</option>
+                <option value="03">Mar</option>
+                <option value="04">Apr</option>
+                <option value="05">Mei</option>
+                <option value="06">Jun</option>
+                <option value="07">Jul</option>
+                <option value="08">Agu</option>
+                <option value="09">Sep</option>
+                <option value="10">Okt</option>
+                <option value="11">Nov</option>
+                <option value="12">Des</option>
+            </select>
+        `);
+
+            // 🔥 FILTER LOGIC
+            $.fn.dataTable.ext.search.push(function (settings, data) {
+
+                let bulan = $('#filterBulan').val();
+                let tahun = $('#filterTahun').val();
+
+                let tanggal = data[1]; // kolom tanggal
+
+                if (!tanggal) return true;
+
+                let parts = tanggal.split('-'); // format: dd-mm-yyyy
+                let bln = parts[1];
+                let thn = parts[2];
+
+                return (bulan === "" || bln === bulan) &&
+                    (tahun === "" || thn === tahun);
+            });
+
+            $('#filterTahun, #filterBulan').on('change', function () {
+                table.draw();
+            });
+
+        });
+    </script>
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Asti\Kuliah\SMT 8\skripsi\simkeu-desa\resources\views/belanja/index.blade.php ENDPATH**/ ?>

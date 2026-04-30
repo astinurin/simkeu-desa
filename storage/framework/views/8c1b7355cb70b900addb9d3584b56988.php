@@ -1,6 +1,4 @@
-@extends('layouts.app')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
     <div class="container-fluid">
 
         <h1 class="h3 mb-4 text-gray-800">Profile</h1>
@@ -16,7 +14,7 @@
                         </h6>
                     </div>
                     <div class="card-body">
-                        @include('profile.partials.update-profile-information-form')
+                        <?php echo $__env->make('profile.partials.update-profile-information-form', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
                     </div>
                 </div>
             </div>
@@ -30,7 +28,7 @@
                         </h6>
                     </div>
                     <div class="card-body">
-                        @include('profile.partials.update-password-form')
+                        <?php echo $__env->make('profile.partials.update-password-form', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
                     </div>
                 </div>
             </div>
@@ -44,16 +42,16 @@
                         </h6>
                     </div>
                     <div class="card-body">
-                        @include('profile.partials.delete-user-form')
+                        <?php echo $__env->make('profile.partials.delete-user-form', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
                     </div>
                 </div>
             </div>
 
         </div>
     </div>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@section('scripts')
+<?php $__env->startSection('scripts'); ?>
     <script>
         let cropper;
 
@@ -158,4 +156,5 @@
         });
     </script>
 
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Asti\Kuliah\SMT 8\skripsi\simkeu-desa\resources\views/profile/edit.blade.php ENDPATH**/ ?>

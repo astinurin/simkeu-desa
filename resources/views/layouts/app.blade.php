@@ -122,7 +122,7 @@
                             </div>
                         </li>
 
-                        <!-- 🔔 ALERT -->
+
                         <!-- 🔔 ALERT -->
                         <li class="nav-item dropdown no-arrow mx-1">
                             <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
@@ -164,7 +164,6 @@
                         </li>
 
                         <!-- ✉️ MESSAGE -->
-                        <!-- ✉️ MESSAGE -->
                         <li class="nav-item dropdown no-arrow mx-1">
                             <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"
                                 data-toggle="dropdown">
@@ -200,13 +199,18 @@
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">
                                     {{ Auth::user()->name ?? 'User' }}
                                 </span>
-                                <img class="img-profile rounded-circle"
-                                    src="{{ asset('sbadmin/img/undraw_profile.svg') }}">
+                                @if(Auth::user()->photo)
+                                    <img class="img-profile rounded-circle"
+                                        src="{{ asset('storage/' . Auth::user()->photo) }}">
+                                @else
+                                    <img class="img-profile rounded-circle"
+                                        src="{{ asset('sbadmin/img/undraw_profile.svg') }}">
+                                @endif
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in">
 
-                                <a class="dropdown-item" href="#">
+                                <a class="dropdown-item" href="{{ route('profile.edit') }}">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Profile
                                 </a>
@@ -256,6 +260,10 @@
 
     <!-- INI WAJIB -->
     @yield('scripts')
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js"></script>
 </body>
 
 </html>

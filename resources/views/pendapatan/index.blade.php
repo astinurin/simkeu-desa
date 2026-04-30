@@ -84,10 +84,10 @@
                                                     <td class="text-center">
                                                         <span
                                                             class="badge 
-                                                                                                                                                                                                                                                                                                                @if($persentase >= 80) badge-success
-                                                                                                                                                                                                                                                                                                                @elseif($persentase >= 50) badge-warning
-                                                                                                                                                                                                                                                                                                                @else badge-danger
-                                                                                                                                                                                                                                                                                                                @endif">
+                                                                                                                                                                                                                                                                                                                                        @if($persentase >= 80) badge-success
+                                                                                                                                                                                                                                                                                                                                        @elseif($persentase >= 50) badge-warning
+                                                                                                                                                                                                                                                                                                                                        @else badge-danger
+                                                                                                                                                                                                                                                                                                                                        @endif">
                                                             {{ number_format($persentase, 2) }} %
                                                         </span>
                                                     </td>
@@ -163,40 +163,41 @@
                 }
             });
 
-            // TAMBAH FILTER DATE
+            // 🔥 TAMBAH FILTER TAHUN + BULAN
             $('.dataTables_length').append(`
-                            <select id="filterTahun" class="form-control form-control-sm ml-2" style="width:130px; display:inline-block;">
-                                <option value="">Semua Tahun</option>
-                                @foreach($tahunList as $th)
-                                    <option value="{{ $th }}">{{ $th }}</option>
-                                @endforeach
-                            </select>
+            <select id="filterTahun" class="form-control form-control-sm ml-2" style="width:130px; display:inline-block;">
+                <option value="">Semua Tahun</option>
+                @foreach($tahunList as $th)
+                    <option value="{{ $th }}">{{ $th }}</option>
+                @endforeach
+            </select>
 
-                            <select id="filterBulan" class="form-control form-control-sm ml-2" style="width:130px; display:inline-block;">
-                                <option value="">Semua Bulan</option>
-                                <option value="01">Jan</option>
-                                <option value="02">Feb</option>
-                                <option value="03">Mar</option>
-                                <option value="04">Apr</option>
-                                <option value="05">Mei</option>
-                                <option value="06">Jun</option>
-                                <option value="07">Jul</option>
-                                <option value="08">Agu</option>
-                                <option value="09">Sep</option>
-                                <option value="10">Okt</option>
-                                <option value="11">Nov</option>
-                                <option value="12">Des</option>
-                            </select>
-                        `);
+            <select id="filterBulan" class="form-control form-control-sm ml-2" style="width:130px; display:inline-block;">
+                <option value="">Semua Bulan</option>
+                <option value="01">Jan</option>
+                <option value="02">Feb</option>
+                <option value="03">Mar</option>
+                <option value="04">Apr</option>
+                <option value="05">Mei</option>
+                <option value="06">Jun</option>
+                <option value="07">Jul</option>
+                <option value="08">Agu</option>
+                <option value="09">Sep</option>
+                <option value="10">Okt</option>
+                <option value="11">Nov</option>
+                <option value="12">Des</option>
+            </select>
+        `);
 
-            // FILTER LOGIC
+            // 🔥 FILTER LOGIC (SAMA KAYAK PENDAPATAN)
             $.fn.dataTable.ext.search.push(function (settings, data) {
+
                 let bulan = $('#filterBulan').val();
                 let tahun = $('#filterTahun').val();
 
-                let tanggal = data[1];
+                let tanggal = data[1]; // kolom tanggal
 
-                // 🔥 HANDLE NULL
+                // handle kosong
                 if (!tanggal || tanggal === '-') {
                     return (bulan === "" && tahun === "");
                 }
