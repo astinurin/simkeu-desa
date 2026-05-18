@@ -2,8 +2,33 @@
 <div class="container-fluid">
 
     <!-- HEADER -->
-    <h1 class="h3 mb-4 text-gray-800">Dashboard</h1>
+    <div class="card shadow mb-4 border-left-primary">
+        <div class="card-body py-3">
 
+            <div class="d-flex justify-content-between align-items-center">
+
+                <div>
+                    <h4 class="mb-1 font-weight-bold text-gray-800">
+                        Dashboard
+                    </h4>
+
+                    <div class="text-muted">
+                        <i class="fas fa-calendar-alt mr-1"></i>
+
+                        {{ \Carbon\Carbon::now()->locale('id')->translatedFormat('l, d F Y') }}
+                        •
+                        {{ \Carbon\Carbon::now()->translatedFormat('H:i') }} WIB
+                    </div>
+                </div>
+
+                {{-- <div class="text-primary">
+                    <i class="fas fa-chart-line fa-2x"></i>
+                </div> --}}
+
+            </div>
+
+        </div>
+    </div>
 
 
 
@@ -277,7 +302,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            @endif  
+                            @endif
                         @empty
                             <tr>
                                 <td colspan="8" class="text-center">Tidak ada data</td>

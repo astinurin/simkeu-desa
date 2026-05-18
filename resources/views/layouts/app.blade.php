@@ -12,6 +12,22 @@
     <link href="{{ asset('sbadmin/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet">
     <link href="{{ asset('sbadmin/css/sb-admin-2.min.css') }}" rel="stylesheet">
     <link href="{{ asset('sbadmin/vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
+
+    <style>
+        .sidebar-brand-text {
+            font-size: 1.8rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+        .sidebar.toggled .sidebar-brand-text {
+            display: none;
+        }
+
+        .sidebar-heading {
+    white-space: nowrap;
+}
+    </style>
 </head>
 
 
@@ -23,9 +39,15 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
+
                 <div class="sidebar-brand-icon">
-                    <img src="{{ asset('assets/img/simkeu_logo3.png') }}" alt="logo" style="width: 160px;">
+                    <img src="{{ asset('assets/img/simkeu_logo2.png') }}" alt="logo" style="width: 42px;">
                 </div>
+
+                <div class="sidebar-brand-text mx-2">
+                    SIMKEU
+                </div>
+
             </a>
 
             <hr class="sidebar-divider my-0">
