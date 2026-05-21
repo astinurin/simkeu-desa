@@ -1,6 +1,6 @@
-@extends('layouts.app')
 
-@section('content')
+
+<?php $__env->startSection('content'); ?>
 
 <div class="container-fluid">
 
@@ -12,7 +12,7 @@
 
         </h1>
 
-        <a href="{{ route('users.index') }}"
+        <a href="<?php echo e(route('users.index')); ?>"
            class="btn btn-secondary shadow-sm">
 
             <i class="fas fa-arrow-left fa-sm mr-1"></i>
@@ -24,25 +24,26 @@
     </div>
 
 
-    @if ($errors->any())
+    <?php if($errors->any()): ?>
 
         <div class="alert alert-danger border-0 shadow-sm">
 
-            {{ $errors->first() }}
+            <?php echo e($errors->first()); ?>
+
 
         </div>
 
-    @endif
+    <?php endif; ?>
 
 
     <div class="card shadow border-0">
 
         <div class="card-body p-4">
 
-            <form action="{{ route('users.store') }}"
+            <form action="<?php echo e(route('users.store')); ?>"
                   method="POST" autocomplete="off">
 
-                @csrf
+                <?php echo csrf_field(); ?>
 
 
                 <!-- USERNAME -->
@@ -128,4 +129,5 @@
 
 </div>
 
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Asti\Kuliah\SMT 8\skripsi\simkeu-desa\resources\views/superadmin/create.blade.php ENDPATH**/ ?>

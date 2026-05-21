@@ -1,6 +1,6 @@
-@extends('layouts.app')
 
-@section('content')
+
+<?php $__env->startSection('content'); ?>
 
 <div class="container-fluid">
 
@@ -12,7 +12,7 @@
 
         </h1>
 
-        <a href="{{ route('users.index') }}"
+        <a href="<?php echo e(route('users.index')); ?>"
            class="btn btn-secondary shadow-sm">
 
             <i class="fas fa-arrow-left fa-sm"></i>
@@ -23,25 +23,26 @@
 
     </div>
 
-    @if ($errors->any())
+    <?php if($errors->any()): ?>
 
         <div class="alert alert-danger">
 
-            {{ $errors->first() }}
+            <?php echo e($errors->first()); ?>
+
 
         </div>
 
-    @endif
+    <?php endif; ?>
 
     <div class="card shadow border-0">
 
         <div class="card-body p-4">
 
-            <form action="{{ route('users.update', $user->id) }}"
+            <form action="<?php echo e(route('users.update', $user->id)); ?>"
                   method="POST">
 
-                @csrf
-                @method('PUT')
+                <?php echo csrf_field(); ?>
+                <?php echo method_field('PUT'); ?>
 
                 <!-- NAMA -->
                 <div class="form-group mb-4">
@@ -51,23 +52,23 @@
                     <input type="text"
                            name="name"
                            class="form-control"
-                           value="{{ $user->name }}"
+                           value="<?php echo e($user->name); ?>"
                            required>
 
                 </div>
 
                 <!-- EMAIL -->
-                {{-- <div class="form-group mb-4">
+                <div class="form-group mb-4">
 
                     <label>Email</label>
 
                     <input type="email"
                            name="email"
                            class="form-control"
-                           value="{{ $user->email }}"
+                           value="<?php echo e($user->email); ?>"
                            required>
 
-                </div> --}}
+                </div>
 
                 <!-- ROLE -->
                 <div class="form-group mb-4">
@@ -78,14 +79,14 @@
                             class="form-control">
 
                         <option value="bendahara"
-                            {{ $user->role == 'bendahara' ? 'selected' : '' }}>
+                            <?php echo e($user->role == 'bendahara' ? 'selected' : ''); ?>>
 
                             Bendahara
 
                         </option>
 
                         <option value="superadmin"
-                            {{ $user->role == 'superadmin' ? 'selected' : '' }}>
+                            <?php echo e($user->role == 'superadmin' ? 'selected' : ''); ?>>
 
                             Superadmin
 
@@ -111,4 +112,5 @@
 
 </div>
 
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Asti\Kuliah\SMT 8\skripsi\simkeu-desa\resources\views/superadmin/edit.blade.php ENDPATH**/ ?>

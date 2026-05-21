@@ -8,6 +8,9 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
+    // =========================
+    // LIST USER
+    // =========================
     public function index()
     {
         $users = User::latest()->get();
@@ -15,62 +18,94 @@ class UserController extends Controller
         return view('superadmin.index', compact('users'));
     }
 
+
+    // =========================
+    // FORM TAMBAH USER
+    // =========================
     public function create()
     {
-        return view('users.create');
+        return view('superadmin.create');
     }
 
+
+    // =========================
+    // SIMPAN USER
+    // =========================
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required',
-            'email' => 'required|email|unique:users',
+            'name' => 'required|unique:users,name',
             'password' => 'required|min:6',
             'role' => 'required'
         ]);
 
         User::create([
             'name' => $request->name,
-            'email' => $request->email,
             'password' => Hash::make($request->password),
             'role' => $request->role,
         ]);
 
-        return redirect()->route('users.index')
+        return redirect()
+            ->route('users.index')
             ->with('success', 'User berhasil ditambahkan');
     }
 
+
+    // =========================
+    // FORM EDIT USER
+    // =========================
     public function edit($id)
     {
         $user = User::findOrFail($id);
 
-        return view('users.edit', compact('user'));
+        return view('superadmin.edit', compact('user'));
     }
 
+
+    // =========================
+    // UPDATE USER
+    // =========================
     public function update(Request $request, $id)
     {
         $user = User::findOrFail($id);
 
         $request->validate([
-            'name' => 'required',
-            'email' => 'required|email',
+            'name' => 'required|unique:users,name,' . $user->id,
             'role' => 'required'
         ]);
 
         $user->update([
             'name' => $request->name,
-            'email' => $request->email,
             'role' => $request->role,
         ]);
 
-        return redirect()->route('users.index')
+        return redirect()
+            ->route('users.index')
             ->with('success', 'User berhasil diupdate');
     }
 
+
+    // =========================
+    // HAPUS USER
+    // =========================
     public function destroy($id)
     {
-        User::findOrFail($id)->delete();
+        $user = User::findOrFail($id);
 
-        return back()->with('success', 'User berhasil dihapus');
+        // cegah hapus akun sendiri
+        if ($user->id == auth()->id()) {
+
+            return back()->with(
+                'error',
+                'Tidak bisa menghapus akun sendiri'
+            );
+        }
+
+        $user->delete();
+
+        return back()->with(
+            'success',
+            'User berhasil dihapus'
+        );
     }
 }

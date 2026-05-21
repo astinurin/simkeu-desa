@@ -80,16 +80,34 @@
 
     <!-- NAME -->
     <div class="form-group">
-        <label>Nama</label>
+        <label>Username</label>
         <input type="text" name="name" class="form-control" value="<?php echo e(old('name', $user->name)); ?>">
     </div>
 
+    <!-- WHATSAPP -->
+<div class="form-group">
 
+    <label>
+
+        Nomor WhatsApp
+
+    </label>
+
+    <input type="text"
+           name="whatsapp"
+           class="form-control"
+           value="<?php echo e(old('whatsapp', $user->whatsapp)); ?>"
+           placeholder="628xxxxxxxx">
+
+    <small class="text-muted">
+
+        
+
+    </small>
+
+</div>
     <!-- EMAIL -->
-    <div class="form-group">
-        <label>Email</label>
-        <input type="email" name="email" class="form-control" value="<?php echo e(old('email', $user->email)); ?>">
-    </div>
+    
 
 
     <button type="submit" class="btn btn-primary">

@@ -62,17 +62,18 @@
 
             border: 1px solid rgba(255, 255, 255, .15);
         }
-.overlay-content h1{
-    font-size: 34px;
-    line-height: 1.25;
-    font-weight: 700;
-}
 
-.overlay-content p{
-    font-size: 14px;
-    line-height: 1.7;
-    margin-top: 14px;
-}
+        .overlay-content h1 {
+            font-size: 34px;
+            line-height: 1.25;
+            font-weight: 700;
+        }
+
+        .overlay-content p {
+            font-size: 14px;
+            line-height: 1.7;
+            margin-top: 14px;
+        }
 
         .login-form-wrapper {
             padding: 70px 60px;
@@ -293,9 +294,14 @@
 
                                     </label>
 
-                                    @if (Route::has('password.request'))
+                                    @php
+                                        $superadmin = \App\Models\User::where('role', 'superadmin')->first();
+                                    @endphp
 
-                                        <a href="{{ route('password.request') }}" class="forgot-link">
+                                    @if($superadmin && $superadmin->whatsapp)
+
+                                        <a href="https://wa.me/{{ $superadmin->whatsapp }}?text=Halo%20Superadmin,%20saya%20mengalami%20kendala%20login%20karena%20lupa%20password%20akun.%0A%0AUsername%20:%20%0A%0AMohon%20bantuannya%20untuk%20reset%20password.%20Terima%20kasih."
+                                            target="_blank" class="forgot-link">
 
                                             Lupa password?
 

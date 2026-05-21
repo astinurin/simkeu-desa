@@ -57,7 +57,7 @@
 
                         <th width="60">No</th>
                         <th>Nama</th>
-                        <th>Email</th>
+                        {{-- <th>Email</th> --}}
                         <th width="160">Role</th>
                         <th width="220">Aksi</th>
 
@@ -83,11 +83,11 @@
 
                             </td>
 
-                            <td>
+                            {{-- <td>
 
                                 {{ $item->email }}
 
-                            </td>
+                            </td> --}}
 
                             <td>
 

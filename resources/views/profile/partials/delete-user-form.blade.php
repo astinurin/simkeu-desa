@@ -1,4 +1,4 @@
-<form method="post" action="{{ route('profile.destroy') }}">
+{{-- <form method="post" action="{{ route('profile.destroy') }}">
     @csrf
     @method('delete')
 
@@ -22,4 +22,4 @@
             Hapus Akun
         </button>
     </div>
-</form>
+</form> --}}

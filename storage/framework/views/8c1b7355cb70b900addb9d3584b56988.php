@@ -34,18 +34,7 @@
             </div>
 
             <!-- Delete Account -->
-            <div class="col-lg-12">
-                <div class="card shadow mb-4 border-left-danger">
-                    <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-danger">
-                            Hapus Akun
-                        </h6>
-                    </div>
-                    <div class="card-body">
-                        <?php echo $__env->make('profile.partials.delete-user-form', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
-                    </div>
-                </div>
-            </div>
+            
 
         </div>
     </div>
