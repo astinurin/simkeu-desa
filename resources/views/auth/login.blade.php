@@ -1,92 +1,361 @@
 @extends('layouts.auth')
 
 @section('content')
-    <div class="container">
 
-        <div class="row justify-content-center">
-            <div class="col-xl-10 col-lg-12 col-md-9">
+    <style>
+        body {
+            background: #f3f4f6;
+            overflow-x: hidden;
+        }
 
-                <div class="card o-hidden border-0 shadow-lg my-5">
-                    <div class="card-body p-0">
+        .login-wrapper {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
 
-                        <div class="row">
-                            <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
+        .login-card {
+            width: 100%;
+            max-width: 1180px;
+            background: white;
+            border-radius: 32px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, .08);
+        }
 
-                            <div class="col-lg-6">
-                                <div class="p-5">
+        .login-image {
+            position: relative;
 
-                                    <div class="text-center">
-                                        <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
-                                    </div>
+            height: 100%;
+            min-height: 760px;
 
-                                    {{-- ERROR --}}
-                                    @if ($errors->any())
-                                        <div class="alert alert-danger">
-                                            {{ $errors->first() }}
-                                        </div>
-                                    @endif
+            background:
+                linear-gradient(rgba(0, 0, 0, .25),
+                    rgba(0, 0, 0, .25)),
+                url('{{ asset('assets/img/villageaerialphotography.jpg') }}');
 
-                                    {{-- SUCCESS (session) --}}
-                                    @if (session('status'))
-                                        <div class="alert alert-success">
-                                            {{ session('status') }}
-                                        </div>
-                                    @endif
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
 
-                                    <form method="POST" action="{{ route('login') }}" class="user">
-                                        @csrf
+            border-top-left-radius: 32px;
+            border-bottom-left-radius: 32px;
 
-                                        <div class="form-group">
-                                            <input type="text" name="name" class="form-control form-control-user"
-                                                placeholder="Username" value="{{ old('name') }}" required autofocus>
-                                        </div>
+            overflow: hidden;
+        }
 
-                                        <div class="form-group">
-                                            <input type="password" name="password" class="form-control form-control-user"
-                                                placeholder="Password" required>
-                                        </div>
+        .overlay-content {
+            position: absolute;
+            left: 40px;
+            bottom: 40px;
 
-                                        <div class="form-group">
-                                            <div class="custom-control custom-checkbox small">
-                                                <input type="checkbox" name="remember" class="custom-control-input"
-                                                    id="remember">
-                                                <label class="custom-control-label" for="remember">
-                                                    Remember Me
-                                                </label>
-                                            </div>
-                                        </div>
+            color: white;
+            max-width: 420px;
 
-                                        <button type="submit" class="btn btn-primary btn-user btn-block">
-                                            Login
-                                        </button>
+            background: rgba(255, 255, 255, .08);
+            backdrop-filter: blur(10px);
 
-                                    </form>
+            padding: 28px;
+            border-radius: 24px;
 
-                                    <hr>
+            border: 1px solid rgba(255, 255, 255, .15);
+        }
+.overlay-content h1{
+    font-size: 34px;
+    line-height: 1.25;
+    font-weight: 700;
+}
 
-                                    @if (Route::has('password.request'))
-                                        <div class="text-center">
-                                            <a class="small" href="{{ route('password.request') }}">
-                                                Forgot Password?
-                                            </a>
-                                        </div>
-                                    @endif
+.overlay-content p{
+    font-size: 14px;
+    line-height: 1.7;
+    margin-top: 14px;
+}
 
-                                    <div class="text-center">
-                                        <a class="small" href="{{ route('register') }}">
-                                            Create an Account!
-                                        </a>
-                                    </div>
+        .login-form-wrapper {
+            padding: 70px 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 100%;
+        }
 
-                                </div>
-                            </div>
+        .brand-logo {
+            margin-bottom: 40px;
+            margin-left: 40px;
+        }
+
+        .brand-logo img {
+            width: 385px;
+            max-width: 100%;
+            display: block;
+        }
+
+        .login-title {
+            font-size: 42px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 10px;
+        }
+
+        .login-subtitle {
+            color: #6b7280;
+            margin-bottom: 45px;
+            font-size: 15px;
+        }
+
+        .form-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 10px;
+        }
+
+        .custom-input {
+            height: 58px;
+            border-radius: 16px;
+            border: 1px solid #e5e7eb;
+            background: #f9fafb;
+            padding: 0 20px;
+            font-size: 15px;
+            transition: .2s ease;
+        }
+
+        .custom-input:focus {
+            background: white;
+            border-color: #4e73df;
+            box-shadow: 0 0 0 4px rgba(78, 115, 223, .12);
+        }
+
+        .login-btn {
+            height: 58px;
+            border-radius: 16px;
+            background: #4e73df;
+            border: none;
+            font-size: 16px;
+            font-weight: 600;
+            transition: .2s ease;
+        }
+
+        .login-btn:hover {
+            background: #3f63d3;
+            transform: translateY(-1px);
+        }
+
+        .forgot-link {
+            color: #4e73df;
+            font-size: 14px;
+            text-decoration: none;
+        }
+
+        .forgot-link:hover {
+            text-decoration: none;
+            color: #2e59d9;
+        }
+
+        .remember-text {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .footer-text {
+            font-size: 14px;
+            color: #9ca3af;
+        }
+
+        .footer-text a {
+            color: #4e73df;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        @media(max-width: 991px) {
+
+            .login-image {
+                display: none;
+            }
+
+            .login-form-wrapper {
+                padding: 50px 35px;
+            }
+
+            .login-title {
+                font-size: 34px;
+            }
+
+        }
+    </style>
+
+
+    <div class="login-wrapper">
+
+        <div class="login-card">
+
+            <div class="row no-gutters">
+
+                <!-- LEFT IMAGE -->
+                <div class="col-lg-6">
+
+                    <div class="login-image">
+
+                        <div class="overlay-content">
+
+                            <h1>
+                                Sistem Informasi
+                                Manajemen
+                                Keuangan Desa
+                            </h1>
+
+                            <p>
+                                Kelola pendapatan, belanja,
+                                realisasi, dan dokumentasi
+                                kegiatan desa secara digital,
+                                transparan, dan terstruktur.
+                            </p>
+
                         </div>
 
                     </div>
+
+                </div>
+
+
+                <!-- RIGHT FORM -->
+                <div class="col-lg-6">
+
+                    <div class="login-form-wrapper">
+
+                        <!-- LOGO -->
+                        <div class="brand-logo">
+
+                            <img src="{{ asset('assets/img/simkeu_logo3.png') }}" alt="SIMKEU" class="logo">
+
+                        </div>
+
+
+                        <!-- TITLE -->
+                        <h2 class="login-title">
+
+                            Login Admin
+
+                        </h2>
+
+                        <p class="login-subtitle">
+
+                            Masuk ke dashboard
+
+                        </p>
+
+
+                        {{-- ERROR --}}
+                        @if ($errors->any())
+
+                            <div class="alert alert-danger border-0 rounded-lg">
+
+                                {{ $errors->first() }}
+
+                            </div>
+
+                        @endif
+
+
+                        <!-- FORM -->
+                        <form method="POST" action="{{ route('login') }}">
+
+                            @csrf
+
+
+                            <!-- USERNAME -->
+                            <div class="form-group mb-4">
+
+                                <label class="form-label">
+
+                                    Username
+
+                                </label>
+
+                                <input type="text" name="name" class="form-control custom-input"
+                                    placeholder="Masukkan username" value="{{ old('name') }}" required autofocus>
+
+                            </div>
+
+
+                            <!-- PASSWORD -->
+                            <div class="form-group mb-3">
+
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+
+                                    <label class="form-label mb-0">
+
+                                        Password
+
+                                    </label>
+
+                                    @if (Route::has('password.request'))
+
+                                        <a href="{{ route('password.request') }}" class="forgot-link">
+
+                                            Lupa password?
+
+                                        </a>
+
+                                    @endif
+
+                                </div>
+
+                                <input type="password" name="password" class="form-control custom-input"
+                                    placeholder="Masukkan password" required>
+
+                            </div>
+
+
+                            <!-- REMEMBER -->
+                            <div class="form-group mb-4">
+
+                                <div class="custom-control custom-checkbox">
+
+                                    <input type="checkbox" class="custom-control-input" id="remember" name="remember">
+
+                                    <label class="custom-control-label remember-text" for="remember">
+
+                                        Ingat saya
+
+                                    </label>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- BUTTON -->
+                            <button type="submit" class="btn btn-primary btn-block login-btn shadow-sm">
+
+                                <i class="fas fa-sign-in-alt mr-2"></i>
+
+                                Masuk
+
+                            </button>
+
+                        </form>
+
+
+                        <!-- FOOTER -->
+                        <div class="text-center mt-5 footer-text">
+
+                            SIMKEU Desa © {{ date('Y') }}
+
+                        </div>
+
+                    </div>
+
                 </div>
 
             </div>
+
         </div>
 
     </div>
+
 @endsection

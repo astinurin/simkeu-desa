@@ -1,32 +1,52 @@
 <?php
 
+use App\Http\Controllers\PublicController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PendapatanController;
 use App\Http\Controllers\BelanjaController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\UserController;
+
 use Illuminate\Support\Facades\Route;
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
-
-Route::get('/', [DashboardController::class, 'index'])
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
+Route::get('/', [PublicController::class, 'index']);
 
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::get('/pendapatan/download/{id}', [PendapatanController::class, 'download'])->name('pendapatan.download');
+
+    // DASHBOARD
+    Route::get('/dashboard', [DashboardController::class, 'index'])
+        ->name('dashboard');
+
+    // PROFILE
+    Route::get('/profile', [ProfileController::class, 'edit'])
+        ->name('profile.edit');
+
+    Route::patch('/profile', [ProfileController::class, 'update'])
+        ->name('profile.update');
+
+    Route::delete('/profile', [ProfileController::class, 'destroy'])
+        ->name('profile.destroy');
+
+    // DOWNLOAD DOKUMEN
+    Route::get('/pendapatan/download/{id}', [PendapatanController::class, 'download'])
+        ->name('pendapatan.download');
 
     // PENDAPATAN
     Route::resource('pendapatan', PendapatanController::class);
 
     // BELANJA
     Route::resource('belanja', BelanjaController::class);
+
+    // =========================
+    // SUPERADMIN ONLY
+    // =========================
+    Route::middleware('superadmin')->group(function () {
+
+        // KELOLA USER
+        Route::resource('users', UserController::class);
+
+    });
+
 });
 
-
-
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

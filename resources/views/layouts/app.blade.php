@@ -25,8 +25,8 @@
         }
 
         .sidebar-heading {
-    white-space: nowrap;
-}
+            white-space: nowrap;
+        }
     </style>
 </head>
 
@@ -53,7 +53,7 @@
             <hr class="sidebar-divider my-0">
 
             <li class="nav-item active">
-                <a class="nav-link" href="/">
+                <a class="nav-link" href="{{ route('dashboard') }}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span>
                 </a>
@@ -78,7 +78,16 @@
                     <span>Belanja</span>
                 </a>
             </li>
+            @if(auth()->user()->role === 'superadmin')
 
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('users.index') }}">
+                        <i class="fas fa-fw fa-users-cog"></i>
+                        <span>Kelola User</span>
+                    </a>
+                </li>
+
+            @endif
             <li class="nav-item">
                 <a class="nav-link" href="/settings">
                     <i class="fas fa-fw fa-cog"></i>
