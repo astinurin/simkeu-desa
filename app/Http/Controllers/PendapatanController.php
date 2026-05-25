@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
+use Smalot\PdfParser\Parser;
+
 
 class PendapatanController extends Controller
 {
@@ -29,6 +31,139 @@ class PendapatanController extends Controller
         return view('pendapatan.create');
     }
 
+    public function detect(Request $request)
+    {
+        try {
+
+            if (!$request->hasFile('dokumen')) {
+
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Dokumen tidak ditemukan'
+                ]);
+            }
+
+            $file = $request->file('dokumen');
+
+            // hanya PDF dulu
+            if ($file->getClientOriginalExtension() !== 'pdf') {
+
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Hanya PDF yang didukung'
+                ]);
+            }
+
+            // =========================
+            // PARSE PDF
+            // =========================
+
+            $parser = new Parser();
+
+            $pdf = $parser->parseFile($file->getPathname());
+
+            $text = $pdf->getText();
+
+            // =========================
+            // DEFAULT
+            // =========================
+
+            $kategori = null;
+            $jenis = null;
+            $realisasi = null;
+
+            // =========================
+            // MAPPING JENIS
+            // =========================
+
+            $mapping = [
+
+                'pendapatan bagi hasil pajak dan retribusi' => [
+                    'kategori' => 'Pendapatan Transfer',
+                    'jenis' => 'Pendapatan Bagi Hasil Pajak dan Retribusi'
+                ],
+
+                'alokasi dana desa' => [
+                    'kategori' => 'Pendapatan Transfer',
+                    'jenis' => 'Alokasi Dana Desa'
+                ],
+
+                'dana desa' => [
+                    'kategori' => 'Pendapatan Transfer',
+                    'jenis' => 'Dana Desa'
+                ],
+
+                'hasil pengelolaan tkd' => [
+                    'kategori' => 'Pendapatan Asli Desa',
+                    'jenis' => 'Hasil Pengelolaan TKD'
+                ],
+
+                'bagi hasil kerjasama antar desa' => [
+                    'kategori' => 'Pendapatan Lain-Lain',
+                    'jenis' => 'Bagi Hasil Kerjasama Antar Desa'
+                ],
+
+                'bunga bank' => [
+                    'kategori' => 'Pendapatan Lain-Lain',
+                    'jenis' => 'Bunga Bank'
+                ],
+
+            ];
+
+            // =========================
+            // DETECT JENIS + KATEGORI
+            // =========================
+
+            foreach ($mapping as $key => $value) {
+
+                if (stripos(strtolower($text), $key) !== false) {
+
+                    $kategori = $value['kategori'];
+
+                    $jenis = $value['jenis'];
+
+                    break;
+                }
+            }
+
+            // =========================
+            // DETECT NOMINAL
+            // =========================
+
+            preg_match('/Rp\s?([\d\.\,]+)/', $text, $matches);
+
+            if (isset($matches[1])) {
+
+                $angka = str_replace('.', '', $matches[1]);
+                $angka = str_replace(',', '.', $angka);
+
+                $realisasi = (float) $angka;
+            }
+
+            return response()->json([
+
+                'success' => true,
+
+                'kategori' => $kategori,
+
+                'jenis' => $jenis,
+
+                'realisasi' => $realisasi,
+
+                'raw_text' => $text
+
+            ]);
+        } catch (\Exception $e) {
+
+            return response()->json([
+
+                'success' => false,
+
+                'message' => $e->getMessage()
+
+            ]);
+        }
+    }
     public function store(Request $request)
     {
         $request->validate([

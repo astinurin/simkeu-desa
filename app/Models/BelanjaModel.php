@@ -15,6 +15,7 @@ class BelanjaModel extends Model
         'bidang',
         'pagu',
         'realisasi_belanja',
+        'pajak',
     ];
 
     // relasi ke user

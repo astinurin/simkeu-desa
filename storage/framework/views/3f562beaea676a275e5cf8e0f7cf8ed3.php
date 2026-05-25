@@ -16,53 +16,161 @@
                         <label>Tanggal</label>
                         <input type="date" name="tanggal" id="tanggal" class="form-control">
                     </div>
+                    
+                    <div class="form-group mb-4">
+
+                        <label class="font-weight-bold text-primary">
+
+                            Upload Dokumen Pendukung
+
+                        </label>
+
+                        <div class="border rounded p-4 text-center" style="
+                                                                                                        border:2px dashed #4e73df !important;
+                                                                                                        background:#f8fbff;
+                                                                                                    ">
+
+                            <i class="fas fa-file-upload mb-3" style="
+                                                                                                            font-size:42px;
+                                                                                                            color:#4e73df;
+                                                                                                    ">
+                            </i>
+
+                            <div class="font-weight-bold mb-2">
+
+                                Unggah Dokumen (PDF)
+
+                            </div>
+
+                            <div class="text-muted small mb-3">
+
+                                Sistem akan membantu mengisi data otomatis
+
+                            </div>
+
+                            <input type="file" name="dokumen" id="dokumen" class="form-control" accept="image/*,.pdf">
+
+                        </div>
+
+                        <div id="previewContainer" class="mt-3"></div>
+
+                    </div>
+
+
                     <!-- KATEGORI -->
                     <div class="form-group">
-                        <label>Kategori Pendapatan</label>
+
+                        <label class="font-weight-bold">
+
+                            Kategori Pendapatan
+
+                        </label>
+
                         <select name="kategori_pendapatan" id="kategori" class="form-control" required>
+
                             <option value="">-- Pilih Kategori --</option>
-                            <option value="Pendapatan Asli Desa">Pendapatan Asli Desa</option>
-                            <option value="Pendapatan Transfer">Pendapatan Transfer</option>
-                            <option value="Pendapatan Lain-lain">Pendapatan Lain-lain</option>
+
+                            <option value="Pendapatan Asli Desa">
+
+                                Pendapatan Asli Desa
+
+                            </option>
+
+                            <option value="Pendapatan Transfer">
+
+                                Pendapatan Transfer
+
+                            </option>
+
+                            <option value="Pendapatan Lain-lain">
+
+                                Pendapatan Lain-lain
+
+                            </option>
+
                         </select>
+
                     </div>
+
 
                     <!-- JENIS -->
                     <div class="form-group">
-                        <label>Jenis Pendapatan</label>
+
+                        <label class="font-weight-bold">
+
+                            Jenis Pendapatan
+
+                        </label>
+
                         <select name="jenis_pendapatan" id="jenis" class="form-control" required>
+
                             <option value="">-- Pilih Jenis --</option>
+
                         </select>
+
                     </div>
 
-                    <!-- PAGU -->
-                    <div class="form-group">
-                        <label>Pagu</label>
-                        <input type="number" name="pagu" id="pagu" class="form-control" required>
-                    </div>
 
                     <!-- REALISASI -->
                     <div class="form-group">
-                        <label>Realisasi</label>
+
+                        <label class="font-weight-bold">
+
+                            Realisasi
+
+                        </label>
+                        <input type="hidden" id="detected_realisasi">
+
+                        <div id="warningNominal" class="alert alert-warning mt-2 py-2 px-3" style="
+                    display:none;
+                    border-radius:10px;
+                 ">
+
+                            <i class="fas fa-exclamation-triangle mr-2"></i>
+
+                            Nominal telah diubah dari hasil pembacaan dokumen
+
+                        </div>
+
                         <input type="number" name="realisasi" id="realisasi" class="form-control">
+
                     </div>
+
+
+                    <!-- PAGU -->
+                    <div class="form-group">
+
+                        <label class="font-weight-bold">
+
+                            Pagu
+
+                        </label>
+
+                        <input type="number" name="pagu" id="pagu" class="form-control" required>
+
+                        <small class="text-muted">
+
+                            Isi sesuai pagu/APBDes
+
+                        </small>
+
+                    </div>
+
 
                     <!-- PREVIEW -->
                     <div class="form-group">
-                        <label>Persentase</label>
+
+                        <label class="font-weight-bold">
+
+                            Persentase
+
+                        </label>
+
                         <input type="text" id="persentase_preview" class="form-control" readonly>
+
                     </div>
 
-                    
-                    <div class="form-group">
-                        <label>Unggah Dokumen Pendukung</label>
-                        <input type="file" name="dokumen" id="dokumen" class="form-control" accept="image/*,.pdf">
 
-                        <div id="previewContainer" class="mt-3"></div>
-                        <small class="text-muted">
-                            Upload foto dokumen / PDF
-                        </small>
-                    </div>
 
                     <button type="submit" class="btn btn-success">Simpan</button>
                     <a href="<?php echo e(route('pendapatan.index')); ?>" class="btn btn-secondary">Kembali</a>
@@ -77,19 +185,22 @@
     <!-- SCRIPT DYNAMIC -->
     <script>
         const jenisOptions = {
+
             "Pendapatan Asli Desa": [
-                "Tanah Kas Desa",
-                "Lain-lain PADes"
+                "Hasil Pengelolaan TKD"
             ],
+
             "Pendapatan Transfer": [
-                "Dana Desa",
                 "Alokasi Dana Desa",
-                "Bagi Hasil Pajak & Retribusi"
+                "Dana Desa",
+                "Pendapatan Bagi Hasil Pajak dan Retribusi"
             ],
+
             "Pendapatan Lain-lain": [
-                "Kerjasama Antar Desa",
+                "Bagi Hasil Kerjasama Antar Desa",
                 "Bunga Bank"
             ]
+
         };
 
         document.getElementById('kategori').addEventListener('change', function () {
@@ -127,6 +238,34 @@
 
         paguInput.addEventListener('input', hitung);
         realisasiInput.addEventListener('input', hitung);
+
+        // =========================
+        // VALIDASI NOMINAL
+        // =========================
+
+        realisasiInput.addEventListener('input', function () {
+
+            const detected =
+                parseFloat(
+                    document.getElementById('detected_realisasi').value
+                ) || 0;
+
+            const current =
+                parseFloat(this.value) || 0;
+
+            const warning =
+                document.getElementById('warningNominal');
+
+            if (detected > 0 && current !== detected) {
+
+                warning.style.display = 'block';
+
+            } else {
+
+                warning.style.display = 'none';
+            }
+
+        });
     </script>
 
     
@@ -143,40 +282,261 @@
     </script>
 
     <script>
-document.getElementById('dokumen').addEventListener('change', function (e) {
-    const file = e.target.files[0];
-    const previewContainer = document.getElementById('previewContainer');
 
-    previewContainer.innerHTML = ''; // reset
+        document.getElementById('dokumen')
+            .addEventListener('change', async function (e) {
 
-    if (!file) return;
+                const file = e.target.files[0];
 
-    const ext = file.name.split('.').pop().toLowerCase();
+                const previewContainer =
+                    document.getElementById('previewContainer');
 
-    // 📷 IMAGE
-    if (['jpg', 'jpeg', 'png'].includes(ext)) {
-        const reader = new FileReader();
+                previewContainer.innerHTML = '';
 
-        reader.onload = function (event) {
-            previewContainer.innerHTML = `
-                <img src="${event.target.result}" 
-                     style="max-width:100%; height:auto; border-radius:8px;">
-            `;
-        };
+                if (!file) return;
 
-        reader.readAsDataURL(file);
-    }
+                const ext =
+                    file.name.split('.').pop().toLowerCase();
 
-    // 📄 PDF
-    else if (ext === 'pdf') {
-        previewContainer.innerHTML = `
-            <div class="border rounded p-3 bg-light">
-                <i class="fas fa-file-pdf text-danger mr-2"></i>
-                ${file.name}
-            </div>
-        `;
-    }
-});
-</script>
+                // =========================
+                // IMAGE PREVIEW
+                // =========================
+
+                if (['jpg', 'jpeg', 'png'].includes(ext)) {
+
+                    const reader = new FileReader();
+
+                    reader.onload = function (event) {
+
+                        previewContainer.innerHTML = `
+
+                                    <img src="${event.target.result}"
+                                         style="
+                                            max-width:100%;
+                                            border-radius:10px;
+                                         ">
+
+                                `;
+                    };
+
+                    reader.readAsDataURL(file);
+                }
+
+                // =========================
+                // PDF PREVIEW
+                // =========================
+
+                else if (ext === 'pdf') {
+
+                    const fileUrl =
+                        URL.createObjectURL(file);
+
+                    const fileSize =
+                        (file.size / 1024 / 1024).toFixed(2);
+
+                    previewContainer.innerHTML = `
+
+                            <div class="border rounded p-4"
+                                 style="
+                                    background:#f8fbff;
+                                    border:1px solid #dbe8ff;
+                                 ">
+
+                                <div class="d-flex align-items-center justify-content-between">
+
+                                    <!-- LEFT -->
+                                    <div class="d-flex align-items-center">
+
+                                        <div class="mr-4">
+
+                                            <i class="fas fa-file-pdf"
+                                               style="
+                                                    font-size:50px;
+                                                    color:#dc3545;
+                                               ">
+                                            </i>
+
+                                        </div>
+
+                                        <div>
+
+                                            <div class="font-weight-bold text-dark"
+                                                 style="font-size:18px;">
+
+                                                ${file.name}
+
+                                            </div>
+
+                                            <div class="text-muted small mb-2">
+
+                                                Ukuran file:
+                                                ${fileSize} MB
+
+                                            </div>
+
+                                            <div id="loadingText"
+                                                 class="d-flex align-items-center text-primary">
+
+                                                <div class="spinner-border spinner-border-sm mr-2"
+                                                     role="status">
+                                                </div>
+
+                                                <span>
+
+                                                    Sedang membaca dokumen...
+
+                                                </span>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                    <!-- RIGHT -->
+                                    <div>
+
+                                        <a href="${fileUrl}"
+                                           target="_blank"
+                                           class="btn btn-outline-primary btn-sm">
+
+                                            <i class="fas fa-eye mr-1"></i>
+
+                                            Preview
+
+                                        </a>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            `;
+
+                    // =========================
+                    // AUTO DETECT PDF
+                    // =========================
+
+                    const formData = new FormData();
+
+                    formData.append('dokumen', file);
+
+                    try {
+
+                        const response = await fetch(
+                            "<?php echo e(route('pendapatan.detect')); ?>",
+                            {
+                                method: 'POST',
+
+                                headers: {
+                                    'X-CSRF-TOKEN':
+                                        '<?php echo e(csrf_token()); ?>'
+                                },
+
+                                body: formData
+                            }
+                        );
+
+                        await new Promise(resolve =>
+                            setTimeout(resolve, 1000)
+                        );
+
+                        const result = await response.json();
+
+                        console.log(result);
+
+                        // =========================
+                        // SUCCESS
+                        // =========================
+
+                        if (result.success) {
+
+                            const loadingText =
+                                document.getElementById('loadingText');
+
+                            if (loadingText) {
+
+                                loadingText.innerHTML = `
+
+                                            <i class="fas fa-check-circle text-success mr-2"></i>
+
+                                            <span class="text-success">
+
+                                                Data berhasil dibaca
+
+                                            </span>
+
+                                        `;
+                            }
+
+                            // kategori
+                            if (result.kategori) {
+
+                                const kategori =
+                                    document.getElementById('kategori');
+
+                                kategori.value =
+                                    result.kategori;
+
+                                kategori.dispatchEvent(
+                                    new Event('change')
+                                );
+
+                                setTimeout(() => {
+
+                                    if (result.jenis) {
+
+                                        document.getElementById('jenis')
+                                            .value = result.jenis;
+                                    }
+
+                                }, 200);
+                            }
+
+                            // realisasi
+                            if (result.realisasi) {
+
+                                document.getElementById('realisasi')
+                                    .value = result.realisasi;
+
+                                // simpan nominal asli detect
+                                document.getElementById('detected_realisasi')
+                                    .value = result.realisasi;
+
+                                hitung();
+                            }
+
+                        }
+
+                    } catch (error) {
+
+                        console.error(error);
+
+                        const loadingText =
+                            document.getElementById('loadingText');
+
+                        if (loadingText) {
+
+                            loadingText.innerHTML = `
+
+                                        <i class="fas fa-times-circle text-danger mr-2"></i>
+
+                                        <span class="text-danger">
+
+                                            Gagal membaca dokumen
+
+                                        </span>
+
+                                    `;
+                        }
+
+                    }
+
+                }
+
+            });
+
+    </script>
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Asti\Kuliah\SMT 8\skripsi\simkeu-desa\resources\views/pendapatan/create.blade.php ENDPATH**/ ?>

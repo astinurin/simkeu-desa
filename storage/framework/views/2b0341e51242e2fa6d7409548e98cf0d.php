@@ -35,8 +35,15 @@
                         <td>Rp <?php echo e(number_format($data->pagu)); ?></td>
                     </tr>
                     <tr>
-                        <th>Realisasi</th>
-                        <td>Rp <?php echo e(number_format($realisasi)); ?></td>
+                        <th>Pajak</th>
+
+                        <td>
+
+                            <?php echo e($data->pajak ?? '-'); ?>
+
+
+                        </td>
+
                     </tr>
                     <tr>
                         <th>Sisa</th>
@@ -51,7 +58,8 @@
                         <th>Dokumentasi Kegiatan</th>
                         <td>
                             <?php $__currentLoopData = $data->dokumentasi; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $doc): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                <img src="<?php echo e(asset('storage/' . $doc->file)); ?>" style="max-width:100%; height:auto; border-radius:8px;">
+                                <img src="<?php echo e(asset('storage/' . $doc->file)); ?>"
+                                    style="max-width:100%; height:auto; border-radius:8px;">
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </td>
                     </tr>

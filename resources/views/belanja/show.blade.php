@@ -34,8 +34,14 @@
                         <td>Rp {{ number_format($data->pagu) }}</td>
                     </tr>
                     <tr>
-                        <th>Realisasi</th>
-                        <td>Rp {{ number_format($realisasi) }}</td>
+                        <th>Pajak</th>
+
+                        <td>
+
+                            {{ $data->pajak ?? '-' }}
+
+                        </td>
+
                     </tr>
                     <tr>
                         <th>Sisa</th>
@@ -50,7 +56,8 @@
                         <th>Dokumentasi Kegiatan</th>
                         <td>
                             @foreach($data->dokumentasi as $doc)
-                                <img src="{{ asset('storage/' . $doc->file) }}" style="max-width:100%; height:auto; border-radius:8px;">
+                                <img src="{{ asset('storage/' . $doc->file) }}"
+                                    style="max-width:100%; height:auto; border-radius:8px;">
                             @endforeach
                         </td>
                     </tr>

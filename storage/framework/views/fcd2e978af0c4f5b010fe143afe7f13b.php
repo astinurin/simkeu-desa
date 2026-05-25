@@ -1,151 +1,190 @@
 <?php $__env->startSection('content'); ?>
 
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            background: #f3f4f6;
-            overflow-x: hidden;
-        }
-
-        .login-wrapper {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 40px 20px;
-        }
-
-        .login-card {
-            width: 100%;
-            max-width: 1180px;
-            background: white;
-            border-radius: 32px;
+            font-family: 'Inter', sans-serif;
             overflow: hidden;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, .08);
+            background: white;
         }
 
-        .login-image {
+        .login-container {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+        }
+
+        /*
+                ====================================
+                LEFT SIDE
+                ====================================
+                */
+
+        .login-left {
+            width: 55%;
             position: relative;
 
-            height: 100%;
-            min-height: 760px;
-
             background:
-                linear-gradient(rgba(0, 0, 0, .25),
-                    rgba(0, 0, 0, .25)),
+                linear-gradient(rgba(0, 0, 0, .28),
+                    rgba(0, 0, 0, .28)),
                 url('<?php echo e(asset('assets/img/villageaerialphotography.jpg')); ?>');
 
             background-size: cover;
             background-position: center;
-            background-repeat: no-repeat;
 
-            border-top-left-radius: 32px;
-            border-bottom-left-radius: 32px;
-
-            overflow: hidden;
+            display: flex;
+            align-items: flex-end;
+            padding: 55px;
         }
 
-        .overlay-content {
-            position: absolute;
-            left: 40px;
-            bottom: 40px;
+        .left-content {
 
-            color: white;
-            max-width: 420px;
+            max-width: 480px;
+
+            backdrop-filter: blur(14px);
 
             background: rgba(255, 255, 255, .08);
-            backdrop-filter: blur(10px);
-
-            padding: 28px;
-            border-radius: 24px;
 
             border: 1px solid rgba(255, 255, 255, .15);
+
+            border-radius: 28px;
+
+            padding: 34px;
         }
 
-        .overlay-content h1 {
-            font-size: 34px;
-            line-height: 1.25;
+        .left-content h1 {
+            color: white;
+            font-size: 52px;
+            line-height: 1.1;
             font-weight: 700;
+            margin-bottom: 18px;
         }
 
-        .overlay-content p {
-            font-size: 14px;
-            line-height: 1.7;
-            margin-top: 14px;
+        .left-content p {
+            color: rgba(255, 255, 255, .88);
+            line-height: 1.8;
+            font-size: 15px;
         }
 
-        .login-form-wrapper {
-            padding: 70px 60px;
+
+        /*
+                ====================================
+                RIGHT SIDE
+                ====================================
+                */
+
+        .login-right {
+            width: 45%;
+            background: white;
+
             display: flex;
-            flex-direction: column;
+            align-items: center;
             justify-content: center;
-            height: 100%;
+
+            padding: 70px;
+        }
+
+        .login-box {
+            width: 100%;
+            max-width: 460px;
+            background: rgba(255, 255, 255, .72);
+
+            /* backdrop-filter: blur(18px); */
+
+            /* border: 1px solid rgba(255, 255, 255, .8); */
+
+            border-radius: 32px;
+
+            padding: 48px;
+
+
         }
 
         .brand-logo {
-            margin-bottom: 40px;
-            margin-left: 40px;
+            margin-bottom: 55px;
         }
 
         .brand-logo img {
-            width: 385px;
+            width: 320px;
             max-width: 100%;
-            display: block;
         }
 
         .login-title {
-            font-size: 42px;
-            font-weight: 700;
-            color: #1f2937;
+            /* font-size: 54px; */
+            /* font-weight: 700; */
+            color: #111827;
+
             margin-bottom: 10px;
+            font-size: 42px;
+
+            font-weight: 800;
+
+            letter-spacing: -1px;
+
+            line-height: 1.1;
         }
 
         .login-subtitle {
             color: #6b7280;
-            margin-bottom: 45px;
             font-size: 15px;
+
+            margin-bottom: 28px;
+
+            line-height: 1.7;
+
+            max-width: 320px;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
         }
 
         .form-label {
+            display: block;
+
+            margin-bottom: 10px;
+
             font-size: 14px;
             font-weight: 600;
             color: #374151;
-            margin-bottom: 10px;
         }
 
         .custom-input {
-            height: 58px;
-            border-radius: 16px;
-            border: 1px solid #e5e7eb;
-            background: #f9fafb;
-            padding: 0 20px;
+            width: 100%;
+            height: 62px;
+
+            border: none;
+
+            background: #f3f4f6;
+
+            border-radius: 18px;
+
+            padding: 0 22px;
+
             font-size: 15px;
-            transition: .2s ease;
+
+            transition: .2s;
         }
 
         .custom-input:focus {
+            outline: none;
+
             background: white;
-            border-color: #4e73df;
-            box-shadow: 0 0 0 4px rgba(78, 115, 223, .12);
-        }
 
-        .login-btn {
-            height: 58px;
-            border-radius: 16px;
-            background: #4e73df;
-            border: none;
-            font-size: 16px;
-            font-weight: 600;
-            transition: .2s ease;
-        }
+            box-shadow:
+                0 0 0 4px rgba(78, 115, 223, .12);
 
-        .login-btn:hover {
-            background: #3f63d3;
-            transform: translateY(-1px);
+            border: 1px solid #4e73df;
         }
 
         .forgot-link {
-            color: #4e73df;
             font-size: 14px;
+            color: #4e73df;
             text-decoration: none;
         }
 
@@ -159,203 +198,213 @@
             color: #6b7280;
         }
 
-        .footer-text {
-            font-size: 14px;
-            color: #9ca3af;
-        }
+        .login-btn {
+            width: 100%;
+            height: 62px;
 
-        .footer-text a {
-            color: #4e73df;
+            border: none;
+
+            border-radius: 18px;
+
+            background: #4e73df;
+
+            color: white;
+
+            font-size: 16px;
             font-weight: 600;
-            text-decoration: none;
+
+            transition: .2s;
         }
 
-        @media(max-width: 991px) {
+        .login-btn:hover {
+            background: #3f63d3;
+            transform: translateY(-2px);
+        }
 
-            .login-image {
+        .footer-text {
+            margin-top: 40px;
+
+            text-align: center;
+
+            color: #9ca3af;
+            font-size: 14px;
+        }
+
+        /*
+                ====================================
+                MOBILE
+                ====================================
+                */
+
+        @media(max-width:991px) {
+
+            .login-left {
                 display: none;
             }
 
-            .login-form-wrapper {
-                padding: 50px 35px;
+            .login-right {
+                width: 100%;
+                padding: 40px 28px;
             }
 
             .login-title {
-                font-size: 34px;
+                font-size: 42px;
             }
 
         }
     </style>
 
 
-    <div class="login-wrapper">
+    <div class="login-container">
 
-        <div class="login-card">
+        <!-- LEFT -->
+        <div class="login-left">
 
-            <div class="row no-gutters">
+            <div class="left-content">
 
-                <!-- LEFT IMAGE -->
-                <div class="col-lg-6">
+                <h1>
+                    Sistem Informasi
+                    Manajemen
+                    Keuangan Desa
+                </h1>
 
-                    <div class="login-image">
+                
 
-                        <div class="overlay-content">
+            </div>
 
-                            <h1>
-                                Sistem Informasi
-                                Manajemen
-                                Keuangan Desa
-                            </h1>
+        </div>
 
-                            <p>
-                                Kelola pendapatan, belanja,
-                                realisasi, dan dokumentasi
-                                kegiatan desa secara digital,
-                                transparan, dan terstruktur.
-                            </p>
 
-                        </div>
 
-                    </div>
+        <!-- RIGHT -->
+        <div class="login-right">
+
+            <div class="login-box">
+
+                <!-- LOGO -->
+                <div class="brand-logo">
+
+                    <img src="<?php echo e(asset('assets/img/simkeu_logo3.png')); ?>">
 
                 </div>
 
 
-                <!-- RIGHT FORM -->
-                <div class="col-lg-6">
+                <!-- TITLE -->
+                <h2 class="login-title">
 
-                    <div class="login-form-wrapper">
+                    Login
 
-                        <!-- LOGO -->
-                        <div class="brand-logo">
+                </h2>
 
-                            <img src="<?php echo e(asset('assets/img/simkeu_logo3.png')); ?>" alt="SIMKEU" class="logo">
+                <p class="login-subtitle">
+
+                    Masuk ke dashboard SIMKEU
+
+                </p>
+
+
+                <!-- ERROR -->
+                <?php if($errors->any()): ?>
+
+                    <div class="alert alert-danger mb-4">
+
+                        <?php echo e($errors->first()); ?>
+
+
+                    </div>
+
+                <?php endif; ?>
+
+
+                <!-- FORM -->
+                <form method="POST" action="<?php echo e(route('login')); ?>">
+
+                    <?php echo csrf_field(); ?>
+
+
+                    <!-- USERNAME -->
+                    <div class="form-group">
+
+                        <label class="form-label">
+
+                            Username
+
+                        </label>
+
+                        <input type="text" name="name" class="custom-input" placeholder="Masukkan username" required>
+
+                    </div>
+
+
+                    <!-- PASSWORD -->
+                    <div class="form-group">
+
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+
+                            <label class="form-label mb-0">
+
+                                Password
+
+                            </label>
+
+                            <?php
+                                $superadmin = \App\Models\User::where('role', 'superadmin')->first();
+                            ?>
+
+                            <?php if($superadmin && $superadmin->whatsapp): ?>
+
+                                <a href="https://wa.me/<?php echo e($superadmin->whatsapp); ?>?text=Halo%20Superadmin,%20saya%20mengalami%20kendala%20login%20karena%20lupa%20password%20akun.%0A%0AUsername%20:%20%0A%0AMohon%20bantuannya%20untuk%20reset%20password.%20Terima%20kasih."
+                                    target="_blank" class="forgot-link">
+
+                                    Lupa password?
+
+                                </a>
+
+                            <?php endif; ?>
 
                         </div>
 
+                        <input type="password" name="password" class="custom-input" placeholder="Masukkan password"
+                            required>
 
-                        <!-- TITLE -->
-                        <h2 class="login-title">
-
-                            Login Admin
-
-                        </h2>
-
-                        <p class="login-subtitle">
-
-                            Masuk ke dashboard
-
-                        </p>
+                    </div>
 
 
-                        
-                        <?php if($errors->any()): ?>
+                    <!-- REMEMBER -->
+                    <div class="form-group">
 
-                            <div class="alert alert-danger border-0 rounded-lg">
+                        <div class="custom-control custom-checkbox">
 
-                                <?php echo e($errors->first()); ?>
+                            <input type="checkbox" class="custom-control-input" id="remember" name="remember">
 
+                            <label class="custom-control-label remember-text" for="remember">
 
-                            </div>
+                                Ingat saya
 
-                        <?php endif; ?>
-
-
-                        <!-- FORM -->
-                        <form method="POST" action="<?php echo e(route('login')); ?>">
-
-                            <?php echo csrf_field(); ?>
-
-
-                            <!-- USERNAME -->
-                            <div class="form-group mb-4">
-
-                                <label class="form-label">
-
-                                    Username
-
-                                </label>
-
-                                <input type="text" name="name" class="form-control custom-input"
-                                    placeholder="Masukkan username" value="<?php echo e(old('name')); ?>" required autofocus>
-
-                            </div>
-
-
-                            <!-- PASSWORD -->
-                            <div class="form-group mb-3">
-
-                                <div class="d-flex justify-content-between align-items-center mb-2">
-
-                                    <label class="form-label mb-0">
-
-                                        Password
-
-                                    </label>
-
-                               <?php
-    $superadmin = \App\Models\User::where('role', 'superadmin')->first();
-?>
-
-<?php if($superadmin && $superadmin->whatsapp): ?>
-
-<a href="https://wa.me/<?php echo e($superadmin->whatsapp); ?>?text=Halo%20Superadmin%20SIMKEU,%20saya%20mengalami%20kendala%20login%20karena%20lupa%20password%20akun.%0A%0AUsername%20:%20%0A%0AMohon%20bantuannya%20untuk%20reset%20password.%20Terima%20kasih."
-   target="_blank"
-   class="forgot-link">
-
-    Lupa password?
-
-</a>
-
-<?php endif; ?>
-
-                                </div>
-
-                                <input type="password" name="password" class="form-control custom-input"
-                                    placeholder="Masukkan password" required>
-
-                            </div>
-
-
-                            <!-- REMEMBER -->
-                            <div class="form-group mb-4">
-
-                                <div class="custom-control custom-checkbox">
-
-                                    <input type="checkbox" class="custom-control-input" id="remember" name="remember">
-
-                                    <label class="custom-control-label remember-text" for="remember">
-
-                                        Ingat saya
-
-                                    </label>
-
-                                </div>
-
-                            </div>
-
-
-                            <!-- BUTTON -->
-                            <button type="submit" class="btn btn-primary btn-block login-btn shadow-sm">
-
-                                <i class="fas fa-sign-in-alt mr-2"></i>
-
-                                Masuk
-
-                            </button>
-
-                        </form>
-
-
-                        <!-- FOOTER -->
-                        <div class="text-center mt-5 footer-text">
-
-                            SIMKEU Desa © <?php echo e(date('Y')); ?>
-
+                            </label>
 
                         </div>
 
                     </div>
+
+
+                    <!-- BUTTON -->
+                    <button type="submit" class="login-btn">
+
+                        <i class="fas fa-sign-in-alt mr-2"></i>
+
+                        Masuk
+
+                    </button>
+
+                </form>
+
+
+                <!-- FOOTER -->
+                <div class="footer-text">
+
+                    SIMKEU © <?php echo e(date('Y')); ?>
+
 
                 </div>
 

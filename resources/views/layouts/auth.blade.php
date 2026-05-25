@@ -10,19 +10,18 @@
     <link href="{{ asset('sbadmin/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet">
     <link href="{{ asset('sbadmin/css/sb-admin-2.min.css') }}" rel="stylesheet">
 
-    <style>
-       body{
-    background:
-        radial-gradient(circle at top left, #6f86ff 0%, transparent 35%),
-        radial-gradient(circle at bottom right, #4e73df 0%, transparent 30%),
-        #eef2ff;
+  <style>
 
-    overflow-x: hidden;
-}
-    </style>
+    body{
+        margin: 0;
+        overflow-x: hidden;
+        background: white;
+    }
+
+</style>
 </head>
 
-<body class="bg-gradient-primary">
+<body>
 
     @yield('content')
 

@@ -32,6 +32,11 @@ Route::middleware('auth')->group(function () {
         ->name('pendapatan.download');
 
     // PENDAPATAN
+        // DETECT DOKUMEN
+    Route::post('/pendapatan/detect', [PendapatanController::class, 'detect'])
+        ->name('pendapatan.detect');
+
+        // PENDAPATAN
     Route::resource('pendapatan', PendapatanController::class);
 
     // BELANJA
@@ -44,9 +49,7 @@ Route::middleware('auth')->group(function () {
 
         // KELOLA USER
         Route::resource('users', UserController::class);
-
     });
-
 });
 
 require __DIR__ . '/auth.php';

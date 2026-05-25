@@ -41,7 +41,8 @@ class BelanjaController extends Controller
             'jenis_kegiatan' => 'required',
             'pagu' => 'required|numeric',
             'realisasi_belanja' => 'nullable|numeric',
-            'dokumentasi.*' => 'nullable|image|mimes:jpg,jpeg,png'
+            'dokumentasi.*' => 'nullable|image|mimes:jpg,jpeg,png,jfif,webp',
+            'pajak' => 'nullable|string|max:255',
         ]);
 
         // 1) BELANJA
@@ -52,6 +53,7 @@ class BelanjaController extends Controller
             'jenis_kegiatan' => $request->jenis_kegiatan,
             'pagu' => $request->pagu,
             'realisasi_belanja' => $request->realisasi_belanja ?? 0,
+            'pajak' => $request->pajak,
         ]);
 
         // 2) REALISASI_BELANJA (sesuai kolom kamu)
@@ -74,32 +76,35 @@ class BelanjaController extends Controller
             $manager = new ImageManager(new Driver());
 
             foreach ($request->file('dokumentasi') as $file) {
-                try {
-                    $img = $manager->read($file);
 
-                    // tolak yg terlalu kecil
-                    if ($img->width() < 400 || $img->height() < 400) {
-                        continue;
-                    }
+                $img = $manager->read($file);
 
-                    // kompres kalau >2MB
-                    if ($file->getSize() > 2 * 1024 * 1024) {
-                        $img->scaleDown(width: 1600);
-                    }
-
-                    $name = Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME));
-                    $filename = $name . '_' . time() . '_' . Str::random(4) . '.jpg';
-                    $path = 'dokumentasi/' . $filename;
-
-                    Storage::disk('public')->put($path, (string) $img->toJpeg(80));
-
-                    DokumentasiKegiatanModel::create([
-                        'belanja_id' => $belanja->id,
-                        'file' => $path
-                    ]);
-                } catch (\Exception $e) {
-                    continue;
+                // kompres kalau >2MB
+                if ($file->getSize() > 2 * 1024 * 1024) {
+                    $img->scaleDown(width: 1600);
                 }
+
+                $name = Str::slug(
+                    pathinfo(
+                        $file->getClientOriginalName(),
+                        PATHINFO_FILENAME
+                    )
+                );
+
+                $filename =
+                    $name . '_' . time() . '_' . Str::random(4) . '.jpg';
+
+                $path = 'dokumentasi/' . $filename;
+
+                Storage::disk('public')->put(
+                    $path,
+                    (string) $img->toJpeg(80)
+                );
+
+                DokumentasiKegiatanModel::create([
+                    'belanja_id' => $belanja->id,
+                    'file' => $path
+                ]);
             }
         }
 
@@ -126,7 +131,8 @@ class BelanjaController extends Controller
             'jenis_kegiatan' => 'required',
             'pagu' => 'required|numeric',
             'realisasi_belanja' => 'nullable|numeric',
-            'dokumentasi.*' => 'nullable|image|mimes:jpg,jpeg,png'
+            'dokumentasi.*' => 'nullable|image|mimes:jpg,jpeg,png',
+            'pajak' => 'nullable|string|max:255',
         ]);
 
         $data = BelanjaModel::findOrFail($id);
@@ -137,6 +143,7 @@ class BelanjaController extends Controller
             'jenis_kegiatan' => $request->jenis_kegiatan,
             'pagu' => $request->pagu,
             'realisasi_belanja' => $request->realisasi_belanja ?? 0,
+            'pajak' => $request->pajak,
         ]);
 
         // update realisasi

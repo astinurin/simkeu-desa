@@ -2,7 +2,7 @@
 <div class="container-fluid">
 
     <!-- HEADER -->
-    <div class="card shadow mb-4 border-left-primary">
+    <div class="card shadow mb-4 border-left-primary dashboard-header">
         <div class="card-body py-3">
 
             <div class="d-flex justify-content-between align-items-center">
@@ -31,7 +31,7 @@
 
 
 
-    <div class="row mb-4">
+    <div class="row mb-4  quick-action-section">
         <div class="col-12">
             <div class="card shadow">
                 <div class="card-body d-flex justify-content-between align-items-center">
@@ -59,7 +59,7 @@
 
 
 
-    <div class="card shadow mb-4">
+    <div class="card shadow mb-4 search-section"  data-search="pendapatan kategori jenis realisasi pagu">
 
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">Pendapatan</h6>
@@ -121,7 +121,7 @@
 
             <!-- TABLE -->
             <div class="table-responsive">
-                <table class="table table-bordered table-hover">
+                <table class="table table-bordered table-hover searchable-table">
                     <thead class="text-center">
                         <tr>
                             <th>No</th>
@@ -172,7 +172,7 @@
 
 
 
-    <div class="card shadow mb-4">
+    <div class="card shadow mb-4 search-section"  data-search="belanja kegiatan bidang dokumentasi realisasi pagu pajak">
 
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">Belanja</h6>
@@ -234,7 +234,7 @@
 
             <!-- TABLE -->
             <div class="table-responsive">
-                <table class="table table-bordered table-hover">
+                <table class="table table-bordered table-hover searchable-table">
                     <thead class="text-center">
                         <tr>
                             <th>No</th>
@@ -242,6 +242,7 @@
                             <th>Bidang</th>
                             <th>Jenis Kegiatan</th>
                             <th>Pagu</th>
+                            <th>Pajak</th>
                             <th>Realisasi</th>
                             <th>Sisa</th>
                             <th>Persentase</th>
@@ -263,6 +264,10 @@
                                 <td><?php echo e($item->bidang); ?></td>
                                 <td><?php echo e($item->jenis_kegiatan); ?></td>
                                 <td>Rp <?php echo e(number_format($item->pagu)); ?></td>
+                                <td>
+                                    <?php echo e($item->pajak ?? '-'); ?>
+
+                                </td>
                                 <td>Rp <?php echo e(number_format($realisasi)); ?></td>
                                 <td>Rp <?php echo e(number_format($sisa)); ?></td>
                                 <td class="text-center">

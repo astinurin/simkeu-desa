@@ -31,6 +31,20 @@
                     </div>
 
                     <div class="form-group">
+
+                        <label>
+
+                            Pajak (pbn, pbh, pajak daerah)
+
+                        </label>
+
+                        <input type="text" name="pajak" class="form-control">
+
+                        
+
+                    </div>
+
+                    <div class="form-group">
                         <label>Realisasi</label>
                         <input type="number" name="realisasi_belanja" id="realisasi" class="form-control">
                     </div>

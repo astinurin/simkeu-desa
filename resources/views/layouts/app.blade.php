@@ -52,9 +52,9 @@
 
             <hr class="sidebar-divider my-0">
 
-            <li class="nav-item active">
+            <li class="nav-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ route('dashboard') }}">
-                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <i class="fas fa-home"></i>
                     <span>Dashboard</span>
                 </a>
             </li>
@@ -65,22 +65,22 @@
                 Keuangan Desa
             </div>
 
-            <li class="nav-item">
+            <li class="nav-item {{ request()->is('pendapatan*') ? 'active' : '' }}">
                 <a class="nav-link" href="/pendapatan">
-                    <i class="fas fa-fw fa-arrow-down"></i>
+                    <i class="fas fa-coins"></i>
                     <span>Pendapatan</span>
                 </a>
             </li>
 
-            <li class="nav-item">
+            <li class="nav-item {{ request()->is('belanja*') ? 'active' : '' }}">
                 <a class="nav-link" href="/belanja">
-                    <i class="fas fa-fw fa-arrow-up"></i>
+                    <i class="fas fa-receipt"></i>
                     <span>Belanja</span>
                 </a>
             </li>
             @if(auth()->user()->role === 'superadmin')
 
-                <li class="nav-item">
+                <li class="nav-item {{ request()->is('users*') ? 'active' : '' }}">
                     <a class="nav-link" href="{{ route('users.index') }}">
                         <i class="fas fa-fw fa-users-cog"></i>
                         <span>Kelola User</span>
@@ -88,12 +88,12 @@
                 </li>
 
             @endif
-            <li class="nav-item">
+            {{-- <li class="nav-item">
                 <a class="nav-link" href="/settings">
                     <i class="fas fa-fw fa-cog"></i>
                     <span>Settings</span>
                 </a>
-            </li>
+            </li> --}}
 
             <hr class="sidebar-divider d-none d-md-block">
 
@@ -116,18 +116,20 @@
                     </button>
 
                     <!-- 🔍 SEARCH DESKTOP -->
-                    <form
-                        class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-                        <div class="input-group">
-                            <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
-                                aria-label="Search">
-                            <div class="input-group-append">
-                                <button class="btn btn-primary">
-                                    <i class="fas fa-search fa-sm"></i>
-                                </button>
+                    @if(request()->routeIs('dashboard'))
+                        <form
+                            class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                            <div class="input-group">
+                                <input type="text" id="globalSearch" class="form-control bg-light border-0 small"
+                                    placeholder="Cari...">
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary">
+                                        <i class="fas fa-search fa-sm"></i>
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                    </form>
+                        </form>
+                    @endif
 
                     <!-- RIGHT SIDE -->
                     <ul class="navbar-nav ml-auto">
@@ -141,8 +143,8 @@
                             <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in">
                                 <form class="form-inline w-100 navbar-search">
                                     <div class="input-group">
-                                        <input type="text" class="form-control bg-light border-0 small"
-                                            placeholder="Search for...">
+                                        <input type="text" id="globalSearch"
+                                            class="form-control bg-light border-0 small" placeholder="Search for...">
                                         <div class="input-group-append">
                                             <button class="btn btn-primary">
                                                 <i class="fas fa-search fa-sm"></i>
@@ -155,7 +157,7 @@
 
 
                         <!-- 🔔 ALERT -->
-                        <li class="nav-item dropdown no-arrow mx-1">
+                        {{-- <li class="nav-item dropdown no-arrow mx-1">
                             <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
                                 data-toggle="dropdown">
                                 <i class="fas fa-bell fa-fw"></i>
@@ -222,7 +224,7 @@
                                 </a>
                             </div>
                         </li>
-                        <div class="topbar-divider d-none d-sm-block"></div>
+                        <div class="topbar-divider d-none d-sm-block"></div> --}}
 
                         <!-- 👤 USER -->
                         <li class="nav-item dropdown no-arrow">
@@ -246,10 +248,10 @@
                                     Profile
                                 </a>
 
-                                <a class="dropdown-item" href="/settings">
+                                {{-- <a class="dropdown-item" href="/settings">
                                     <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Settings
-                                </a>
+                                </a> --}}
 
                                 <div class="dropdown-divider"></div>
 
@@ -288,6 +290,93 @@
     <script src="{{ asset('sbadmin/vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
     {{--
     <script src="{{ asset('sbadmin/js/demo/datatables-demo.js') }}"></script> --}}
+
+    {{-- script search --}}
+    <script>
+
+        $(document).ready(function () {
+
+            $('#globalSearch').on('input', function () {
+
+                let keyword =
+                    $(this).val().toLowerCase().trim();
+
+                // =========================
+                // MODE NORMAL
+                // =========================
+
+                if (keyword === '') {
+
+                    $('.dashboard-header').show();
+
+                    $('.quick-action-section').show();
+
+                    $('.search-section').show();
+
+                    $('.search-section tbody tr').show();
+
+                    $('.search-section .row.mb-4').show();
+
+                    return;
+                }
+
+                // =========================
+                // MODE SEARCH
+                // =========================
+
+                $('.dashboard-header').hide();
+
+                $('.quick-action-section').hide();
+
+                $('.search-section').each(function () {
+
+                    let section =
+                        $(this);
+
+                    let rows =
+                        section.find('tbody tr');
+
+                    let visibleCount = 0;
+
+                    rows.each(function () {
+
+                        let rowText =
+                            $(this).text().toLowerCase();
+
+                        if (rowText.includes(keyword)) {
+
+                            $(this).show();
+
+                            visibleCount++;
+
+                        } else {
+
+                            $(this).hide();
+
+                        }
+
+                    });
+
+                    // hide/show statistik card
+                    if (visibleCount > 0) {
+
+                        section.show();
+
+                        section.find('.row.mb-4').show();
+
+                    } else {
+
+                        section.hide();
+
+                    }
+
+                });
+
+            });
+
+        });
+
+    </script>
 
     <!-- INI WAJIB -->
     @yield('scripts')

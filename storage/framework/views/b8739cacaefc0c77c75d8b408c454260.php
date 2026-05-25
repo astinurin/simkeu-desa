@@ -16,6 +16,7 @@
 
         <?php
             $totalPagu = 0;
+            $totalPajak = 0;
             $totalRealisasi = 0;
             $totalSisa = 0;
         ?>
@@ -32,6 +33,7 @@
                                 <th>Bidang</th>
                                 <th>Nama Kegiatan</th>
                                 <th>Pagu</th>
+                                <th>Pajak</th>
                                 <th>Realisasi</th>
                                 <th>Sisa</th>
                                 <th>Persentase</th>
@@ -47,6 +49,9 @@
                                     $persentase = $item->pagu > 0 ? ($realisasi / $item->pagu) * 100 : 0;
 
                                     $totalPagu += $item->pagu;
+                                    $totalPajak += is_numeric($item->pajak)
+                                        ? $item->pajak
+                                        : 0;
                                     $totalRealisasi += $realisasi;
                                     $totalSisa += $sisa;
                                 ?>
@@ -60,14 +65,18 @@
                                     <td><?php echo e($item->bidang); ?></td>
                                     <td><?php echo e($item->jenis_kegiatan); ?></td>
                                     <td>Rp <?php echo e(number_format($item->pagu)); ?></td>
+                                    <td>
+                                       Rp <?php echo e($item->pajak ?? '-'); ?>
+
+                                    </td>
                                     <td>Rp <?php echo e(number_format($realisasi)); ?></td>
                                     <td>Rp <?php echo e(number_format($sisa)); ?></td>
                                     <td class="text-center">
                                         <span class="badge
-                                                                <?php if($persentase >= 80): ?> badge-success
-                                                                <?php elseif($persentase >= 50): ?> badge-warning
-                                                                <?php else: ?> badge-danger
-                                                                <?php endif; ?>">
+                                                                                <?php if($persentase >= 80): ?> badge-success
+                                                                                <?php elseif($persentase >= 50): ?> badge-warning
+                                                                                <?php else: ?> badge-danger
+                                                                                <?php endif; ?>">
                                             <?php echo e(number_format($persentase, 2)); ?> %
                                         </span>
                                     </td>
@@ -98,12 +107,49 @@
 
                         <tfoot>
                             <tr style="font-weight:bold;background:#f8f9fc;">
-                                <td colspan="4" class="text-center">Total</td>
-                                <td>Rp <?php echo e(number_format($totalPagu)); ?></td>
-                                <td>Rp <?php echo e(number_format($totalRealisasi)); ?></td>
-                                <td>Rp <?php echo e(number_format($totalSisa)); ?></td>
-                                <td><?php echo e(number_format($totalPersen, 2)); ?> %</td>
+
+                                <td colspan="4" class="text-center">
+
+                                    Total
+
+                                </td>
+
+                                <td>
+
+                                    Rp <?php echo e(number_format($totalPagu)); ?>
+
+
+                                </td>
+
+                                <td>
+
+                                    Rp <?php echo e(number_format($totalPajak)); ?>
+
+
+                                </td>
+
+                                <td>
+
+                                    Rp <?php echo e(number_format($totalRealisasi)); ?>
+
+
+                                </td>
+
+                                <td>
+
+                                    Rp <?php echo e(number_format($totalSisa)); ?>
+
+
+                                </td>
+
+                                <td>
+
+                                    <?php echo e(number_format($totalPersen, 2)); ?> %
+
+                                </td>
+
                                 <td></td>
+
                             </tr>
                         </tfoot>
                     </table>
@@ -131,29 +177,29 @@
 
             // 🔥 TAMBAH DROPDOWN TAHUN + BULAN
             $('.dataTables_length').append(`
-            <select id="filterTahun" class="form-control form-control-sm ml-2" style="width:130px; display:inline-block;">
-                <option value="">Semua Tahun</option>
-                <?php $__currentLoopData = $tahunList; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $th): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                    <option value="<?php echo e($th); ?>"><?php echo e($th); ?></option>
-                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-            </select>
+                    <select id="filterTahun" class="form-control form-control-sm ml-2" style="width:130px; display:inline-block;">
+                        <option value="">Semua Tahun</option>
+                        <?php $__currentLoopData = $tahunList; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $th): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <option value="<?php echo e($th); ?>"><?php echo e($th); ?></option>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                    </select>
 
-            <select id="filterBulan" class="form-control form-control-sm ml-2" style="width:130px; display:inline-block;">
-                <option value="">Semua Bulan</option>
-                <option value="01">Jan</option>
-                <option value="02">Feb</option>
-                <option value="03">Mar</option>
-                <option value="04">Apr</option>
-                <option value="05">Mei</option>
-                <option value="06">Jun</option>
-                <option value="07">Jul</option>
-                <option value="08">Agu</option>
-                <option value="09">Sep</option>
-                <option value="10">Okt</option>
-                <option value="11">Nov</option>
-                <option value="12">Des</option>
-            </select>
-        `);
+                    <select id="filterBulan" class="form-control form-control-sm ml-2" style="width:130px; display:inline-block;">
+                        <option value="">Semua Bulan</option>
+                        <option value="01">Jan</option>
+                        <option value="02">Feb</option>
+                        <option value="03">Mar</option>
+                        <option value="04">Apr</option>
+                        <option value="05">Mei</option>
+                        <option value="06">Jun</option>
+                        <option value="07">Jul</option>
+                        <option value="08">Agu</option>
+                        <option value="09">Sep</option>
+                        <option value="10">Okt</option>
+                        <option value="11">Nov</option>
+                        <option value="12">Des</option>
+                    </select>
+                `);
 
             // 🔥 FILTER LOGIC
             $.fn.dataTable.ext.search.push(function (settings, data) {

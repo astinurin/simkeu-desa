@@ -58,17 +58,7 @@
                 </div>
 
                 <!-- EMAIL -->
-                <div class="form-group mb-4">
-
-                    <label>Email</label>
-
-                    <input type="email"
-                           name="email"
-                           class="form-control"
-                           value="<?php echo e($user->email); ?>"
-                           required>
-
-                </div>
+                
 
                 <!-- ROLE -->
                 <div class="form-group mb-4">
