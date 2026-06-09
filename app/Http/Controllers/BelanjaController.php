@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\BelanjaModel;
 use App\Models\RealisasiBelanjaModel;
 use App\Models\DokumentasiKegiatanModel;
+use App\Models\SumberDanaModel;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -30,7 +31,9 @@ class BelanjaController extends Controller
 
     public function create()
     {
-        return view('belanja.create');
+        $sumberDana = SumberDanaModel::orderBy('kode')->get();
+
+        return view('belanja.create', compact('sumberDana'));
     }
 
     public function store(Request $request)
@@ -55,6 +58,12 @@ class BelanjaController extends Controller
             'realisasi_belanja' => $request->realisasi_belanja ?? 0,
             'pajak' => $request->pajak,
         ]);
+        if ($request->filled('sumber_dana')) {
+
+            $belanja->sumberDana()->sync(
+                $request->sumber_dana
+            );
+        }
 
         // 2) REALISASI_BELANJA (sesuai kolom kamu)
         $realisasi = $request->realisasi_belanja ?? 0;
@@ -133,6 +142,8 @@ class BelanjaController extends Controller
             'realisasi_belanja' => 'nullable|numeric',
             'dokumentasi.*' => 'nullable|image|mimes:jpg,jpeg,png',
             'pajak' => 'nullable|string|max:255',
+            'sumber_dana' => 'required|array',
+            'sumber_dana.*' => 'exists:sumber_dana,id',
         ]);
 
         $data = BelanjaModel::findOrFail($id);
@@ -145,6 +156,9 @@ class BelanjaController extends Controller
             'realisasi_belanja' => $request->realisasi_belanja ?? 0,
             'pajak' => $request->pajak,
         ]);
+        $data->sumberDana()->sync(
+    $request->sumber_dana ?? []
+);
 
         // update realisasi
         $realisasi = $request->realisasi_belanja ?? 0;

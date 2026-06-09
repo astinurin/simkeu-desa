@@ -2,101 +2,198 @@
 <html lang="id">
 
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>SIMKEU</title>
     <link rel="icon" type="image/png" href="<?php echo e(asset('assets/img/simkeu_logo2.png')); ?>">
 
+    <!-- Google Fonts: Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- FontAwesome via CDN (lebih reliable) -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <!-- FontAwesome dari SB Admin -->
     <link href="<?php echo e(asset('sbadmin/vendor/fontawesome-free/css/all.min.css')); ?>" rel="stylesheet">
 
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+    <!-- SB Admin 2 — tetap dipakai untuk Bootstrap & utilities -->
     <link href="<?php echo e(asset('sbadmin/css/sb-admin-2.min.css')); ?>" rel="stylesheet">
 
     <style>
+        /* ── RESET FONT & BACKGROUND ── */
         body {
-            background: #f4f6fb;
+            font-family: 'Plus Jakarta Sans', 'Segoe UI', sans-serif !important;
         }
 
-        .rounded-lg {
-            border-radius: 20px;
+        *:not(i):not(.fas):not(.far):not(.fab):not(.fal):not(.fad):not([class*="fa-"]) {
+            font-family: 'Plus Jakarta Sans', 'Segoe UI', sans-serif !important;
+        }
+
+        body {
+            background: #f1f5f9 !important;
+            min-height: 100vh;
+        }
+
+        /* ── NAVBAR OVERRIDES ── */
+        .simkeu-navbar {
+            background: #fff !important;
+            border-bottom: 1px solid #e5e7eb;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, .06) !important;
+            padding: 0 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .simkeu-navbar .navbar-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            height: 60px;
+        }
+
+        .simkeu-navbar .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .simkeu-navbar .brand img {
+            width: 36px;
+            height: 36px;
+            object-fit: contain;
+        }
+
+        .simkeu-navbar .brand-text {
+            font-size: .88rem;
+            font-weight: 700;
+            color: #1a56db;
+            line-height: 1.2;
+        }
+
+        .simkeu-navbar .brand-text span {
+            display: block;
+            font-size: .65rem;
+            font-weight: 500;
+            color: #6b7280;
+            letter-spacing: .03em;
+        }
+
+        .simkeu-navbar .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .simkeu-navbar .tahun-select {
+            border: 1.5px solid #e5e7eb;
+            border-radius: 10px;
+            padding: 6px 12px;
+            font-size: .82rem;
+            font-weight: 600;
+            color: #374151;
+            background: #f9fafb;
+            cursor: pointer;
+            outline: none;
+            transition: border-color .2s;
+            height: 38px;
+        }
+
+        .simkeu-navbar .tahun-select:focus {
+            border-color: #1a56db;
+            background: #fff;
+        }
+
+        .simkeu-navbar .btn-login {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #1a56db;
+            color: #fff !important;
+            font-size: .8rem;
+            font-weight: 700;
+            padding: 7px 16px;
+            border-radius: 10px;
+            text-decoration: none !important;
+            transition: background .2s;
+        }
+
+        .simkeu-navbar .btn-login:hover {
+            background: #1341b2;
+        }
+
+        /* ── MAIN WRAPPER ── */
+        .page-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 32px 24px 48px;
+        }
+
+        @media (max-width: 768px) {
+            .page-wrapper {
+                padding: 20px 16px 32px;
+            }
+
+            .simkeu-navbar .brand-text {
+                font-size: .8rem;
+            }
         }
     </style>
 
+    <?php echo $__env->yieldContent('styles'); ?>
 </head>
 
-<body class="bg-light">
+<body>
 
-    <!-- NAVBAR -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+    <!-- NAVBAR CUSTOM (menggantikan navbar SB Admin bawaan) -->
+    <nav class="simkeu-navbar">
+        <div class="navbar-inner">
 
-        <div class="container">
-
-            <a class="navbar-brand d-flex align-items-center font-weight-bold" href="/">
-
-                <img src="<?php echo e(asset('assets/img/simkeu_logo2.png')); ?>" alt="logo"
-                    style="width: 42px; margin-right: 10px;">
-
-                <span>
-                    Sistem Informasi Manajemen Keuangan Desa
-                </span>
-
+            <a class="brand" href="/">
+                <img src="<?php echo e(asset('assets/img/simkeu_logo2.png')); ?>" alt="Logo SIMKEU">
+                <div class="brand-text">
+                    SIMKEU
+                    <span>Sistem Informasi Manajemen Keuangan Desa</span>
+                </div>
             </a>
 
-            <div class="ml-auto d-flex align-items-center">
-
-                <!-- FILTER TAHUN -->
+            <div class="nav-right">
                 <form method="GET" class="mb-0">
-
-                    <select name="tahun" class="form-control border-0 shadow-sm" onchange="this.form.submit()" style="
-                    border-radius: 12px;
-                    min-width: 160px;
-                    height: 42px;
-                ">
-
+                    <select name="tahun" class="tahun-select" onchange="this.form.submit()">
                         <?php for($i = date('Y'); $i >= 2020; $i--): ?>
-
                             <option value="<?php echo e($i); ?>" <?php echo e(request('tahun', date('Y')) == $i ? 'selected' : ''); ?>>
-
                                 Tahun <?php echo e($i); ?>
 
-
                             </option>
-
                         <?php endfor; ?>
-
                     </select>
-
                 </form>
-
-
-                <!-- LOGIN -->
-                <a href="<?php echo e(route('login')); ?>" class="ml-3 text-white small font-weight-bold text-decoration-none">
-
-                    <i class="fas fa-sign-in-alt mr-1"></i>
-
+                <a href="<?php echo e(route('login')); ?>" class="btn-login">
+                    <i class="fas fa-sign-in-alt"></i>
                     Login
-
                 </a>
-
             </div>
 
         </div>
-
     </nav>
 
-    <!-- CONTENT -->
-    <div class="container py-5">
-
+    <!-- MAIN CONTENT -->
+    <div class="page-wrapper">
         <?php echo $__env->yieldContent('content'); ?>
-
     </div>
 
     <script src="<?php echo e(asset('sbadmin/vendor/jquery/jquery.min.js')); ?>"></script>
-
     <script src="<?php echo e(asset('sbadmin/vendor/bootstrap/js/bootstrap.bundle.min.js')); ?>"></script>
-
     <script src="<?php echo e(asset('sbadmin/js/sb-admin-2.min.js')); ?>"></script>
+    <?php echo $__env->yieldContent('scripts'); ?>
 
 </body>
 

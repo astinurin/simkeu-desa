@@ -148,7 +148,7 @@ class PendapatanController extends Controller
 
                 'jenis' => $jenis,
 
-                'realisasi' => $realisasi,
+                // 'realisasi' => $realisasi,
 
                 'raw_text' => $text
 
@@ -236,17 +236,20 @@ class PendapatanController extends Controller
         ]);
 
         // 2. HITUNG REALISASI
-        $realisasi = $request->realisasi ?? 0;
+        // $realisasi = $request->realisasi ?? 0;
+        $realisasi = 0;
         $sisa = $request->pagu - $realisasi;
 
-        $persentase = $request->pagu > 0
-            ? ($realisasi / $request->pagu) * 100
-            : 0;
+        // $persentase = $request->pagu > 0
+        //     ? ($realisasi / $request->pagu) * 100
+        //     : 0;
 
+        $persentase = 0;
         // 3. SIMPAN KE TABEL REALISASI
         RealisasiPendapatanModel::create([
             'pendapatan_id' => $pendapatan->id,
-            'realisasi' => $realisasi,
+            // 'realisasi' => $realisasi,
+            
             'sisa' => $sisa,
             'persentase' => $persentase,
         ]);

@@ -16,6 +16,7 @@ class BelanjaModel extends Model
         'pagu',
         'realisasi_belanja',
         'pajak',
+
     ];
 
     // relasi ke user
@@ -34,5 +35,15 @@ class BelanjaModel extends Model
     public function dokumentasi()
     {
         return $this->hasMany(DokumentasiKegiatanModel::class, 'belanja_id');
+    }
+
+    public function sumberDana()
+    {
+        return $this->belongsToMany(
+            SumberDanaModel::class,
+            'belanja_sumber_dana',
+            'belanja_id',
+            'sumber_dana_id'
+        )->withPivot('nominal');
     }
 }

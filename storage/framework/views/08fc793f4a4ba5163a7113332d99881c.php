@@ -2,105 +2,114 @@
 
 <?php $__env->startSection('content'); ?>
 
-<div class="container-fluid">
+    <div class="container-fluid">
 
-    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <div class="d-sm-flex align-items-center justify-content-between mb-4">
 
-        <h1 class="h3 mb-0 text-gray-800">
+            <h1 class="h3 mb-0 text-gray-800">
 
-            Edit User
+                Edit User
 
-        </h1>
+            </h1>
 
-        <a href="<?php echo e(route('users.index')); ?>"
-           class="btn btn-secondary shadow-sm">
+            <a href="<?php echo e(route('users.index')); ?>" class="btn btn-secondary shadow-sm">
 
-            <i class="fas fa-arrow-left fa-sm"></i>
+                <i class="fas fa-arrow-left fa-sm"></i>
 
-            Kembali
+                Kembali
 
-        </a>
-
-    </div>
-
-    <?php if($errors->any()): ?>
-
-        <div class="alert alert-danger">
-
-            <?php echo e($errors->first()); ?>
-
+            </a>
 
         </div>
 
-    <?php endif; ?>
+        <?php if($errors->any()): ?>
 
-    <div class="card shadow border-0">
+            <div class="alert alert-danger">
 
-        <div class="card-body p-4">
+                <?php echo e($errors->first()); ?>
 
-            <form action="<?php echo e(route('users.update', $user->id)); ?>"
-                  method="POST">
 
-                <?php echo csrf_field(); ?>
-                <?php echo method_field('PUT'); ?>
+            </div>
 
-                <!-- NAMA -->
-                <div class="form-group mb-4">
+        <?php endif; ?>
 
-                    <label>Nama</label>
+        <div class="card shadow border-0">
 
-                    <input type="text"
-                           name="name"
-                           class="form-control"
-                           value="<?php echo e($user->name); ?>"
-                           required>
+            <div class="card-body p-4">
 
-                </div>
+                <form action="<?php echo e(route('users.update', $user->id)); ?>" method="POST">
 
-                <!-- EMAIL -->
-                
+                    <?php echo csrf_field(); ?>
+                    <?php echo method_field('PUT'); ?>
 
-                <!-- ROLE -->
-                <div class="form-group mb-4">
+                    <!-- NAMA -->
+                    <div class="form-group mb-4">
 
-                    <label>Role</label>
+                        <label>Nama</label>
 
-                    <select name="role"
-                            class="form-control">
+                        <input type="text" name="name" class="form-control" value="<?php echo e($user->name); ?>" required>
 
-                        <option value="bendahara"
-                            <?php echo e($user->role == 'bendahara' ? 'selected' : ''); ?>>
+                    </div>
 
-                            Bendahara
+                    
+                    <div class="form-group mb-4">
 
-                        </option>
+                        <label>Password Baru</label>
 
-                        <option value="superadmin"
-                            <?php echo e($user->role == 'superadmin' ? 'selected' : ''); ?>>
+                        <input type="password" name="password" class="form-control"
+                            placeholder="">
 
-                            Superadmin
+                    </div>
 
-                        </option>
+                    <div class="form-group mb-4">
 
-                    </select>
+                        <label>Konfirmasi Password</label>
 
-                </div>
+                        <input type="password" name="password_confirmation" class="form-control"
+                            placeholder="">
 
-                <button class="btn btn-primary">
+                    </div>
+                    <!-- EMAIL -->
+                    
 
-                    <i class="fas fa-save mr-1"></i>
+                    <!-- ROLE -->
+                    <div class="form-group mb-4">
 
-                    Update
+                        <label>Role</label>
 
-                </button>
+                        <select name="role" class="form-control">
 
-            </form>
+                            <option value="bendahara" <?php echo e($user->role == 'bendahara' ? 'selected' : ''); ?>>
+
+                                Bendahara
+
+                            </option>
+
+                            <option value="superadmin" <?php echo e($user->role == 'superadmin' ? 'selected' : ''); ?>>
+
+                                Superadmin
+
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <button class="btn btn-primary">
+
+                        <i class="fas fa-save mr-1"></i>
+
+                        Update
+
+                    </button>
+
+                </form>
+
+            </div>
 
         </div>
 
     </div>
-
-</div>
 
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Asti\Kuliah\SMT 8\skripsi\simkeu-desa\resources\views/superadmin/edit.blade.php ENDPATH**/ ?>

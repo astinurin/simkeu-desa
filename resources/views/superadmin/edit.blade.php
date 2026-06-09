@@ -2,113 +2,118 @@
 
 @section('content')
 
-<div class="container-fluid">
+    <div class="container-fluid">
 
-    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <div class="d-sm-flex align-items-center justify-content-between mb-4">
 
-        <h1 class="h3 mb-0 text-gray-800">
+            <h1 class="h3 mb-0 text-gray-800">
 
-            Edit User
+                Edit User
 
-        </h1>
+            </h1>
 
-        <a href="{{ route('users.index') }}"
-           class="btn btn-secondary shadow-sm">
+            <a href="{{ route('users.index') }}" class="btn btn-secondary shadow-sm">
 
-            <i class="fas fa-arrow-left fa-sm"></i>
+                <i class="fas fa-arrow-left fa-sm"></i>
 
-            Kembali
+                Kembali
 
-        </a>
-
-    </div>
-
-    @if ($errors->any())
-
-        <div class="alert alert-danger">
-
-            {{ $errors->first() }}
+            </a>
 
         </div>
 
-    @endif
+        @if ($errors->any())
 
-    <div class="card shadow border-0">
+            <div class="alert alert-danger">
 
-        <div class="card-body p-4">
+                {{ $errors->first() }}
 
-            <form action="{{ route('users.update', $user->id) }}"
-                  method="POST">
+            </div>
 
-                @csrf
-                @method('PUT')
+        @endif
 
-                <!-- NAMA -->
-                <div class="form-group mb-4">
+        <div class="card shadow border-0">
 
-                    <label>Nama</label>
+            <div class="card-body p-4">
 
-                    <input type="text"
-                           name="name"
-                           class="form-control"
-                           value="{{ $user->name }}"
-                           required>
+                <form action="{{ route('users.update', $user->id) }}" method="POST">
 
-                </div>
+                    @csrf
+                    @method('PUT')
 
-                <!-- EMAIL -->
-                {{-- <div class="form-group mb-4">
+                    <!-- NAMA -->
+                    <div class="form-group mb-4">
 
-                    <label>Email</label>
+                        <label>Nama</label>
 
-                    <input type="email"
-                           name="email"
-                           class="form-control"
-                           value="{{ $user->email }}"
-                           required>
+                        <input type="text" name="name" class="form-control" value="{{ $user->name }}" required>
 
-                </div> --}}
+                    </div>
 
-                <!-- ROLE -->
-                <div class="form-group mb-4">
+                    {{-- PASSWORD --}}
+                    <div class="form-group mb-4">
 
-                    <label>Role</label>
+                        <label>Password Baru</label>
 
-                    <select name="role"
-                            class="form-control">
+                        <input type="password" name="password" class="form-control"
+                            placeholder="">
 
-                        <option value="bendahara"
-                            {{ $user->role == 'bendahara' ? 'selected' : '' }}>
+                    </div>
 
-                            Bendahara
+                    <div class="form-group mb-4">
 
-                        </option>
+                        <label>Konfirmasi Password</label>
 
-                        <option value="superadmin"
-                            {{ $user->role == 'superadmin' ? 'selected' : '' }}>
+                        <input type="password" name="password_confirmation" class="form-control"
+                            placeholder="">
 
-                            Superadmin
+                    </div>
+                    <!-- EMAIL -->
+                    {{-- <div class="form-group mb-4">
 
-                        </option>
+                        <label>Email</label>
 
-                    </select>
+                        <input type="email" name="email" class="form-control" value="{{ $user->email }}" required>
 
-                </div>
+                    </div> --}}
 
-                <button class="btn btn-primary">
+                    <!-- ROLE -->
+                    <div class="form-group mb-4">
 
-                    <i class="fas fa-save mr-1"></i>
+                        <label>Role</label>
 
-                    Update
+                        <select name="role" class="form-control">
 
-                </button>
+                            <option value="bendahara" {{ $user->role == 'bendahara' ? 'selected' : '' }}>
 
-            </form>
+                                Bendahara
+
+                            </option>
+
+                            <option value="superadmin" {{ $user->role == 'superadmin' ? 'selected' : '' }}>
+
+                                Superadmin
+
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <button class="btn btn-primary">
+
+                        <i class="fas fa-save mr-1"></i>
+
+                        Update
+
+                    </button>
+
+                </form>
+
+            </div>
 
         </div>
 
     </div>
-
-</div>
 
 @endsection

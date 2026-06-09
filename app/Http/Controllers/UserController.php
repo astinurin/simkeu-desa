@@ -71,17 +71,24 @@ class UserController extends Controller
 
         $request->validate([
             'name' => 'required|unique:users,name,' . $user->id,
-            'role' => 'required'
+            'role' => 'required',
+            'password' => 'nullable|confirmed|min:6',
         ]);
 
-        $user->update([
+        $data = [
             'name' => $request->name,
             'role' => $request->role,
-        ]);
+        ];
+
+        if ($request->filled('password')) {
+            $data['password'] = bcrypt($request->password);
+        }
+
+        $user->update($data);
 
         return redirect()
             ->route('users.index')
-            ->with('success', 'User berhasil diupdate');
+            ->with('success', 'Data user berhasil diupdate');
     }
 
 

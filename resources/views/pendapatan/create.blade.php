@@ -6,113 +6,117 @@
 
         <h1 class="h3 mb-4 text-gray-800">Tambah Pendapatan</h1>
 
-        <div class="card shadow">
-            <div class="card-body">
+        <div class="main-form-card">
 
-                <form action="{{ route('pendapatan.store') }}" method="POST" enctype="multipart/form-data">
-                    @csrf
-                    <!-- TANGGAL -->
-                    <div class="form-group">
-                        <label>Tanggal</label>
-                        <input type="date" name="tanggal" id="tanggal" class="form-control">
-                    </div>
-                    {{-- DOKUMEN --}}
-                    <div class="form-group mb-4">
+            <form action="{{ route('pendapatan.store') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <!-- TANGGAL -->
+                <div class="form-group">
+                    <label>Tanggal</label>
+                    <input type="date" name="tanggal" id="tanggal" class="form-control">
+                </div>
+                {{-- DOKUMEN --}}
+                <div class="ocr-section mb-4">
 
-                        <label class="font-weight-bold text-primary">
+                    <label class="font-weight-bold">
 
-                            Upload Dokumen Pendukung
+                        Unggah Dokumen Pendukung (PDF)
 
-                        </label>
+                    </label>
 
-                        <div class="border rounded p-4 text-center" style="
-                                                                                                        border:2px dashed #4e73df !important;
-                                                                                                        background:#f8fbff;
-                                                                                                    ">
+                    <div class="border rounded p-2 text-center ocr-upload-box"
+                        style="
+                                                                                                                                                                                                        border:2px dashed #4e73df !important;
+                                                                                                                                                                                                        background:#f8fbff;
+                                                                                                                                                                                                    ">
 
-                            <i class="fas fa-file-upload mb-3" style="
-                                                                                                            font-size:42px;
-                                                                                                            color:#4e73df;
-                                                                                                    ">
-                            </i>
+                        <i class="fas fa-file-upload mb-2 text-primary"
+                            style="
+                                                                                     font-size:20px;
+                                                                                                                                                                                                    ">
+                        </i>
 
-                            <div class="font-weight-bold mb-2">
+                
 
-                                Unggah Dokumen (PDF)
+                        <div class="text-muted small mb-2">
 
-                            </div>
-
-                            <div class="text-muted small mb-3">
-
-                                Sistem akan membantu mengisi data otomatis
-
-                            </div>
-
-                            <input type="file" name="dokumen" id="dokumen" class="form-control" accept="image/*,.pdf">
+                            Sistem akan membantu mengisi data otomatis
 
                         </div>
 
-                        <div id="previewContainer" class="mt-3"></div>
+                        <input type="file" name="dokumen" id="dokumen" class="form-control" accept="image/*,.pdf"
+                            style="max-width:500px;margin:auto;">
 
                     </div>
 
+                    <div id="previewContainer" class="mt-3"></div>
 
-                    <!-- KATEGORI -->
-                    <div class="form-group">
-
-                        <label class="font-weight-bold">
-
-                            Kategori Pendapatan
-
-                        </label>
-
-                        <select name="kategori_pendapatan" id="kategori" class="form-control" required>
-
-                            <option value="">-- Pilih Kategori --</option>
-
-                            <option value="Pendapatan Asli Desa">
-
-                                Pendapatan Asli Desa
-
-                            </option>
-
-                            <option value="Pendapatan Transfer">
-
-                                Pendapatan Transfer
-
-                            </option>
-
-                            <option value="Pendapatan Lain-lain">
-
-                                Pendapatan Lain-lain
-
-                            </option>
-
-                        </select>
-
-                    </div>
+                </div>
 
 
-                    <!-- JENIS -->
-                    <div class="form-group">
+                {{-- HIDDEN INPUT --}}
+                <input type="hidden" name="kategori_pendapatan" id="kategori" required>
 
-                        <label class="font-weight-bold">
+                <input type="hidden" name="jenis_pendapatan" id="jenis" required>
 
-                            Jenis Pendapatan
+                <div class="folder-wrapper">
+                    <label class="font-weight-bold ">
 
-                        </label>
+                        Pilih Kategori Pendapatan
 
-                        <select name="jenis_pendapatan" id="jenis" class="form-control" required>
+                    </label>
 
-                            <option value="">-- Pilih Jenis --</option>
+                    <div class="folder-tabs">
 
-                        </select>
+                        <button type="button" class="folder-tab active" data-kategori="Pendapatan Asli Desa">
+
+                            Pendapatan Asli Desa
+
+                        </button>
+
+                        <button type="button" class="folder-tab" data-kategori="Pendapatan Transfer">
+
+                            Pendapatan Transfer
+
+                        </button>
+
+                        <button type="button" class="folder-tab" data-kategori="Pendapatan Lain-lain">
+
+                            Pendapatan Lain-lain
+
+                        </button>
 
                     </div>
 
+                    <div class="folder-content">
 
+                        <p class="font-weight-bold mb-3">
+
+                            Pilih Jenis Pendapatan
+
+                        </p>
+{{-- 
+                        <p class="text-muted small mb-4">
+
+                            Pilih jenis pendapatan sesuai APBDes
+
+                        </p> --}}
+
+                        <div id="jenisContainer"></div>
+
+                    </div>
+
+                </div>
+
+                <div class="folder-content mt-3">
+                    <p
+                     class="font-weight-bold mb-4">
+
+                        Detail Pendapatan
+
+                    </p>
                     <!-- REALISASI -->
-                    <div class="form-group">
+                    {{-- <div class="form-group">
 
                         <label class="font-weight-bold">
 
@@ -122,9 +126,9 @@
                         <input type="hidden" id="detected_realisasi">
 
                         <div id="warningNominal" class="alert alert-warning mt-2 py-2 px-3" style="
-                    display:none;
-                    border-radius:10px;
-                 ">
+                                                                                                                    display:none;
+                                                                                                                    border-radius:10px;
+                                                                                                                 ">
 
                             <i class="fas fa-exclamation-triangle mr-2"></i>
 
@@ -134,7 +138,7 @@
 
                         <input type="number" name="realisasi" id="realisasi" class="form-control">
 
-                    </div>
+                    </div> --}}
 
 
                     <!-- PAGU -->
@@ -150,40 +154,29 @@
 
                         <small class="text-muted">
 
-                            Isi sesuai pagu/APBDes
+                            Masukkan sesuai APBDes 
 
                         </small>
 
                     </div>
-
-
-                    <!-- PREVIEW -->
-                    <div class="form-group">
-
-                        <label class="font-weight-bold">
-
-                            Persentase
-
-                        </label>
-
-                        <input type="text" id="persentase_preview" class="form-control" readonly>
-
-                    </div>
+                </div>
 
 
 
-                    <button type="submit" class="btn btn-success">Simpan</button>
-                    <a href="{{ route('pendapatan.index') }}" class="btn btn-secondary">Kembali</a>
 
-                </form>
 
-            </div>
+                <button type="submit" class="btn btn-success px-4">Simpan</button>
+                <a href="{{ route('pendapatan.index') }}" class="btn btn-secondary px-4">Kembali</a>
+
+            </form>
+
+
         </div>
 
     </div>
 
-    <!-- SCRIPT DYNAMIC -->
     <script>
+
         const jenisOptions = {
 
             "Pendapatan Asli Desa": [
@@ -203,69 +196,102 @@
 
         };
 
-        document.getElementById('kategori').addEventListener('change', function () {
-            const kategori = this.value;
-            const jenisSelect = document.getElementById('jenis');
+        function renderJenis(kategori) {
 
-            // reset
-            jenisSelect.innerHTML = '<option value="">-- Pilih Jenis --</option>';
+            document
+                .getElementById('kategori')
+                .value = kategori;
 
-            if (jenisOptions[kategori]) {
-                jenisOptions[kategori].forEach(function (item) {
-                    const option = document.createElement('option');
-                    option.value = item;
-                    option.text = item;
-                    jenisSelect.appendChild(option);
+            const container =
+                document.getElementById('jenisContainer');
+
+            let html =
+                '<div class="jenis-grid">';
+
+            jenisOptions[kategori]
+                .forEach(jenis => {
+
+                    html += `
+
+                                                                                                            <div
+                                                                                                                class="jenis-card"
+                                                                                                                data-jenis="${jenis}">
+
+                                                                                                                <strong>
+
+                                                                                                                    ${jenis}
+
+                                                                                                                </strong>
+
+                                                                                                            </div>
+
+                                                                                                        `;
+
                 });
+
+            html += '</div>';
+
+            container.innerHTML = html;
+            const firstCard =
+                container.querySelector('.jenis-card');
+
+            if (firstCard) {
+
+                firstCard.classList.add('active');
+
+                document
+                    .getElementById('jenis')
+                    .value =
+                    firstCard.dataset.jenis;
             }
-        });
-    </script>
 
-    {{-- presentase realisasi --}}
-    <script>
-        const paguInput = document.getElementById('pagu');
-        const realisasiInput = document.getElementById('realisasi');
-        const preview = document.getElementById('persentase_preview');
+            document
+                .querySelectorAll('.jenis-card')
+                .forEach(card => {
 
-        function hitung() {
-            let pagu = parseFloat(paguInput.value) || 0;
-            let realisasi = parseFloat(realisasiInput.value) || 0;
+                    card.addEventListener('click', function () {
 
-            let persen = pagu > 0 ? (realisasi / pagu) * 100 : 0;
+                        document
+                            .querySelectorAll('.jenis-card')
+                            .forEach(c =>
+                                c.classList.remove('active'));
 
-            preview.value = persen.toFixed(2) + " %";
+                        this.classList.add('active');
+
+                        document
+                            .getElementById('jenis')
+                            .value =
+                            this.dataset.jenis;
+
+                    });
+
+                });
+
         }
 
-        paguInput.addEventListener('input', hitung);
-        realisasiInput.addEventListener('input', hitung);
+        document
+            .querySelectorAll('.folder-tab')
+            .forEach(tab => {
 
-        // =========================
-        // VALIDASI NOMINAL
-        // =========================
+                tab.addEventListener('click', function () {
 
-        realisasiInput.addEventListener('input', function () {
+                    document
+                        .querySelectorAll('.folder-tab')
+                        .forEach(t =>
+                            t.classList.remove('active'));
 
-            const detected =
-                parseFloat(
-                    document.getElementById('detected_realisasi').value
-                ) || 0;
+                    this.classList.add('active');
 
-            const current =
-                parseFloat(this.value) || 0;
+                    renderJenis(
+                        this.dataset.kategori
+                    );
 
-            const warning =
-                document.getElementById('warningNominal');
+                });
 
-            if (detected > 0 && current !== detected) {
+            });
 
-                warning.style.display = 'block';
+        renderJenis('Pendapatan Asli Desa');
 
-            } else {
-
-                warning.style.display = 'none';
-            }
-
-        });
     </script>
 
     {{-- kalender --}}
@@ -310,13 +336,13 @@
 
                         previewContainer.innerHTML = `
 
-                                    <img src="${event.target.result}"
-                                         style="
-                                            max-width:100%;
-                                            border-radius:10px;
-                                         ">
+                                                                                                                                    <img src="${event.target.result}"
+                                                                                                                                         style="
+                                                                                                                                            max-width:100%;
+                                                                                                                                            border-radius:10px;
+                                                                                                                                         ">
 
-                                `;
+                                                                                                                                `;
                     };
 
                     reader.readAsDataURL(file);
@@ -336,83 +362,83 @@
 
                     previewContainer.innerHTML = `
 
-                            <div class="border rounded p-4"
-                                 style="
-                                    background:#f8fbff;
-                                    border:1px solid #dbe8ff;
-                                 ">
+                                                                                                                            <div class="border rounded p-4"
+                                                                                                                                 style="
+                                                                                                                                    background:#f8fbff;
+                                                                                                                                    border:1px solid #dbe8ff;
+                                                                                                                                 ">
 
-                                <div class="d-flex align-items-center justify-content-between">
+                                                                                                                                <div class="d-flex align-items-center justify-content-between">
 
-                                    <!-- LEFT -->
-                                    <div class="d-flex align-items-center">
+                                                                                                                                    <!-- LEFT -->
+                                                                                                                                    <div class="d-flex align-items-center">
 
-                                        <div class="mr-4">
+                                                                                                                                        <div class="mr-4">
 
-                                            <i class="fas fa-file-pdf"
-                                               style="
-                                                    font-size:50px;
-                                                    color:#dc3545;
-                                               ">
-                                            </i>
+                                                                                                                                            <i class="fas fa-file-pdf"
+                                                                                                                                               style="
+                                                                                                                                                    font-size:50px;
+                                                                                                                                                    color:#dc3545;
+                                                                                                                                               ">
+                                                                                                                                            </i>
 
-                                        </div>
+                                                                                                                                        </div>
 
-                                        <div>
+                                                                                                                                        <div>
 
-                                            <div class="font-weight-bold text-dark"
-                                                 style="font-size:18px;">
+                                                                                                                                            <div class="font-weight-bold text-dark"
+                                                                                                                                                 style="font-size:18px;">
 
-                                                ${file.name}
+                                                                                                                                                ${file.name}
 
-                                            </div>
+                                                                                                                                            </div>
 
-                                            <div class="text-muted small mb-2">
+                                                                                                                                            <div class="text-muted small mb-2">
 
-                                                Ukuran file:
-                                                ${fileSize} MB
+                                                                                                                                                Ukuran file:
+                                                                                                                                                ${fileSize} MB
 
-                                            </div>
+                                                                                                                                            </div>
 
-                                            <div id="loadingText"
-                                                 class="d-flex align-items-center text-primary">
+                                                                                                                                            <div id="loadingText"
+                                                                                                                                                 class="d-flex align-items-center text-primary">
 
-                                                <div class="spinner-border spinner-border-sm mr-2"
-                                                     role="status">
-                                                </div>
+                                                                                                                                                <div class="spinner-border spinner-border-sm mr-2"
+                                                                                                                                                     role="status">
+                                                                                                                                                </div>
 
-                                                <span>
+                                                                                                                                                <span>
 
-                                                    Sedang membaca dokumen...
+                                                                                                                                                    Sedang membaca dokumen...
 
-                                                </span>
+                                                                                                                                                </span>
 
-                                            </div>
+                                                                                                                                            </div>
 
-                                        </div>
+                                                                                                                                        </div>
 
-                                    </div>
+                                                                                                                                    </div>
 
-                                    <!-- RIGHT -->
-                                    <div>
+                                                                                                                                    <!-- RIGHT -->
+                                                                                                                                    <div>
 
-                                        <a href="${fileUrl}"
-                                           target="_blank"
-                                           class="btn btn-outline-primary btn-sm">
+                                                                                                                                        <a href="${fileUrl}"
+                                                                                                                                           target="_blank"
+                                                                                                                                           class="btn btn-outline-primary btn-sm">
 
-                                            <i class="fas fa-eye mr-1"></i>
+                                                                                                                                            <i class="fas fa-eye mr-1"></i>
 
-                                            Preview
+                                                                                                                                            Preview
 
-                                        </a>
+                                                                                                                                        </a>
 
-                                    </div>
+                                                                                                                                    </div>
 
-                                </div>
+                                                                                                                                </div>
 
-                            </div>
+                                                                                                                            </div>
 
-                            `;
+                                                                                                                            `;
 
                     // =========================
                     // AUTO DETECT PDF
@@ -459,15 +485,15 @@
 
                                 loadingText.innerHTML = `
 
-                                            <i class="fas fa-check-circle text-success mr-2"></i>
+                                                                                                                                            <i class="fas fa-check-circle text-success mr-2"></i>
 
-                                            <span class="text-success">
+                                                                                                                                            <span class="text-success">
 
-                                                Data berhasil dibaca
+                                                                                                                                                Data berhasil dibaca
 
-                                            </span>
+                                                                                                                                            </span>
 
-                                        `;
+                                                                                                                                        `;
                             }
 
                             // kategori
@@ -476,36 +502,67 @@
                                 const kategori =
                                     document.getElementById('kategori');
 
-                                kategori.value =
-                                    result.kategori;
+                                renderJenis(result.kategori);
+                                document
+                                    .querySelectorAll('.folder-tab')
+                                    .forEach(tab => {
 
-                                kategori.dispatchEvent(
-                                    new Event('change')
-                                );
+                                        tab.classList.remove('active');
+
+                                        if (
+                                            tab.dataset.kategori
+                                            === result.kategori
+                                        ) {
+                                            tab.classList.add('active');
+                                        }
+
+                                    });
+
+                                document
+                                    .getElementById('kategori')
+                                    .value =
+                                    result.kategori;
 
                                 setTimeout(() => {
 
                                     if (result.jenis) {
 
-                                        document.getElementById('jenis')
-                                            .value = result.jenis;
+                                        document
+                                            .getElementById('jenis')
+                                            .value =
+                                            result.jenis;
+
+                                        document
+                                            .querySelectorAll('.jenis-card')
+                                            .forEach(card => {
+
+                                                if (
+                                                    card.dataset.jenis ===
+                                                    result.jenis
+                                                ) {
+
+                                                    card.classList.add('active');
+
+                                                }
+
+                                            });
                                     }
 
                                 }, 200);
                             }
 
                             // realisasi
-                            if (result.realisasi) {
+                        // if (result.realisasi) {
 
-                                document.getElementById('realisasi')
-                                    .value = result.realisasi;
+                        //     document.getElementById('realisasi')
+                        //         .value = result.realisasi;
 
-                                // simpan nominal asli detect
-                                document.getElementById('detected_realisasi')
-                                    .value = result.realisasi;
+                        //     // simpan nominal asli detect
+                        //     document.getElementById('detected_realisasi')
+                        //         .value = result.realisasi;
 
-                                hitung();
-                            }
+                        //     hitung();
+                        // }
 
                         }
 
@@ -520,15 +577,15 @@
 
                             loadingText.innerHTML = `
 
-                                        <i class="fas fa-times-circle text-danger mr-2"></i>
+                                                                                                                                        <i class="fas fa-times-circle text-danger mr-2"></i>
 
-                                        <span class="text-danger">
+                                                                                                                                        <span class="text-danger">
 
-                                            Gagal membaca dokumen
+                                                                                                                                            Gagal membaca dokumen
 
-                                        </span>
+                                                                                                                                        </span>
 
-                                    `;
+                                                                                                                                    `;
                         }
 
                     }
@@ -538,4 +595,177 @@
             });
 
     </script>
+
+    <style>
+        .main-form-card {
+            background: #fff;
+            border-radius: 24px;
+            padding: 28px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, .06);
+        }
+
+        .ocr-section {
+            margin-bottom: 24px;
+        }
+
+        .folder-tabs {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .folder-tab {
+
+            border: none;
+
+            background: #eef4ff;
+
+            color: #1a56db;
+
+            border-radius: 999px;
+
+            padding: 10px 18px;
+
+            font-size: .95rem;
+
+            font-weight: 600;
+
+            transition: .2s;
+
+            cursor: pointer;
+        }
+
+        .folder-tab:hover {
+            background: #dbe8ff;
+        }
+
+        .folder-tab.active {
+            background: #1a56db;
+            color: #fff;
+        }
+
+        .folder-content {
+            background: #fafafa;
+            border: 1px solid #ececec;
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .folder-content h5 {
+            margin-bottom: 8px !important;
+        }
+
+        .jenis-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .jenis-card {
+            background: #fff;
+            border: 1px solid #dfe3ea;
+            border-radius: 12px;
+            min-height: 48px;
+            padding: 12px 18px;
+            display: inline-flex;
+            width: auto;
+            min-width: 220px;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .jenis-card:hover {
+            border-color: #1a56db;
+        }
+
+        .jenis-card.active {
+
+            background: #eff6ff;
+
+            border: 2px solid #1a56db;
+
+            color: #1a56db;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            font-weight: 600;
+            color: #4b5563;
+        }
+
+        .form-control {
+
+            border-radius: 10px;
+
+            min-height: 42px;
+
+            border: 1px solid #d7dce3;
+        }
+
+        .form-control:focus {
+
+            border-color: #1a56db;
+
+            box-shadow:
+                0 0 0 0.15rem rgba(26, 86, 219, .15);
+        }
+
+        .btn-success,
+        .btn-secondary {
+
+            height: 48px;
+
+            min-width: 120px;
+
+            border-radius: 14px;
+
+            font-weight: 600;
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 0 24px;
+
+        }
+
+        h5 {
+            font-weight: 700;
+            color: #374151;
+        }
+
+        @media(max-width:768px) {
+
+            .main-form-card {
+                padding: 20px;
+            }
+
+            .folder-tabs {
+                flex-direction: column;
+            }
+
+            .folder-tab {
+                width: 100%;
+            }
+
+            .jenis-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .ocr-upload-box {
+            max-width: 760px;
+            margin: auto;
+            background: #f8fbff;
+            border: 2px dashed #4e73df !important;
+        }
+    </style>
 @endsection
