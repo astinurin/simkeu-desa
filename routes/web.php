@@ -6,6 +6,7 @@ use App\Http\Controllers\PendapatanController;
 use App\Http\Controllers\BelanjaController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\LaporanController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -42,6 +43,12 @@ Route::middleware('auth')->group(function () {
     // BELANJA
     Route::resource('belanja', BelanjaController::class);
 
+
+Route::get('/laporan', [LaporanController::class, 'index'])
+    ->name('laporan.index');
+
+Route::get('/laporan/cetak', [LaporanController::class, 'cetak'])
+    ->name('laporan.cetak');
     // =========================
     // SUPERADMIN ONLY
     // =========================

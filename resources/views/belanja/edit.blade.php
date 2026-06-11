@@ -1,5 +1,76 @@
 @extends('layouts.app')
+@section('styles')
+    <style>
+        .sumber-item {
+            margin-bottom: 15px;
+        }
 
+        .bidang-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        .bidang-tab {
+            border: none;
+            padding: 12px 22px;
+            border-radius: 999px;
+            background: #eef2ff;
+            color: #1d4ed8;
+            font-weight: 600;
+            transition: .2s;
+        }
+
+        .bidang-tab.active {
+            background: #1d4ed8;
+            color: white;
+        }
+
+        .bidang-info {
+            margin-top: 12px;
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 12px 16px;
+            color: #64748b;
+        }
+
+        .sumber-dana-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .sumber-card {
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 14px;
+            cursor: pointer;
+            margin-bottom: 0;
+        }
+
+        .sumber-card:hover {
+            border-color: #2563eb;
+        }
+
+        .sumber-card input {
+            margin-right: 8px;
+        }
+
+        @media(max-width:768px) {
+
+            .bidang-tabs {
+                display: grid;
+                grid-template-columns: 1fr;
+            }
+
+            .sumber-dana-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+    </style>
+@endsection
 @section('content')
     <div class="container-fluid">
 
@@ -9,52 +80,207 @@
             <div class="card-body">
 
                 <form action="{{ route('belanja.update', $data->id) }}" method="POST" enctype="multipart/form-data">
-                    @csrf @method('PUT')
-
-                    {{-- TANGGAL --}}
+                    @csrf
+                    @method('PUT')
                     <div class="form-group">
                         <label>Tanggal</label>
-                        <input type="date" name="tanggal" value="{{ $data->tanggal }}" class="form-control">
+                        <input type="date" name="tanggal" id="tanggal" class="form-control"
+                            value="{{ old('tanggal', $data->tanggal) }}">
                     </div>
 
-                    {{-- BIDANG --}}
-                    <div class="form-group">
+                    {{-- <div class="form-group">
                         <label>Bidang</label>
                         <select name="bidang" id="bidang" class="form-control" required></select>
+                    </div> --}}
+
+                    <div class="form-group">
+
+                        <label class="font-weight-bold">
+                            Pilih Bidang
+                        </label>
+
+                        <input type="hidden" name="bidang" id="bidang" value="{{ old('bidang', $data->bidang) }}" required>
+
+                        <div class="bidang-tabs">
+
+                            <button type="button"
+                                class="bidang-tab {{ $data->bidang == 'Bidang I - Penyelenggaraan Pemerintahan Desa' ? 'active' : '' }}"
+                                data-value="Bidang I - Penyelenggaraan Pemerintahan Desa">
+                                Bidang I
+                            </button>
+
+                            <button type="button"
+                                class="bidang-tab {{ $data->bidang == 'Bidang II - Pelaksanaan Pembangunan Desa' ? 'active' : '' }}"
+                                data-value="Bidang II - Pelaksanaan Pembangunan Desa">
+                                Bidang II
+                            </button>
+
+                            <button type="button"
+                                class="bidang-tab {{ $data->bidang == 'Bidang III - Pembinaan Kemasyarakatan' ? 'active' : '' }}"
+                                data-value="Bidang III - Pembinaan Kemasyarakatan">
+                                Bidang III
+                            </button>
+
+                            <button type="button"
+                                class="bidang-tab {{ $data->bidang == 'Bidang IV - Pemberdayaan Masyarakat' ? 'active' : '' }}"
+                                data-value="Bidang IV - Pemberdayaan Masyarakat">
+                                Bidang IV
+                            </button>
+
+                            <button type="button"
+                                class="bidang-tab {{ $data->bidang == 'Bidang V - Penanggulangan Bencana' ? 'active' : '' }}"
+                                data-value="Bidang V - Penanggulangan Bencana">
+                                Bidang V
+                            </button>
+
+                        </div>
+
+                        <div id="bidang-info" class="bidang-info">
+                            {{ $data->bidang }}
+                        </div>
+
                     </div>
 
-                    {{-- KEGIATAN --}}
-                    <div class="form-group">
+                    {{-- <div class="form-group">
                         <label>Jenis Kegiatan</label>
                         <select name="jenis_kegiatan" id="kegiatan" class="form-control" required></select>
-                    </div>
+                    </div> --}}
 
-                    {{-- PAGU --}}
                     <div class="form-group">
-                        <label>Pagu</label>
-                        <input type="number" name="pagu" value="{{ $data->pagu }}" class="form-control">
+
+                        <label>Jenis Kegiatan</label>
+
+                        <input type="text" name="jenis_kegiatan" class="form-control"
+                            value="{{ old('jenis_kegiatan', $data->jenis_kegiatan) }}" required>
+
                     </div>
 
-                    {{-- REALISASI --}}
                     <div class="form-group">
-                        <label>Realisasi</label>
-                        <input type="number" name="realisasi_belanja" value="{{ optional($data->realisasi)->realisasi }}"
-                            class="form-control">
+
+                        <label class="font-weight-bold">
+                            Pilih Sumber Dana
+                        </label>
+                        <p class="text-muted">
+
+                            (Pilih semua sumber dana yang relevan dengan kegiatan belanja ini)
+
+                        </p>
+
+                        <div class="sumber-dana-grid">
+                            @php
+                                $selectedDana = $data->sumberDana->pluck('id')->toArray();
+                            @endphp
+
+                            @foreach($sumberDana as $item)
+
+                                <div class="sumber-item">
+
+                                    <label class="sumber-card">
+
+                                        <input type="checkbox" class="sumber-checkbox" data-id="{{ $item->id }}"
+                                            name="sumber_dana[]" value="{{ $item->id }}" {{ in_array($item->id, $selectedDana) ? 'checked' : '' }}>
+
+                                        {{ $item->kode }} - {{ $item->nama }}
+
+                                    </label>
+
+                                    <div class="nominal-wrapper mt-2 {{ in_array($item->id, $selectedDana) ? '' : 'd-none' }}"
+                                        id="nominal-{{ $item->id }}">
+
+                                        <label>
+                                            Nominal {{ $item->kode }}
+                                        </label>
+                                        <input type="number" class="form-control" name="nominal[{{ $item->id }}]" min="0"
+                                            value="{{ optional(optional($data->sumberDana->find($item->id))->pivot)->nominal }}">
+
+
+                                    </div>
+
+                                </div>
+
+                            @endforeach
+
+                        </div>
+
                     </div>
 
-                    {{-- PREVIEW GAMBAR --}}
                     <div class="form-group">
-                        <label>Dokumentasi</label><br>
-
-                        @foreach($data->dokumentasi as $doc)
-                            <img src="{{ asset('storage/' . $doc->file) }}"
-                                style="max-width:800px; margin:10px; border-radius:8px;">
-                        @endforeach
-
-                        <input type="file" name="dokumentasi[]" multiple class="form-control mt-2">
+                        <label>Pagu Kegiatan</label>
+                        <input type="number" name="pagu" id="pagu" class="form-control"
+                            value="{{ old('pagu', $data->pagu) }}">
                     </div>
 
-                    <button class="btn btn-primary">Update</button>
+                    <div class="form-group">
+
+                        <label>
+
+                            Pajak (pbn, pbh, pajak daerah)
+
+                        </label>
+
+                        <input type="text" name="pajak" class="form-control" value="{{ old('pajak', $data->pajak) }}">
+
+                        {{-- <small class="text-muted">
+
+                            Pajak sudah termasuk dalam nominal realisasi
+
+                        </small> --}}
+
+                    </div>
+
+                    <div class="form-group">
+                        <label>Realisasi Belanja</label>
+
+                        <input type="number" name="realisasi_belanja" id="realisasi" class="form-control" value="{{ old(
+        'realisasi_belanja',
+        optional($data->realisasi)->realisasi
+    ) }}">
+                        <small class="text-muted">
+                            Masukkan total dana yang telah dibelanjakan untuk kegiatan ini.
+                        </small>
+                    </div>
+                    <div class="form-group">
+                        <label>Sisa Anggaran</label>
+                        <input type="text" id="sisa_preview" class="form-control" readonly>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Persentase Realisasi Belanja</label>
+                        <input type="text" id="persen_preview" class="form-control" readonly>
+                    </div>
+
+                    <div class="form-group">
+                        @if($data->dokumentasi->count())
+
+                            <div class="mb-3">
+
+                                <label class="font-weight-bold">
+                                    Dokumentasi Saat Ini
+                                </label>
+
+                                <div>
+
+                                    @foreach($data->dokumentasi as $doc)
+
+                                        <img src="{{ asset('storage/' . $doc->file) }}" style="
+                                                                                                                                max-width:250px;
+                                                                                                                                margin:10px;
+                                                                                                                                border-radius:10px;
+                                                                                                                            ">
+
+                                    @endforeach
+
+                                </div>
+
+                            </div>
+
+                        @endif
+                        <label>Dokumentasi kegiatan (gambar)</label>
+                        <input type="file" name="dokumentasi[]" multiple accept="image/*" class="form-control">
+                        <div id="preview" class="mt-2"></div>
+                    </div>
+
+                    <button class="btn btn-success">Simpan</button>
                     <a href="{{ route('belanja.index') }}" class="btn btn-secondary">Kembali</a>
 
                 </form>
@@ -67,94 +293,112 @@
 
     {{-- SCRIPT BIDANG + KEGIATAN --}}
     <script>
-        const kegiatanMap = {
+        const bidangInfo = document.getElementById('bidang-info');
+        const bidangInput = document.getElementById('bidang');
 
-            "Bidang I - Penyelenggaraan Pemerintahan Desa": [
-                "Penyediaan Penghasilan Tetap dan Tunjangan Kepala Desa",
-                "Penyediaan Penghasilan Tetap dan Tunjangan Perangkat Desa",
-                "Penyediaan Operasional Pemerintah Desa (ATK, Honor PKPKD dan PPKD dll)",
-                "Penyediaan Tunjangan BPD",
-                "Penyediaan Operasional BPD",
-                "Penyediaan Insentif/Operasional RT/RW",
-                "Penyediaan Operasional Pemerintah Desa yang bersumber dari Dana Desa",
-                "Sarana Prasana Kantor Desa",
-                "Penyelenggaraan Musdes",
-                "Penyusunan RKPDes",
-                "Penyusunan Kebijakan Desa",
-                "Pemungutan SPPT PBB"
-            ],
+        document.querySelectorAll('.bidang-tab')
+            .forEach(btn => {
 
-            "Bidang II - Pelaksanaan Pembangunan Desa": [
-                "Insentif Guru TPQ dan PAUD",
-                "Penyelenggaraan Posyandu",
-                "Pembangunan Drainase RT 002 RW 001",
-                "Pembangunan Jalan Hotmix RT 011 RW 002",
-                "Pembangunan Drainase RT 015 RW 003",
-                "Pembangunan Drainase/Gorong-Gorong RT 017 RW 004",
-                "Pembangunan Gorong-Gorong dan Pavingisasi",
-                "Pembangunan Drainase RT 026 RW 006",
-                "Pembangunan Jalan Rabat RT 033 RW 007",
-                "Pelaksanaan Kegiatan PKTD",
-                "Peningkatan Perekonomian Desa (30%)",
-                "Ketahanan Pangan 20%"
-            ],
+                btn.addEventListener('click', function () {
 
-            "Bidang III - Pembinaan Kemasyarakatan": [
-                "Pembinaan LPMD",
-                "Pembinaan KIM",
-                "Pembinaan PB PANDAN",
-                "Pembinaan SSB PANDAWA",
-                "Peningkatan Kapasitas Linmas",
-                "Pembinaan Forum Anak Desa (FAD)",
-                "Pembinaan Swadeshi",
-                "Pembinaan Ilal Ahad",
-                "Pembinaan Kelompok Kesenian",
-                "Operasional RW",
-                "Operasional PKK"
-            ],
+                    document.querySelectorAll('.bidang-tab')
+                        .forEach(x => x.classList.remove('active'));
 
-            "Bidang IV - Pemberdayaan Masyarakat": [
-                "Pelatihan PKK Desa dan PKK RW",
-                "Pelatihan PKK"
-            ],
+                    this.classList.add('active');
 
-            "Bidang V - Penanggulangan Bencana": [
-                "BLT DD"
-            ]
-        };
+                    bidangInput.value = this.dataset.value;
 
-        const bidangSelect = document.getElementById('bidang');
-        const kegiatanSelect = document.getElementById('kegiatan');
+                    bidangInfo.innerHTML = this.dataset.value;
 
-        const selectedBidang = @json($data->bidang);
-        const selectedKegiatan = @json($data->jenis_kegiatan);
-
-        // isi bidang
-        bidangSelect.innerHTML = `<option value="">-- Pilih Bidang --</option>`;
-        Object.keys(kegiatanMap).forEach(b => {
-            bidangSelect.innerHTML += `<option value="${b}" ${b === selectedBidang ? 'selected' : ''}>${b}</option>`;
-        });
-
-        // isi kegiatan saat load
-        function loadKegiatan(bidang) {
-            kegiatanSelect.innerHTML = `<option value="">-- Pilih Kegiatan --</option>`;
-
-            if (kegiatanMap[bidang]) {
-                kegiatanMap[bidang].forEach(k => {
-                    kegiatanSelect.innerHTML += `<option value="${k}" ${k === selectedKegiatan ? 'selected' : ''}>${k}</option>`;
                 });
+
+            });
+        const pagu = document.getElementById('pagu');
+        const realisasi = document.getElementById('realisasi');
+        function hitung() {
+
+            let p = parseFloat(pagu.value) || 0;
+            let r = parseFloat(realisasi.value) || 0;
+
+            let sisa = p - r;
+
+            if (sisa < 0) {
+                sisa = 0;
             }
+
+            document.getElementById('sisa_preview').value =
+                'Rp ' + sisa.toLocaleString('id-ID');
+
+            document.getElementById('persen_preview').value =
+                (p > 0 ? (r / p) * 100 : 0).toFixed(2) + " %";
         }
 
-        // trigger awal
-        if (selectedBidang) {
-            loadKegiatan(selectedBidang);
-        }
+        pagu.oninput = hitung;
+        realisasi.oninput = hitung;
 
-        // kalau ganti bidang
-        bidangSelect.addEventListener('change', function () {
-            loadKegiatan(this.value);
-        });
+        document
+            .querySelector('input[name="dokumentasi[]"]')
+            .addEventListener('change', e => {
+
+                const preview = document.getElementById('preview');
+
+                preview.innerHTML = '';
+
+                [...e.target.files].forEach(f => {
+
+                    let r = new FileReader();
+
+                    r.onload = ev =>
+                        preview.innerHTML +=
+                        `<img src="${ev.target.result}"
+                    style="max-width:800px;
+                    margin:10px;
+                    border-radius:8px;">`;
+
+                    r.readAsDataURL(f);
+
+                });
+
+            });
+
+        document
+            .querySelectorAll('.sumber-checkbox')
+            .forEach(cb => {
+
+                cb.addEventListener('change', function () {
+
+                    const target =
+                        document.getElementById(
+                            'nominal-' + this.dataset.id
+                        );
+
+                    if (this.checked) {
+
+                        target.classList.remove('d-none');
+
+                    } else {
+
+                        target.classList.add('d-none');
+
+                        target
+                            .querySelector('input')
+                            .value = '';
+
+                    }
+
+                });
+
+            });
+
+
+        document.addEventListener(
+            'DOMContentLoaded',
+            function () {
+
+                hitung();
+
+            }
+        );
     </script>
 
 @endsection

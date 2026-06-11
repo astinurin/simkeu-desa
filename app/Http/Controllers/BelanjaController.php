@@ -17,7 +17,10 @@ class BelanjaController extends Controller
 {
     public function index()
     {
-        $data = BelanjaModel::with('realisasi')->latest()->get();
+        $data = BelanjaModel::with([
+            'realisasi',
+            'sumberDana'
+        ])->latest()->get();
 
         // ini ambil tahun
         $tahunList = BelanjaModel::selectRaw('YEAR(tanggal) as tahun')
@@ -60,9 +63,25 @@ class BelanjaController extends Controller
         ]);
         if ($request->filled('sumber_dana')) {
 
-            $belanja->sumberDana()->sync(
-                $request->sumber_dana
-            );
+            $syncData = [];
+
+            foreach ($request->sumber_dana as $id) {
+
+                $syncData[$id] = [
+                    'nominal' => $request->nominal[$id] ?? 0
+                ];
+            }
+
+            $syncData = [];
+
+            foreach ($request->sumber_dana ?? [] as $id) {
+
+                $syncData[$id] = [
+                    'nominal' => $request->nominal[$id] ?? 0
+                ];
+            }
+
+            $belanja->sumberDana()->sync($syncData);
         }
 
         // 2) REALISASI_BELANJA (sesuai kolom kamu)
@@ -122,14 +141,35 @@ class BelanjaController extends Controller
 
     public function show($id)
     {
-        $data = BelanjaModel::with(['realisasi', 'dokumentasi'])->findOrFail($id);
-        return view('belanja.show', compact('data'));
+        $data = BelanjaModel::with([
+            'realisasi',
+            'dokumentasi',
+            'sumberDana'
+        ])->findOrFail($id);
+
+        return view(
+            'belanja.show',
+            compact('data')
+        );
     }
 
     public function edit($id)
     {
-        $data = BelanjaModel::with('realisasi')->findOrFail($id);
-        return view('belanja.edit', compact('data'));
+        $data = BelanjaModel::with([
+            'realisasi',
+            'dokumentasi',
+            'sumberDana'
+        ])->findOrFail($id);
+
+        $sumberDana = SumberDanaModel::orderBy('kode')->get();
+
+        return view(
+            'belanja.edit',
+            compact(
+                'data',
+                'sumberDana'
+            )
+        );
     }
 
     public function update(Request $request, $id)
@@ -156,9 +196,17 @@ class BelanjaController extends Controller
             'realisasi_belanja' => $request->realisasi_belanja ?? 0,
             'pajak' => $request->pajak,
         ]);
-        $data->sumberDana()->sync(
-    $request->sumber_dana ?? []
-);
+
+        $syncData = [];
+
+        foreach ($request->sumber_dana ?? [] as $id) {
+
+            $syncData[$id] = [
+                'nominal' => $request->nominal[$id] ?? 0
+            ];
+        }
+
+        $data->sumberDana()->sync($syncData);
 
         // update realisasi
         $realisasi = $request->realisasi_belanja ?? 0;

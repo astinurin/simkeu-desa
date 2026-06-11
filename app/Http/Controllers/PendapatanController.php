@@ -54,7 +54,7 @@ class PendapatanController extends Controller
                 ]);
             }
 
-            // =========================
+            // =========================p
             // PARSE PDF
             // =========================
 
@@ -63,6 +63,7 @@ class PendapatanController extends Controller
             $pdf = $parser->parseFile($file->getPathname());
 
             $text = $pdf->getText();
+            // dd($text);
 
             // =========================
             // DEFAULT
@@ -148,7 +149,7 @@ class PendapatanController extends Controller
 
                 'jenis' => $jenis,
 
-                // 'realisasi' => $realisasi,
+                'realisasi' => $realisasi,
 
                 'raw_text' => $text
 
@@ -230,26 +231,27 @@ class PendapatanController extends Controller
             'user_id' => Auth::id(),
             'kategori_pendapatan' => $request->kategori_pendapatan,
             'jenis_pendapatan' => $request->jenis_pendapatan,
+            'tahap' => $request->tahap,
             'pagu' => $request->pagu,
             'tanggal' => $request->tanggal ?? now()->toDateString(),
             'dokumen' => $dokumenPath,
         ]);
 
         // 2. HITUNG REALISASI
-        // $realisasi = $request->realisasi ?? 0;
-        $realisasi = 0;
+        $realisasi = $request->realisasi ?? 0;
+
         $sisa = $request->pagu - $realisasi;
 
-        // $persentase = $request->pagu > 0
-        //     ? ($realisasi / $request->pagu) * 100
-        //     : 0;
+        $persentase = $request->pagu > 0
+            ? ($realisasi / $request->pagu) * 100
+            : 0;
 
         $persentase = 0;
         // 3. SIMPAN KE TABEL REALISASI
         RealisasiPendapatanModel::create([
             'pendapatan_id' => $pendapatan->id,
-            // 'realisasi' => $realisasi,
-            
+            'realisasi' => $realisasi,
+
             'sisa' => $sisa,
             'persentase' => $persentase,
         ]);

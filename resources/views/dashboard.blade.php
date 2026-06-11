@@ -725,12 +725,62 @@
                 font-size: .62rem;
             }
         }
+
+   .folder-tabs{
+    display:flex;
+    gap:10px;
+    padding:20px;
+    flex-wrap:wrap;
+}
+
+.folder-tab{
+    border:none;
+    padding:10px 18px;
+    border-radius:999px;
+    background:#eef2ff;
+    color:#1a56db;
+    font-weight:600;
+}
+
+.folder-tab.active{
+    background:#1a56db;
+    color:white;
+}
+
+.progress-item{
+    padding:15px 20px;
+    border-top:1px solid #f3f4f6;
+}
+
+.progress-head{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:8px;
+}
+
+.progress{
+    height:10px;
+    border-radius:999px;
+    overflow:hidden;
+    background:#e5e7eb;
+}
+
+.progress-bar{
+    background:#1a56db;
+    height:100%;
+}
+
+.empty-data{
+    padding:25px;
+    text-align:center;
+    color:#9ca3af;
+}
     </style>
 
     {{-- ======================================================= --}}
     {{-- HEADER --}}
     {{-- ======================================================= --}}
-    <div class="db-header a1">
+    <div class="db-header searchable-card a1">
         <div style="position:relative;z-index:1;">
             <div class="badge-pill">
                 <i class="fas fa-tachometer-alt"></i> Dashboard Admin
@@ -757,29 +807,29 @@
     {{-- ======================================================= --}}
     {{-- KPI CARDS --}}
     {{-- ======================================================= --}}
-    <div class="kpi-grid a2">
+    <div class="kpi-grid searchable-card a2">
         <div class="kpi-card blue">
             <div class="kpi-icon blue"><i class="fas fa-wallet"></i></div>
             <div>
-                <div class="kpi-label">Total Pagu</div>
-                <div class="kpi-val">Rp {{ number_format($totalPaguPendapatan + $totalPaguBelanja) }}</div>
-                <div class="kpi-note">Pendapatan + Belanja</div>
+                <div class="kpi-label">Total Realisasi Pendapatan</div>
+                <div class="kpi-val">Rp {{ number_format($totalRealisasiPendapatan) }}</div>
+                {{-- <div class="kpi-note">Pendapatan + Belanja</div> --}}
             </div>
         </div>
         <div class="kpi-card green">
             <div class="kpi-icon green"><i class="fas fa-check-circle"></i></div>
             <div>
-                <div class="kpi-label">Total Realisasi</div>
-                <div class="kpi-val">Rp {{ number_format($totalRealisasiPendapatan + $totalRealisasiBelanja) }}</div>
-                <div class="kpi-note">Pendapatan + Belanja</div>
+                <div class="kpi-label">Total Realisasi Belanja</div>
+                <div class="kpi-val">Rp {{ number_format($totalRealisasiBelanja) }}</div>
+                {{-- <div class="kpi-note">Pendapatan + Belanja</div> --}}
             </div>
         </div>
         <div class="kpi-card blue">
             <div class="kpi-icon blue"><i class="fas fa-hand-holding-usd"></i></div>
             <div>
-                <div class="kpi-label">Realisasi Pendapatan</div>
-                <div class="kpi-val">{{ number_format($persenPendapatan, 1) }}%</div>
-                <div class="kpi-note">Rp {{ number_format($totalRealisasiPendapatan) }}</div>
+                <div class="kpi-label">Sisa Anggaran</div>
+                {{-- <div class="kpi-val">{{ number_format($persenPendapatan, 1) }}%</div> --}}
+                <div class="kpi-note">Rp {{ number_format($totalSisaAnggaran = $totalRealisasiPendapatan - $totalRealisasiBelanja) }}</div>
             </div>
         </div>
         <div class="kpi-card green">
@@ -795,76 +845,101 @@
     {{-- ======================================================= --}}
     {{-- CHARTS --}}
     {{-- ======================================================= --}}
-    <div class="charts-grid a3">
+   <div class="charts-grid searchable-card a3">
 
-        {{-- Doughnut --}}
-        <div class="s-card" style="display:flex;flex-direction:column;">
-            <div class="s-head">
-                <div style="display:flex;align-items:center;gap:10px;">
-                    <div class="s-icon blue"><i class="fas fa-chart-pie"></i></div>
-                    <div>
-                        <p class="s-title">Komposisi</p>
-                        <p class="s-sub">Pagu vs Realisasi</p>
-                    </div>
+    {{-- Doughnut --}}
+    <div class="s-card searchable-card" style="display:flex;flex-direction:column;">
+        <div class="s-head">
+            <div style="display:flex;align-items:center;gap:10px;">
+                <div class="s-icon blue">
+                    <i class="fas fa-chart-pie"></i>
+                </div>
+                <div>
+                    <p class="s-title">Persentase Realisasi</p>
+                    <p class="s-sub">Pendapatan vs Belanja</p>
                 </div>
             </div>
-            <div class="chart-card"
-                style="display:flex;flex-direction:column;align-items:center;flex:1;justify-content:center;">
-                <div style="position:relative;width:150px;height:150px;margin:8px auto 12px;">
-                    <canvas id="chartDoughnut"></canvas>
+        </div>
+
+        <div class="chart-card"
+            style="display:flex;flex-direction:column;align-items:center;flex:1;justify-content:center;">
+
+            <div style="position:relative;width:170px;height:170px;margin:8px auto 12px;">
+                <canvas id="chartDoughnut"></canvas>
+
+                <div
+                    style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none;">
+
                     <div
-                        style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none;">
-                        <div
-                            style="font-size:.58rem;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:.04em;">
-                            Avg</div>
-                        <div style="font-size:1rem;font-weight:800;color:#1f2937;">
-                            {{ number_format(($persenPendapatan + $persenBelanja) / 2, 0) }}%
-                        </div>
+                        style="font-size:.58rem;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:.04em;">
+                        Avg
                     </div>
-                </div>
-                <div style="display:flex;flex-direction:column;gap:6px;width:100%;">
-                    <div style="display:flex;align-items:center;justify-content:space-between;font-size:.75rem;">
-                        <span style="display:flex;align-items:center;gap:6px;">
-                            <span
-                                style="width:9px;height:9px;border-radius:3px;background:#1a56db;display:inline-block;flex-shrink:0;"></span>
-                            <span style="color:#4b5563;font-weight:600;">Pendapatan</span>
-                        </span>
-                        <strong>{{ number_format($persenPendapatan, 1) }}%</strong>
-                    </div>
-                    <div style="display:flex;align-items:center;justify-content:space-between;font-size:.75rem;">
-                        <span style="display:flex;align-items:center;gap:6px;">
-                            <span
-                                style="width:9px;height:9px;border-radius:3px;background:#0e9f6e;display:inline-block;flex-shrink:0;"></span>
-                            <span style="color:#4b5563;font-weight:600;">Belanja</span>
-                        </span>
-                        <strong>{{ number_format($persenBelanja, 1) }}%</strong>
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        {{-- Bar Chart --}}
-        <div class="s-card">
-            <div class="s-head">
-                <div style="display:flex;align-items:center;gap:10px;">
-                    <div class="s-icon green"><i class="fas fa-chart-bar"></i></div>
-                    <div>
-                        <p class="s-title">Pagu vs Realisasi</p>
-                        <p class="s-sub">Perbandingan anggaran {{ date('Y') }}</p>
+                    <div style="font-size:1rem;font-weight:800;color:#1f2937;">
+                        {{ number_format(($persenPendapatan + $persenBelanja) / 2, 0) }}%
                     </div>
+
                 </div>
             </div>
-            <div class="chart-card">
-                <canvas id="chartBar" style="max-height:185px;"></canvas>
-            </div>
-        </div>
 
+            <div style="display:flex;flex-direction:column;gap:6px;width:100%;">
+
+                <div style="display:flex;align-items:center;justify-content:space-between;font-size:.75rem;">
+                    <span style="display:flex;align-items:center;gap:6px;">
+                        <span
+                            style="width:9px;height:9px;border-radius:3px;background:#1a56db;display:inline-block;">
+                        </span>
+                        <span style="color:#4b5563;font-weight:600;">
+                            Pendapatan
+                        </span>
+                    </span>
+
+                    <strong>{{ number_format($persenPendapatan, 1) }}%</strong>
+                </div>
+
+                <div style="display:flex;align-items:center;justify-content:space-between;font-size:.75rem;">
+                    <span style="display:flex;align-items:center;gap:6px;">
+                        <span
+                            style="width:9px;height:9px;border-radius:3px;background:#0e9f6e;display:inline-block;">
+                        </span>
+                        <span style="color:#4b5563;font-weight:600;">
+                            Belanja
+                        </span>
+                    </span>
+
+                    <strong>{{ number_format($persenBelanja, 1) }}%</strong>
+                </div>
+
+            </div>
+
+        </div>
     </div>
+
+    {{-- Bar Chart --}}
+    <div class="s-card searchable-card">
+        <div class="s-head">
+            <div style="display:flex;align-items:center;gap:10px;">
+                <div class="s-icon green">
+                    <i class="fas fa-chart-bar"></i>
+                </div>
+                <div>
+                    <p class="s-title">Belanja per Bidang</p>
+                    {{-- <p class="s-sub">Total Realisasi Belanja</p> --}}
+                </div>
+            </div>
+        </div>
+
+        <div class="chart-card">
+            <canvas id="chartBar" style="max-height:185px;"></canvas>
+        </div>
+    </div>
+
+</div>
 
     {{-- ======================================================= --}}
     {{-- PROGRESS REALISASI --}}
     {{-- ======================================================= --}}
-    <div class="s-card a4">
+    <div class="s-card searchable-card a4">
         <div class="s-head">
             <div style="display:flex;align-items:center;gap:10px;">
                 <div class="s-icon blue"><i class="fas fa-tasks"></i></div>
@@ -917,74 +992,77 @@
     </div>
 
     {{-- ======================================================= --}}
-    {{-- SUMMARY CARDS: Pendapatan & Belanja --}}
+    {{-- REALISASI PERJENIS PENDAPATAN --}}
     {{-- ======================================================= --}}
-    <div class="summary-grid a5">
+    
+<div class="s-card searchable-card mt-4">
 
-        {{-- Pendapatan summary --}}
-        <div class="sum-card blue">
-            <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
-                <div class="s-icon blue" style="flex-shrink:0;"><i class="fas fa-coins"></i></div>
-                <div>
-                    <p class="s-title" style="font-size:.88rem;">Pendapatan Desa</p>
-                    <p class="s-sub">Realisasi {{ number_format($persenPendapatan, 2) }}% dari pagu</p>
-                </div>
+    <div class="s-head">
+        <div style="display:flex;align-items:center;gap:10px;">
+            <div class="s-icon blue">
+                <i class="fas fa-chart-line"></i>
             </div>
-            <div class="sum-pill-row">
-                <div class="sum-pill blue">
-                    <span class="sum-pill-lbl">Pagu</span>
-                    <span class="sum-pill-val">Rp {{ number_format($totalPaguPendapatan) }}</span>
-                </div>
-                <div class="sum-pill blue">
-                    <span class="sum-pill-lbl">Realisasi</span>
-                    <span class="sum-pill-val">Rp {{ number_format($totalRealisasiPendapatan) }}</span>
-                </div>
-                <div class="sum-pill blue">
-                    <span class="sum-pill-lbl">Sisa</span>
-                    <span class="sum-pill-val" style="color:#e02424;">Rp {{ number_format($totalSisaPendapatan) }}</span>
-                </div>
-            </div>
-            <div class="progress" style="height:6px;">
-                <div class="progress-bar" style="width:{{ min($persenPendapatan, 100) }}%;background:var(--blue);"></div>
+            <div>
+                <p class="s-title">
+                    Pemanfaatan Sumber Dana
+                </p>
+                <p class="s-sub">
+                    Persentase dana yang telah digunakan untuk kegiatan belanja
+                </p>
             </div>
         </div>
-
-        {{-- Belanja summary --}}
-        <div class="sum-card green">
-            <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
-                <div class="s-icon green" style="flex-shrink:0;"><i class="fas fa-receipt"></i></div>
-                <div>
-                    <p class="s-title" style="font-size:.88rem;">Belanja Desa</p>
-                    <p class="s-sub">Realisasi {{ number_format($persenBelanja, 2) }}% dari pagu</p>
-                </div>
-            </div>
-            <div class="sum-pill-row">
-                <div class="sum-pill green">
-                    <span class="sum-pill-lbl">Pagu</span>
-                    <span class="sum-pill-val">Rp {{ number_format($totalPaguBelanja) }}</span>
-                </div>
-                <div class="sum-pill green">
-                    <span class="sum-pill-lbl">Realisasi</span>
-                    <span class="sum-pill-val">Rp {{ number_format($totalRealisasiBelanja) }}</span>
-                </div>
-                <div class="sum-pill green">
-                    <span class="sum-pill-lbl">Sisa</span>
-                    <span class="sum-pill-val" style="color:#e02424;">Rp {{ number_format($totalSisaBelanja) }}</span>
-                </div>
-            </div>
-            <div class="progress" style="height:6px;">
-                <div class="progress-bar" style="width:{{ min($persenBelanja, 100) }}%;background:var(--green);"></div>
-            </div>
-        </div>
-
     </div>
 
+    @forelse($dashboardSumberDana as $item)
+
+        <div class="progress-item">
+
+            <div class="progress-head">
+
+                <span>
+                    {{ $item['nama'] }}
+                </span>
+
+                <strong>
+                    {{ number_format($item['persentase'],2) }}%
+                </strong>
+
+            </div>
+
+            <div class="progress">
+                <div class="progress-bar"
+                    style="width:{{ min($item['persentase'],100) }}%">
+                </div>
+            </div>
+
+            <small>
+
+                Rp {{ number_format($item['terpakai']) }}
+
+                digunakan dari
+
+                Rp {{ number_format($item['diterima']) }}
+
+            </small>
+
+        </div>
+
+    @empty
+
+        <div class="empty-data">
+            Belum ada data sumber dana
+        </div>
+
+    @endforelse
+
+</div>
+  
     {{-- ======================================================= --}}
     {{-- TABEL DETAIL — ACCORDION (secondary info) --}}
     {{-- ======================================================= --}}
 
     {{-- Pendapatan Detail --}}
-    <div class="s-card a6">
+    <div class="s-card searchable-card a6">
         <div class="acc-head" id="accPendHead" onclick="toggleAcc('pendapatan')">
             <div style="display:flex;align-items:center;gap:10px;">
                 <div class="s-icon blue"><i class="fas fa-table"></i></div>
@@ -1004,21 +1082,20 @@
                 <div class="table-responsive">
                     <table class="dt">
                         <thead>
-                            <tr>
-                                <th style="width:30px;">No</th>
-                                <th>Tanggal</th>
-                                <th>Kategori &amp; Jenis</th>
-                                <th class="col-hide-xs">Pagu</th>
-                                <th>Realisasi</th>
-                                <th class="col-hide-xs">Sisa</th>
-                                <th style="text-align:center;">%</th>
-                            </tr>
+                           <tr>
+    <th>No</th>
+    <th>Tanggal</th>
+    <th>Kategori & Jenis</th>
+    <th class="col-hide-xs">Pagu</th>
+    <th>Realisasi</th>
+    <th>%</th>
+</tr>
                         </thead>
                         <tbody>
                             @forelse($pendapatan as $i => $item)
                                 @php
                                     $real = optional($item->realisasi)->realisasi ?? 0;
-                                    $sisa = $item->pagu - $real;
+                                    // $sisa = $item->pagu - $real;
                                     $pct = $item->pagu > 0 ? ($real / $item->pagu) * 100 : 0;
                                     $cls = $pct >= 75 ? 'pct-hi' : ($pct >= 40 ? 'pct-mid' : 'pct-lo');
                                 @endphp
@@ -1034,13 +1111,13 @@
                                     <td class="col-hide-xs"><span class="num pagu">Rp {{ number_format($item->pagu) }}</span>
                                     </td>
                                     <td><span class="num real">Rp {{ number_format($real) }}</span></td>
-                                    <td class="col-hide-xs"><span class="num sisa">Rp {{ number_format($sisa) }}</span></td>
+                                    {{-- <td class="col-hide-xs"><span class="num sisa">Rp {{ number_format($sisa) }}</span></td> --}}
                                     <td style="text-align:center;"><span
                                             class="pct-badge {{ $cls }}">{{ number_format($pct, 1) }}%</span></td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="7" class="text-center" style="padding:28px;color:var(--gray-400);">
+                                    <td colspan="6" class="text-center" style="padding:28px;color:var(--gray-400);">
                                         <i class="fas fa-inbox"
                                             style="display:block;font-size:1.5rem;margin-bottom:6px;"></i>Belum ada data
                                         pendapatan.
@@ -1055,7 +1132,7 @@
     </div>
 
     {{-- Belanja Detail --}}
-    <div class="s-card a7">
+    <div class="s-card searchable-card a7">
         <div class="acc-head" id="accBelHead" onclick="toggleAcc('belanja')">
             <div style="display:flex;align-items:center;gap:10px;">
                 <div class="s-icon green"><i class="fas fa-table"></i></div>
@@ -1204,50 +1281,87 @@
 
             /* ── BAR ── */
             const ctxB = document.getElementById('chartBar');
-            if (ctxB) {
-                const fmt = v => {
-                    if (v >= 1e9) return 'Rp ' + (v / 1e9).toFixed(1) + ' M';
-                    if (v >= 1e6) return 'Rp ' + (v / 1e6).toFixed(0) + ' jt';
-                    return 'Rp ' + (v / 1e3).toFixed(0) + ' rb';
-                };
-                new Chart(ctxB, {
-                    type: 'bar',
-                    data: {
-                        labels: ['Pendapatan', 'Belanja'],
-                        datasets: [
-                            {
-                                label: 'Pagu',
-                                data: [paguPend, paguBel],
-                                backgroundColor: ['#bfdbfe', '#a7f3d0'],
-                                borderRadius: 7, borderSkipped: false, barPercentage: 0.6
-                            },
-                            {
-                                label: 'Realisasi',
-                                data: [realPend, realBel],
-                                backgroundColor: ['#1a56db', '#0e9f6e'],
-                                borderRadius: 7, borderSkipped: false, barPercentage: 0.6
-                            }
-                        ]
-                    },
-                    options: {
-                        responsive: true, maintainAspectRatio: false,
-                        plugins: {
-                            legend: {
-                                position: 'top', align: 'end',
-                                labels: { font: { size: 11, weight: '600' }, usePointStyle: true, pointStyleWidth: 8, padding: 14 }
-                            },
-                            tooltip: { callbacks: { label: c => '  ' + c.dataset.label + ': Rp ' + c.parsed.y.toLocaleString('id-ID') } }
-                        },
-                        scales: {
-                            x: { grid: { display: false }, ticks: { font: { size: 11, weight: '700' }, color: '#4b5563' } },
-                            y: {
-                                grid: { color: '#f3f4f6' }, border: { display: false },
-                                ticks: { font: { size: 10 }, color: '#9ca3af', callback: fmt }
-                            }
-                        }
+
+if (ctxB) {
+
+    const fmt = v => {
+        if (v >= 1e9) return 'Rp ' + (v / 1e9).toFixed(1) + ' M';
+        if (v >= 1e6) return 'Rp ' + (v / 1e6).toFixed(0) + ' jt';
+        return 'Rp ' + (v / 1e3).toFixed(0) + ' rb';
+    };
+
+    new Chart(ctxB, {
+        type: 'bar',
+
+        data: {
+            labels: @json($chartBelanjaLabels),
+
+            datasets: [{
+                label: 'Realisasi Belanja',
+                data: @json($chartBelanjaData),
+
+                backgroundColor: '#0e9f6e',
+                borderRadius: 7,
+                borderSkipped: false,
+                barPercentage: 0.6
+            }]
+        },
+
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+
+            plugins: {
+                legend: {
+                    display: false
+                },
+
+                tooltip: {
+                    callbacks: {
+                        label: c =>
+                            'Rp ' + c.parsed.y.toLocaleString('id-ID')
                     }
-                });
+                }
+            },
+
+            scales: {
+                x: {
+                    grid: {
+                        display: false
+                    },
+
+                    ticks: {
+                        font: {
+                            size: 11,
+                            weight: '700'
+                        },
+                        color: '#4b5563'
+                    }
+                },
+
+                y: {
+                    beginAtZero: true,
+
+                    grid: {
+                        color: '#f3f4f6'
+                    },
+
+                    border: {
+                        display: false
+                    },
+
+                    ticks: {
+                        font: {
+                            size: 10
+                        },
+                        color: '#9ca3af',
+                        callback: fmt
+                    }
+                }
             }
+        }
+    });
+}
 
             /* ── ACCORDION ── */
             window.toggleAcc = function (key) {
@@ -1259,5 +1373,47 @@
             };
 
         });
+
+function showKategori(event,id){
+
+    document
+        .querySelectorAll('.kategori-content')
+        .forEach(el => el.classList.add('d-none'));
+
+    document
+        .getElementById(id)
+        .classList.remove('d-none');
+
+    document
+        .querySelectorAll('.folder-tab')
+        .forEach(el => el.classList.remove('active'));
+
+    event.target.classList.add('active');
+}
+
+// search 
+$('#globalSearch').on('input', function () {
+
+    let keyword =
+        $(this).val().toLowerCase().trim();
+
+    if (keyword === '') {
+
+        $('.searchable-card').show();
+        return;
+    }
+
+    $('.searchable-card').each(function () {
+
+        let text =
+            $(this).text().toLowerCase();
+
+        $(this).toggle(
+            text.includes(keyword)
+        );
+
+    });
+
+});
     </script>
 @endsection

@@ -10,6 +10,7 @@
     <link rel="icon" type="image/png" href="<?php echo e(asset('assets/img/simkeu_logo2.png')); ?>">
 
     <link href="<?php echo e(asset('sbadmin/vendor/fontawesome-free/css/all.min.css')); ?>" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
     <link href="<?php echo e(asset('sbadmin/css/sb-admin-2.min.css')); ?>" rel="stylesheet">
     <link href="<?php echo e(asset('sbadmin/vendor/datatables/dataTables.bootstrap4.min.css')); ?>" rel="stylesheet">
 
@@ -34,7 +35,7 @@
         .navbar-nav .nav-link span,
         .sidebar .nav-link span,
         .topbar .navbar-brand,
-        .topbar .mr-2,
+        /* .topbar .mr-2, */
         .card-body,
         .card-header,
         .card-footer,
@@ -64,7 +65,7 @@
         }
 
         /* Pastikan FontAwesome TIDAK ditimpa — eksplisit protect */
-        .fas,
+        /* .fas,
         .far,
         .fab,
         .fal,
@@ -85,7 +86,7 @@
         .dropdown-item i {
             font-family: "Font Awesome 6 Free", "Font Awesome 5 Free", "FontAwesome" !important;
             font-style: normal;
-        }
+        } */
 
         /* ── BODY ── */
         body {
@@ -225,7 +226,7 @@
             }
         }
     </style>
-<?php echo $__env->yieldContent('styles'); ?>
+    <?php echo $__env->yieldContent('styles'); ?>
 </head>
 
 
@@ -274,6 +275,13 @@
                 <a class="nav-link" href="/belanja">
                     <i class="fas fa-receipt"></i>
                     <span>Belanja</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="<?php echo e(route('laporan.index')); ?>">
+                    <i class="fas fa-print"></i>
+                    <span>Laporan</span>
                 </a>
             </li>
             <?php if(auth()->user()->role === 'superadmin'): ?>
@@ -507,6 +515,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css" />
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js"></script>
+    <i class="fas fa-user"></i>
+<i class="fas fa-home"></i>
+<i class="fas fa-print"></i>
 </body>
 
 </html><?php /**PATH C:\Asti\Kuliah\SMT 8\skripsi\simkeu-desa\resources\views/layouts/app.blade.php ENDPATH**/ ?>

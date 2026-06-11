@@ -2,6 +2,10 @@
 
 <?php $__env->startSection('styles'); ?>
     <style>
+        .sumber-item {
+            margin-bottom: 15px;
+        }
+
         .bidang-tabs {
             display: flex;
             flex-wrap: wrap;
@@ -33,8 +37,8 @@
         }
 
         .sumber-dana-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            display: flex;
+            flex-direction: column;
             gap: 12px;
         }
 
@@ -152,19 +156,30 @@
 
                             <?php $__currentLoopData = $sumberDana; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
 
-                                <label class="sumber-card">
+                                <div class="sumber-item">
 
-                                    <input type="checkbox" name="sumber_dana[]" value="<?php echo e($item->id); ?>">
+                                    <label class="sumber-card">
 
-                                    <span>
-                                        <?php echo e($item->kode); ?>
+                                        <input type="checkbox" class="sumber-checkbox" data-id="<?php echo e($item->id); ?>"
+                                            name="sumber_dana[]" value="<?php echo e($item->id); ?>">
 
-                                        -
-                                        <?php echo e($item->nama); ?>
+                                        <?php echo e($item->kode); ?> - <?php echo e($item->nama); ?>
 
-                                    </span>
 
-                                </label>
+                                    </label>
+
+                                    <div class="nominal-wrapper d-none mt-2" id="nominal-<?php echo e($item->id); ?>">
+
+                                        <label>
+                                            Nominal <?php echo e($item->kode); ?>
+
+                                        </label>
+
+                                        <input type="number" class="form-control" name="nominal[<?php echo e($item->id); ?>]" min="0">
+
+                                    </div>
+
+                                </div>
 
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
@@ -173,7 +188,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label>Pagu</label>
+                        <label>Pagu Kegiatan</label>
                         <input type="number" name="pagu" id="pagu" class="form-control">
                     </div>
 
@@ -192,17 +207,25 @@
                     </div>
 
                     <div class="form-group">
-                        <label>Realisasi</label>
+                        <label>Realisasi Belanja</label>
+
                         <input type="number" name="realisasi_belanja" id="realisasi" class="form-control">
+                        <small class="text-muted">
+                            Masukkan total dana yang telah dibelanjakan untuk kegiatan ini.
+                        </small>
+                    </div>
+                    <div class="form-group">
+                        <label>Sisa Anggaran</label>
+                        <input type="text" id="sisa_preview" class="form-control" readonly>
                     </div>
 
                     <div class="form-group">
-                        <label>Persentase</label>
+                        <label>Persentase Realisasi Belanja</label>
                         <input type="text" id="persen_preview" class="form-control" readonly>
                     </div>
 
                     <div class="form-group">
-                        <label>Dokumentasi (gambar)</label>
+                        <label>Dokumentasi kegiatan (gambar)</label>
                         <input type="file" name="dokumentasi[]" multiple accept="image/*" class="form-control">
                         <div id="preview" class="mt-2"></div>
                     </div>
@@ -319,9 +342,21 @@
         // });
 
         function hitung() {
+
             let p = parseFloat(pagu.value) || 0;
             let r = parseFloat(realisasi.value) || 0;
-            persen_preview.value = (p > 0 ? (r / p) * 100 : 0).toFixed(2) + " %";
+
+            let sisa = p - r;
+
+            if (sisa < 0) {
+                sisa = 0;
+            }
+
+            document.getElementById('sisa_preview').value =
+                'Rp ' + sisa.toLocaleString('id-ID');
+
+            document.getElementById('persen_preview').value =
+                (p > 0 ? (r / p) * 100 : 0).toFixed(2) + " %";
         }
         pagu.oninput = hitung;
         realisasi.oninput = hitung;
@@ -341,6 +376,34 @@
             const today = new Date().toISOString().split('T')[0];
             tanggalInput.value = today;
         });
+
+        // sbr dana
+        document
+            .querySelectorAll('.sumber-checkbox')
+            .forEach(cb => {
+
+                cb.addEventListener('change', function () {
+
+                    const target =
+                        document.getElementById(
+                            'nominal-' + this.dataset.id
+                        );
+
+                    if (this.checked) {
+                        target.classList.remove('d-none');
+                    } else {
+                        target.classList.add('d-none');
+
+                        target
+                            .querySelector('input')
+                            .value = '';
+                    }
+
+                });
+
+            });
     </script>
+
+
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Asti\Kuliah\SMT 8\skripsi\simkeu-desa\resources\views/belanja/create.blade.php ENDPATH**/ ?>

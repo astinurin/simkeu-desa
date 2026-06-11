@@ -197,7 +197,7 @@ $totalRealisasi = $data->sum(function($item){
     return optional($item->realisasi)->realisasi ?? 0;
 });
 
-$totalSisa = $totalPagu - $totalRealisasi;
+// $totalSisa = $totalPagu - $totalRealisasi;
 
 $totalPersentase =
     $totalPagu > 0
@@ -231,7 +231,7 @@ $totalPersentase =
 
             </div>
 
-            <div class="summary-card">
+            {{-- <div class="summary-card">
 
                 <div class="summary-label">
                     Total Sisa
@@ -241,7 +241,7 @@ $totalPersentase =
                     Rp {{ number_format($totalSisa) }}
                 </div>
 
-            </div>
+            </div> --}}
 
             {{-- <div class="summary-card">
 
@@ -271,9 +271,10 @@ $totalPersentase =
                                 <th>Tanggal</th>
                                 <th>Kategori Pendapatan</th>
                                 <th>Jenis</th>
+                                <th>Tahap</th>
                                 <th>Pagu</th>
-                                <th>Realisasi</th>
-                                <th>Sisa</th>
+                                <th>Realisasi Pendapatan</th>
+                                {{-- <th>Sisa</th> --}}
                                 <th>Persentase</th>
                                 <th>Aksi</th>
                             </tr>
@@ -285,7 +286,7 @@ $totalPersentase =
 
                                                 @php
                                                     $realisasi = optional($item->realisasi)->realisasi ?? 0;
-                                                    $sisa = optional($item->realisasi)->sisa ?? ($item->pagu - $realisasi);
+                                                    // $sisa = optional($item->realisasi)->sisa ?? ($item->pagu - $realisasi);
 
                                                     $persentase = $item->pagu > 0
                                                         ? ($realisasi / $item->pagu) * 100
@@ -308,9 +309,10 @@ $totalPersentase =
 
                                                     <td>{{ $item->kategori_pendapatan }}</td>
                                                     <td>{{ $item->jenis_pendapatan }}</td>
+                                                    <td>{{ $item->tahap ?? '-' }}</td>
                                                     <td>Rp {{ number_format($item->pagu) }}</td>
                                                     <td>Rp {{ number_format($realisasi) }}</td>
-                                                    <td>Rp {{ number_format($sisa) }}</td>
+                                                    {{-- <td>Rp {{ number_format($sisa) }}</td> --}}
 
                                                     <!-- PERSENTASE -->
                                                     <td class="text-center">
@@ -348,7 +350,7 @@ $totalPersentase =
 
                             @empty
                                 <tr>
-                                    <td colspan="9" class="text-center">Data kosong</td>
+                                    <td colspan="8" class="text-center">Data kosong</td>
                                 </tr>
                             @endforelse
                         </tbody>
@@ -366,10 +368,10 @@ $totalPersentase =
 
                         <tfoot>
                             <tr style="font-weight:bold; background:#f8f9fc;">
-                                <td colspan="4" class="text-center">Total</td>
+                                <td colspan="5" class="text-center">Total</td>
                                 <td>Rp {{ number_format($totalPagu) }}</td>
                                 <td>Rp {{ number_format($totalRealisasi) }}</td>
-                                <td>Rp {{ number_format($totalSisa) }}</td>
+                                {{-- <td>Rp {{ number_format($totalSisa) }}</td> --}}
                                 <td>{{ number_format($totalPersentase, 2) }} %</td>
                                 <td></td>
                             </tr>

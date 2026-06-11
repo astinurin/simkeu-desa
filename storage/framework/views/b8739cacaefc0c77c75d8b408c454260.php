@@ -1,13 +1,118 @@
 
 
+<?php $__env->startSection('styles'); ?>
+    <style>
+        .page-header {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 24px;
+
+            flex-wrap: wrap;
+
+            gap: 16px;
+
+        }
+
+        .page-title {
+
+            font-size: 2rem;
+
+            font-weight: 700;
+
+            color: #1f2937;
+
+            margin: 0;
+        }
+
+        .page-subtitle {
+
+            color: #6b7280;
+
+            margin-top: 4px;
+        }
+
+        .summary-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(auto-fit, minmax(220px, 1fr));
+
+            gap: 16px;
+
+            margin-bottom: 24px;
+        }
+
+        .summary-card {
+
+            background: white;
+
+            border-radius: 20px;
+
+            padding: 20px;
+
+            box-shadow:
+                0 8px 25px rgba(0, 0, 0, .06);
+        }
+
+        .table-card {
+
+            background: white;
+
+            border-radius: 20px;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 8px 25px rgba(0, 0, 0, .06);
+        }
+
+        .btn-action {
+
+            width: 36px;
+
+            height: 36px;
+
+            border-radius: 10px;
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+        }
+    </style>
+
+<?php $__env->stopSection(); ?>
 <?php $__env->startSection('content'); ?>
     <div class="container-fluid">
 
-        <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Data Belanja</h1>
-            <a href="<?php echo e(route('belanja.create')); ?>" class="btn btn-primary btn-sm">
-                <i class="fas fa-plus"></i> Tambah Data
+        <div class="page-header">
+
+            <div>
+
+                <h1 class="page-title">
+                    Data Belanja
+                </h1>
+
+                <div class="page-subtitle">
+                    Kelola data belanja desa
+                </div>
+
+            </div>
+
+            <a href="<?php echo e(route('belanja.create')); ?>" class="btn btn-primary">
+
+                <i class="fas fa-plus mr-2"></i>
+                Tambah Data
+
             </a>
+
         </div>
 
         <?php if(session('success')): ?>
@@ -31,11 +136,12 @@
                                 <th>No</th>
                                 <th>Tanggal</th>
                                 <th>Bidang</th>
-                                <th>Nama Kegiatan</th>
-                                <th>Pagu</th>
+                                <th>Jenis Kegiatan</th>
+                                <th>Sumber Dana</th>
+                                <th>Pagu Kegiatan</th>
                                 <th>Pajak</th>
-                                <th>Realisasi</th>
-                                <th>Sisa</th>
+                                <th>Realisasi Belanja</th>
+                                <th>Sisa Anggaran</th>
                                 <th>Persentase</th>
                                 <th>Aksi</th>
                             </tr>
@@ -64,31 +170,45 @@
                                     </td>
                                     <td><?php echo e($item->bidang); ?></td>
                                     <td><?php echo e($item->jenis_kegiatan); ?></td>
+                                    <td>
+
+                                        <?php $__currentLoopData = $item->sumberDana; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $sd): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+
+                                            <span class="badge badge-info mr-1">
+
+                                                <?php echo e($sd->kode); ?>
+
+
+                                            </span>
+
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+
+                                    </td>
                                     <td>Rp <?php echo e(number_format($item->pagu)); ?></td>
                                     <td>
-                                       Rp <?php echo e($item->pajak ?? '-'); ?>
+                                        Rp <?php echo e($item->pajak ?? '-'); ?>
 
                                     </td>
                                     <td>Rp <?php echo e(number_format($realisasi)); ?></td>
                                     <td>Rp <?php echo e(number_format($sisa)); ?></td>
                                     <td class="text-center">
                                         <span class="badge
-                                                                                <?php if($persentase >= 80): ?> badge-success
-                                                                                <?php elseif($persentase >= 50): ?> badge-warning
-                                                                                <?php else: ?> badge-danger
-                                                                                <?php endif; ?>">
+                                                                                                                <?php if($persentase >= 80): ?> badge-success
+                                                                                                                <?php elseif($persentase >= 50): ?> badge-warning
+                                                                                                                <?php else: ?> badge-danger
+                                                                                                                <?php endif; ?>">
                                             <?php echo e(number_format($persentase, 2)); ?> %
                                         </span>
                                     </td>
                                     <td class="text-center">
-                                        <a href="<?php echo e(route('belanja.show', $item->id)); ?>" class="btn btn-info btn-sm p-1"><i
+                                        <a href="<?php echo e(route('belanja.show', $item->id)); ?>" class="btn btn-info btn-action"><i
                                                 class="fas fa-eye"></i></a>
-                                        <a href="<?php echo e(route('belanja.edit', $item->id)); ?>" class="btn btn-warning btn-sm p-1"><i
+                                        <a href="<?php echo e(route('belanja.edit', $item->id)); ?>" class="btn btn-warning btn-action"><i
                                                 class="fas fa-edit"></i></a>
                                         <form action="<?php echo e(route('belanja.destroy', $item->id)); ?>" method="POST"
                                             style="display:inline;">
                                             <?php echo csrf_field(); ?> <?php echo method_field('DELETE'); ?>
-                                            <button class="btn btn-danger btn-sm p-1" onclick="return confirm('Hapus?')">
+                                            <button class="btn btn-danger btn-action" onclick="return confirm('Hapus?')">
                                                 <i class="fas fa-trash"></i>
                                             </button>
                                         </form>
@@ -104,11 +224,40 @@
                         <?php
                             $totalPersen = $totalPagu > 0 ? ($totalRealisasi / $totalPagu) * 100 : 0;
                         ?>
+                        <div class="summary-grid">
+
+                            <div class="summary-card">
+
+                                <div class="summary-label">
+                                    Total Pagu
+                                </div>
+
+                                <div class="summary-value">
+                                    Rp <?php echo e(number_format($totalPagu)); ?>
+
+                                </div>
+
+                            </div>
+
+                            <div class="summary-card">
+
+                                <div class="summary-label">
+                                    Total Realisasi
+                                </div>
+
+                                <div class="summary-value">
+                                    Rp <?php echo e(number_format($totalRealisasi)); ?>
+
+                                </div>
+
+                            </div>
+
+                        </div>
 
                         <tfoot>
                             <tr style="font-weight:bold;background:#f8f9fc;">
 
-                                <td colspan="4" class="text-center">
+                                <td colspan="6" class="text-center">
 
                                     Total
 
@@ -177,29 +326,29 @@
 
             // 🔥 TAMBAH DROPDOWN TAHUN + BULAN
             $('.dataTables_length').append(`
-                    <select id="filterTahun" class="form-control form-control-sm ml-2" style="width:130px; display:inline-block;">
-                        <option value="">Semua Tahun</option>
-                        <?php $__currentLoopData = $tahunList; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $th): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                            <option value="<?php echo e($th); ?>"><?php echo e($th); ?></option>
-                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                    </select>
+                                    <select id="filterTahun" class="form-control form-control-sm ml-2" style="width:130px; display:inline-block;">
+                                        <option value="">Semua Tahun</option>
+                                        <?php $__currentLoopData = $tahunList; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $th): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                            <option value="<?php echo e($th); ?>"><?php echo e($th); ?></option>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                    </select>
 
-                    <select id="filterBulan" class="form-control form-control-sm ml-2" style="width:130px; display:inline-block;">
-                        <option value="">Semua Bulan</option>
-                        <option value="01">Jan</option>
-                        <option value="02">Feb</option>
-                        <option value="03">Mar</option>
-                        <option value="04">Apr</option>
-                        <option value="05">Mei</option>
-                        <option value="06">Jun</option>
-                        <option value="07">Jul</option>
-                        <option value="08">Agu</option>
-                        <option value="09">Sep</option>
-                        <option value="10">Okt</option>
-                        <option value="11">Nov</option>
-                        <option value="12">Des</option>
-                    </select>
-                `);
+                                    <select id="filterBulan" class="form-control form-control-sm ml-2" style="width:130px; display:inline-block;">
+                                        <option value="">Semua Bulan</option>
+                                        <option value="01">Jan</option>
+                                        <option value="02">Feb</option>
+                                        <option value="03">Mar</option>
+                                        <option value="04">Apr</option>
+                                        <option value="05">Mei</option>
+                                        <option value="06">Jun</option>
+                                        <option value="07">Jul</option>
+                                        <option value="08">Agu</option>
+                                        <option value="09">Sep</option>
+                                        <option value="10">Okt</option>
+                                        <option value="11">Nov</option>
+                                        <option value="12">Des</option>
+                                    </select>
+                                `);
 
             // 🔥 FILTER LOGIC
             $.fn.dataTable.ext.search.push(function (settings, data) {

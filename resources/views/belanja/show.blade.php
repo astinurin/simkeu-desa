@@ -30,21 +30,56 @@
                         <td>{{ $data->jenis_kegiatan }}</td>
                     </tr>
                     <tr>
-                        <th>Pagu</th>
+                        <th>Sumber Dana</th>
+
+                        <td>
+
+                            @forelse($data->sumberDana as $sd)
+
+                                <div class="mb-2">
+
+                                    <strong>
+                                        {{ $sd->kode }}
+                                    </strong>
+
+                                    -
+                                    Rp {{ number_format($sd->pivot->nominal) }}
+
+                                </div>
+
+                            @empty
+
+                                -
+
+                            @endforelse
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Pagu Kegiatan</th>
                         <td>Rp {{ number_format($data->pagu) }}</td>
+                    </tr>
+                    <tr>
+                        <th>Realisasi Belanja</th>
+
+                        <td>
+
+                            Rp {{ number_format($realisasi) }}
+
+                        </td>
                     </tr>
                     <tr>
                         <th>Pajak</th>
 
                         <td>
 
-                            {{ $data->pajak ?? '-' }}
+                           Rp {{ $data->pajak ?? '-' }}
 
                         </td>
 
                     </tr>
                     <tr>
-                        <th>Sisa</th>
+                        <th>Sisa Anggaran</th>
                         <td>Rp {{ number_format($sisa) }}</td>
                     </tr>
                     <tr>

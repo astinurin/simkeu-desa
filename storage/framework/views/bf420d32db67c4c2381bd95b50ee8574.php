@@ -198,7 +198,7 @@ $totalRealisasi = $data->sum(function($item){
     return optional($item->realisasi)->realisasi ?? 0;
 });
 
-$totalSisa = $totalPagu - $totalRealisasi;
+// $totalSisa = $totalPagu - $totalRealisasi;
 
 $totalPersentase =
     $totalPagu > 0
@@ -234,18 +234,7 @@ $totalPersentase =
 
             </div>
 
-            <div class="summary-card">
-
-                <div class="summary-label">
-                    Total Sisa
-                </div>
-
-                <div class="summary-value">
-                    Rp <?php echo e(number_format($totalSisa)); ?>
-
-                </div>
-
-            </div>
+            
 
             
 
@@ -265,9 +254,10 @@ $totalPersentase =
                                 <th>Tanggal</th>
                                 <th>Kategori Pendapatan</th>
                                 <th>Jenis</th>
+                                <th>Tahap</th>
                                 <th>Pagu</th>
-                                <th>Realisasi</th>
-                                <th>Sisa</th>
+                                <th>Realisasi Pendapatan</th>
+                                
                                 <th>Persentase</th>
                                 <th>Aksi</th>
                             </tr>
@@ -279,7 +269,7 @@ $totalPersentase =
 
                                                 <?php
                                                     $realisasi = optional($item->realisasi)->realisasi ?? 0;
-                                                    $sisa = optional($item->realisasi)->sisa ?? ($item->pagu - $realisasi);
+                                                    // $sisa = optional($item->realisasi)->sisa ?? ($item->pagu - $realisasi);
 
                                                     $persentase = $item->pagu > 0
                                                         ? ($realisasi / $item->pagu) * 100
@@ -303,9 +293,10 @@ $totalPersentase =
 
                                                     <td><?php echo e($item->kategori_pendapatan); ?></td>
                                                     <td><?php echo e($item->jenis_pendapatan); ?></td>
+                                                    <td><?php echo e($item->tahap ?? '-'); ?></td>
                                                     <td>Rp <?php echo e(number_format($item->pagu)); ?></td>
                                                     <td>Rp <?php echo e(number_format($realisasi)); ?></td>
-                                                    <td>Rp <?php echo e(number_format($sisa)); ?></td>
+                                                    
 
                                                     <!-- PERSENTASE -->
                                                     <td class="text-center">
@@ -343,7 +334,7 @@ $totalPersentase =
 
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                                 <tr>
-                                    <td colspan="9" class="text-center">Data kosong</td>
+                                    <td colspan="8" class="text-center">Data kosong</td>
                                 </tr>
                             <?php endif; ?>
                         </tbody>
@@ -361,10 +352,10 @@ $totalPersentase =
 
                         <tfoot>
                             <tr style="font-weight:bold; background:#f8f9fc;">
-                                <td colspan="4" class="text-center">Total</td>
+                                <td colspan="5" class="text-center">Total</td>
                                 <td>Rp <?php echo e(number_format($totalPagu)); ?></td>
                                 <td>Rp <?php echo e(number_format($totalRealisasi)); ?></td>
-                                <td>Rp <?php echo e(number_format($totalSisa)); ?></td>
+                                
                                 <td><?php echo e(number_format($totalPersentase, 2)); ?> %</td>
                                 <td></td>
                             </tr>

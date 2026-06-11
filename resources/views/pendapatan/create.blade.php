@@ -26,17 +26,17 @@
 
                     <div class="border rounded p-2 text-center ocr-upload-box"
                         style="
-                                                                                                                                                                                                        border:2px dashed #4e73df !important;
-                                                                                                                                                                                                        background:#f8fbff;
-                                                                                                                                                                                                    ">
+                                                                                                                                                                                                                                            border:2px dashed #4e73df !important;
+                                                                                                                                                                                                                                            background:#f8fbff;
+                                                                                                                                                                                                                                        ">
 
                         <i class="fas fa-file-upload mb-2 text-primary"
                             style="
-                                                                                     font-size:20px;
-                                                                                                                                                                                                    ">
+                                                                                                                         font-size:20px;
+                                                                                                                                                                                                                                        ">
                         </i>
 
-                
+
 
                         <div class="text-muted small mb-2">
 
@@ -95,7 +95,7 @@
                             Pilih Jenis Pendapatan
 
                         </p>
-{{-- 
+                        {{--
                         <p class="text-muted small mb-4">
 
                             Pilih jenis pendapatan sesuai APBDes
@@ -103,32 +103,33 @@
                         </p> --}}
 
                         <div id="jenisContainer"></div>
+                        <br>
+                        <div class="mb-3">
+                            <p class="font-weight-bold mb-3">Tahap</p>
+                            <input type="text" name="tahap" class="form-control" placeholder="Contoh: Tahap 1">
+                        </div>
 
                     </div>
 
                 </div>
 
                 <div class="folder-content mt-3">
-                    <p
-                     class="font-weight-bold mb-4">
+                    <p class="font-weight-bold mb-4">
 
                         Detail Pendapatan
 
                     </p>
                     <!-- REALISASI -->
-                    {{-- <div class="form-group">
+                    <div class="form-group">
 
                         <label class="font-weight-bold">
-
-                            Realisasi
-
+                            Realisasi Pendapatan
                         </label>
+
                         <input type="hidden" id="detected_realisasi">
 
-                        <div id="warningNominal" class="alert alert-warning mt-2 py-2 px-3" style="
-                                                                                                                    display:none;
-                                                                                                                    border-radius:10px;
-                                                                                                                 ">
+                        <div id="warningNominal" class="alert alert-warning mt-2 py-2 px-3"
+                            style="display:none; border-radius:10px;">
 
                             <i class="fas fa-exclamation-triangle mr-2"></i>
 
@@ -136,9 +137,13 @@
 
                         </div>
 
-                        <input type="number" name="realisasi" id="realisasi" class="form-control">
+                        <!-- tampil ke user -->
+                        <input type="text" id="realisasi_display" class="form-control" placeholder="Rp 0">
 
-                    </div> --}}
+                        <!-- dikirim ke database -->
+                        <input type="hidden" name="realisasi" id="realisasi">
+
+                    </div>
 
 
                     <!-- PAGU -->
@@ -146,15 +151,17 @@
 
                         <label class="font-weight-bold">
 
-                            Pagu
+                            Pagu Pendapatan
 
                         </label>
 
-                        <input type="number" name="pagu" id="pagu" class="form-control" required>
+                        <input type="text" id="pagu_display" class="form-control" placeholder="Rp 0" required>
+
+                        <input type="hidden" name="pagu" id="pagu">
 
                         <small class="text-muted">
 
-                            Masukkan sesuai APBDes 
+                            Masukkan sesuai APBDes
 
                         </small>
 
@@ -165,8 +172,17 @@
 
 
 
-                <button type="submit" class="btn btn-success px-4">Simpan</button>
-                <a href="{{ route('pendapatan.index') }}" class="btn btn-secondary px-4">Kembali</a>
+                <div class="action-buttons">
+
+                    <button type="submit" class="btn btn-success">
+                        Simpan
+                    </button>
+
+                    <a href="{{ route('pendapatan.index') }}" class="btn btn-secondary">
+                        Kembali
+                    </a>
+
+                </div>
 
             </form>
 
@@ -213,19 +229,19 @@
 
                     html += `
 
-                                                                                                            <div
-                                                                                                                class="jenis-card"
-                                                                                                                data-jenis="${jenis}">
+                                                                                                                                                <div
+                                                                                                                                                    class="jenis-card"
+                                                                                                                                                    data-jenis="${jenis}">
 
-                                                                                                                <strong>
+                                                                                                                                                    <strong>
 
-                                                                                                                    ${jenis}
+                                                                                                                                                        ${jenis}
 
-                                                                                                                </strong>
+                                                                                                                                                    </strong>
 
-                                                                                                            </div>
+                                                                                                                                                </div>
 
-                                                                                                        `;
+                                                                                                                                            `;
 
                 });
 
@@ -336,13 +352,13 @@
 
                         previewContainer.innerHTML = `
 
-                                                                                                                                    <img src="${event.target.result}"
-                                                                                                                                         style="
-                                                                                                                                            max-width:100%;
-                                                                                                                                            border-radius:10px;
-                                                                                                                                         ">
+                                                                                                                                                                        <img src="${event.target.result}"
+                                                                                                                                                                             style="
+                                                                                                                                                                                max-width:100%;
+                                                                                                                                                                                border-radius:10px;
+                                                                                                                                                                             ">
 
-                                                                                                                                `;
+                                                                                                                                                                    `;
                     };
 
                     reader.readAsDataURL(file);
@@ -362,83 +378,83 @@
 
                     previewContainer.innerHTML = `
 
-                                                                                                                            <div class="border rounded p-4"
-                                                                                                                                 style="
-                                                                                                                                    background:#f8fbff;
-                                                                                                                                    border:1px solid #dbe8ff;
-                                                                                                                                 ">
+                                                                                                                                                                <div class="border rounded p-4"
+                                                                                                                                                                     style="
+                                                                                                                                                                        background:#f8fbff;
+                                                                                                                                                                        border:1px solid #dbe8ff;
+                                                                                                                                                                     ">
 
-                                                                                                                                <div class="d-flex align-items-center justify-content-between">
+                                                                                                                                                                    <div class="d-flex align-items-center justify-content-between">
 
-                                                                                                                                    <!-- LEFT -->
-                                                                                                                                    <div class="d-flex align-items-center">
+                                                                                                                                                                        <!-- LEFT -->
+                                                                                                                                                                        <div class="d-flex align-items-center">
 
-                                                                                                                                        <div class="mr-4">
+                                                                                                                                                                            <div class="mr-4">
 
-                                                                                                                                            <i class="fas fa-file-pdf"
-                                                                                                                                               style="
-                                                                                                                                                    font-size:50px;
-                                                                                                                                                    color:#dc3545;
-                                                                                                                                               ">
-                                                                                                                                            </i>
+                                                                                                                                                                                <i class="fas fa-file-pdf"
+                                                                                                                                                                                   style="
+                                                                                                                                                                                        font-size:50px;
+                                                                                                                                                                                        color:#dc3545;
+                                                                                                                                                                                   ">
+                                                                                                                                                                                </i>
 
-                                                                                                                                        </div>
+                                                                                                                                                                            </div>
 
-                                                                                                                                        <div>
+                                                                                                                                                                            <div>
 
-                                                                                                                                            <div class="font-weight-bold text-dark"
-                                                                                                                                                 style="font-size:18px;">
+                                                                                                                                                                                <div class="font-weight-bold text-dark"
+                                                                                                                                                                                     style="font-size:18px;">
 
-                                                                                                                                                ${file.name}
+                                                                                                                                                                                    ${file.name}
 
-                                                                                                                                            </div>
+                                                                                                                                                                                </div>
 
-                                                                                                                                            <div class="text-muted small mb-2">
+                                                                                                                                                                                <div class="text-muted small mb-2">
 
-                                                                                                                                                Ukuran file:
-                                                                                                                                                ${fileSize} MB
+                                                                                                                                                                                    Ukuran file:
+                                                                                                                                                                                    ${fileSize} MB
 
-                                                                                                                                            </div>
+                                                                                                                                                                                </div>
 
-                                                                                                                                            <div id="loadingText"
-                                                                                                                                                 class="d-flex align-items-center text-primary">
+                                                                                                                                                                                <div id="loadingText"
+                                                                                                                                                                                     class="d-flex align-items-center text-primary">
 
-                                                                                                                                                <div class="spinner-border spinner-border-sm mr-2"
-                                                                                                                                                     role="status">
-                                                                                                                                                </div>
+                                                                                                                                                                                    <div class="spinner-border spinner-border-sm mr-2"
+                                                                                                                                                                                         role="status">
+                                                                                                                                                                                    </div>
 
-                                                                                                                                                <span>
+                                                                                                                                                                                    <span>
 
-                                                                                                                                                    Sedang membaca dokumen...
+                                                                                                                                                                                        Sedang membaca dokumen...
 
-                                                                                                                                                </span>
+                                                                                                                                                                                    </span>
 
-                                                                                                                                            </div>
+                                                                                                                                                                                </div>
 
-                                                                                                                                        </div>
+                                                                                                                                                                            </div>
 
-                                                                                                                                    </div>
+                                                                                                                                                                        </div>
 
-                                                                                                                                    <!-- RIGHT -->
-                                                                                                                                    <div>
+                                                                                                                                                                        <!-- RIGHT -->
+                                                                                                                                                                        <div>
 
-                                                                                                                                        <a href="${fileUrl}"
-                                                                                                                                           target="_blank"
-                                                                                                                                           class="btn btn-outline-primary btn-sm">
+                                                                                                                                                                            <a href="${fileUrl}"
+                                                                                                                                                                               target="_blank"
+                                                                                                                                                                               class="btn btn-outline-primary btn-sm">
 
-                                                                                                                                            <i class="fas fa-eye mr-1"></i>
+                                                                                                                                                                                <i class="fas fa-eye mr-1"></i>
 
-                                                                                                                                            Preview
+                                                                                                                                                                                Preview
 
-                                                                                                                                        </a>
+                                                                                                                                                                            </a>
 
-                                                                                                                                    </div>
+                                                                                                                                                                        </div>
 
-                                                                                                                                </div>
+                                                                                                                                                                    </div>
 
-                                                                                                                            </div>
+                                                                                                                                                                </div>
 
-                                                                                                                            `;
+                                                                                                                                                                `;
 
                     // =========================
                     // AUTO DETECT PDF
@@ -485,15 +501,15 @@
 
                                 loadingText.innerHTML = `
 
-                                                                                                                                            <i class="fas fa-check-circle text-success mr-2"></i>
+                                                                                                                                                                                <i class="fas fa-check-circle text-success mr-2"></i>
 
-                                                                                                                                            <span class="text-success">
+                                                                                                                                                                                <span class="text-success">
 
-                                                                                                                                                Data berhasil dibaca
+                                                                                                                                                                                    Data berhasil dibaca
 
-                                                                                                                                            </span>
+                                                                                                                                                                                </span>
 
-                                                                                                                                        `;
+                                                                                                                                                                            `;
                             }
 
                             // kategori
@@ -552,17 +568,39 @@
                             }
 
                             // realisasi
-                        // if (result.realisasi) {
+                            if (result.realisasi) {
 
-                        //     document.getElementById('realisasi')
-                        //         .value = result.realisasi;
+                                console.log('SEBELUM', document.getElementById('realisasi_display').value);
 
-                        //     // simpan nominal asli detect
-                        //     document.getElementById('detected_realisasi')
-                        //         .value = result.realisasi;
+                                document.getElementById('realisasi').value =
+                                    result.realisasi;
 
-                        //     hitung();
-                        // }
+                                document.getElementById('detected_realisasi').value =
+                                    result.realisasi;
+
+                                document.getElementById('realisasi_display').value =
+                                    'Rp ' + Number(result.realisasi).toLocaleString('id-ID');
+
+                                console.log('SESUDAH', document.getElementById('realisasi_display').value);
+                            }
+
+                            const paguDisplay =
+                                document.getElementById('pagu_display');
+
+                            const paguHidden =
+                                document.getElementById('pagu');
+
+                            paguDisplay.addEventListener('input', function () {
+
+                                let angka = this.value.replace(/\D/g, '');
+
+                                paguHidden.value = angka;
+
+                                this.value = angka
+                                    ? 'Rp ' + Number(angka).toLocaleString('id-ID')
+                                    : '';
+
+                            });
 
                         }
 
@@ -577,15 +615,15 @@
 
                             loadingText.innerHTML = `
 
-                                                                                                                                        <i class="fas fa-times-circle text-danger mr-2"></i>
+                                                                                                                                                                            <i class="fas fa-times-circle text-danger mr-2"></i>
 
-                                                                                                                                        <span class="text-danger">
+                                                                                                                                                                            <span class="text-danger">
 
-                                                                                                                                            Gagal membaca dokumen
+                                                                                                                                                                                Gagal membaca dokumen
 
-                                                                                                                                        </span>
+                                                                                                                                                                            </span>
 
-                                                                                                                                    `;
+                                                                                                                                                                        `;
                         }
 
                     }
@@ -594,6 +632,26 @@
 
             });
 
+    </script>
+
+    <script>
+        const realisasiDisplay =
+            document.getElementById('realisasi_display');
+
+        const realisasiHidden =
+            document.getElementById('realisasi');
+
+        realisasiDisplay.addEventListener('input', function () {
+
+            let angka = this.value.replace(/\D/g, '');
+
+            realisasiHidden.value = angka;
+
+            this.value = angka
+                ? 'Rp ' + Number(angka).toLocaleString('id-ID')
+                : '';
+
+        });
     </script>
 
     <style>
@@ -669,12 +727,18 @@
             border-radius: 12px;
             min-height: 48px;
             padding: 12px 18px;
-            display: inline-flex;
-            width: auto;
-            min-width: 220px;
+
+            display: flex;
+
+            width: 100%;
+
             align-items: center;
             justify-content: center;
+
             text-align: center;
+
+            overflow-wrap: break-word;
+            word-break: break-word;
         }
 
         .jenis-card:hover {
@@ -759,6 +823,16 @@
             .jenis-grid {
                 grid-template-columns: 1fr;
             }
+
+            .jenis-card {
+                width: 100%;
+                min-width: unset;
+            }
+
+            .jenis-card strong {
+                font-size: .95rem;
+                line-height: 1.4;
+            }
         }
 
         .ocr-upload-box {
@@ -767,5 +841,27 @@
             background: #f8fbff;
             border: 2px dashed #4e73df !important;
         }
+
+        .action-buttons {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.action-buttons .btn {
+    flex: 1;
+}
+
+@media(max-width:768px){
+
+    .action-buttons{
+        flex-direction: column;
+    }
+
+    .action-buttons .btn{
+        width:100%;
+    }
+
+}
     </style>
 @endsection

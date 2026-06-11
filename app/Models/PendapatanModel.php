@@ -13,6 +13,7 @@ class PendapatanModel extends Model
         'kategori_pendapatan',
         'jenis_pendapatan',
         'pagu',
+        'tahap',
         'tanggal',
         'dokumen',
     ];

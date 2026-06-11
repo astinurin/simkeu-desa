@@ -6,7 +6,7 @@
 
         <?php
             $realisasi = optional($data->realisasi)->realisasi ?? 0;
-            $sisa = optional($data->realisasi)->sisa ?? ($data->pagu - $realisasi);
+            // $sisa = optional($data->realisasi)->sisa ?? ($data->pagu - $realisasi);
 
             $persentase = $data->pagu > 0
                 ? ($realisasi / $data->pagu) * 100
@@ -36,21 +36,22 @@
                         <th>Jenis Pendapatan</th>
                         <td><?php echo e($data->jenis_pendapatan); ?></td>
                     </tr>
+                    <tr>
+    <th>Tahap</th>
+    <td><?php echo e($data->tahap ?? '-'); ?></td>
+</tr>
 
                     <tr>
-                        <th>Pagu</th>
+                        <th>Pagu Pendapatan</th>
                         <td>Rp <?php echo e(number_format($data->pagu)); ?></td>
                     </tr>
 
                     <tr>
-                        <th>Realisasi</th>
+                        <th>Realisasi Pendapatan</th>
                         <td>Rp <?php echo e(number_format($realisasi)); ?></td>
                     </tr>
 
-                    <tr>
-                        <th>Sisa</th>
-                        <td>Rp <?php echo e(number_format($sisa)); ?></td>
-                    </tr>
+                    
 
                     <tr>
                         <th>Persentase Realisasi</th>

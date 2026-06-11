@@ -138,12 +138,41 @@
         }
 
         @media (max-width: 768px) {
+
             .page-wrapper {
                 padding: 20px 16px 32px;
             }
 
+            .simkeu-navbar .navbar-inner {
+                padding: 0 12px;
+            }
+
+            .simkeu-navbar .brand img {
+                width: 30px;
+                height: 30px;
+            }
+
             .simkeu-navbar .brand-text {
                 font-size: .8rem;
+            }
+
+            .simkeu-navbar .brand-text span {
+                display: none;
+            }
+
+            .simkeu-navbar .nav-right {
+                gap: 6px;
+            }
+
+            .simkeu-navbar .tahun-select {
+                max-width: 120px;
+                font-size: .75rem;
+                padding: 6px 8px;
+            }
+
+            .simkeu-navbar .btn-login {
+                padding: 7px 10px;
+                font-size: .75rem;
             }
         }
     </style>
