@@ -26,7 +26,7 @@
                         <td>{{ $data->bidang }}</td>
                     </tr>
                     <tr>
-                        <th>Kegiatan</th>
+                        <th>Nama Kegiatan</th>
                         <td>{{ $data->jenis_kegiatan }}</td>
                     </tr>
                     <tr>
@@ -42,8 +42,8 @@
                                         {{ $sd->kode }}
                                     </strong>
 
-                                    -
-                                    Rp {{ number_format($sd->pivot->nominal) }}
+                                    :
+                                 Rp {{ number_format($sd->pivot->nominal, 0, ',', '.') }}
 
                                 </div>
 
@@ -56,15 +56,15 @@
                         </td>
                     </tr>
                     <tr>
-                        <th>Pagu Kegiatan</th>
-                        <td>Rp {{ number_format($data->pagu) }}</td>
+                        <th>Anggaran Kegiatan (Pagu)</th>
+                        <td>Rp {{ number_format($data->pagu, 0, ',', '.') }}</td>
                     </tr>
                     <tr>
                         <th>Realisasi Belanja</th>
 
                         <td>
 
-                            Rp {{ number_format($realisasi) }}
+                            Rp {{ number_format($realisasi, 0, ',', '.') }}
 
                         </td>
                     </tr>
@@ -72,19 +72,25 @@
                         <th>Pajak</th>
 
                         <td>
-
-                           Rp {{ $data->pajak ?? '-' }}
-
+                            {{ $data->pajak
+        ? 'Rp ' . number_format($data->pajak, 0, ',', '.')
+        : '-' }}
                         </td>
-
                     </tr>
                     <tr>
-                        <th>Sisa Anggaran</th>
-                        <td>Rp {{ number_format($sisa) }}</td>
+                        <th>Sisa Anggaran
+                            <br>
+                            <small class="text-muted">
+                                Lebih/(Kurang)
+                            </small>
+                        </th>
+                        <td>
+                            Rp {{ number_format($sisa, 0, ',', '.') }}</td>
                     </tr>
                     <tr>
                         <th>Persentase</th>
-                        <td>{{ number_format($persentase, 2) }}%</td>
+                        <td>
+                           {{ number_format($persentase, 2, ',', '.') }} %</td>
                     </tr>
 
                     <tr>

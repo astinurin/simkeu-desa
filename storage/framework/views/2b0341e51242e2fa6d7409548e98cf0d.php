@@ -27,7 +27,7 @@
                         <td><?php echo e($data->bidang); ?></td>
                     </tr>
                     <tr>
-                        <th>Kegiatan</th>
+                        <th>Nama Kegiatan</th>
                         <td><?php echo e($data->jenis_kegiatan); ?></td>
                     </tr>
                     <tr>
@@ -44,8 +44,8 @@
 
                                     </strong>
 
-                                    -
-                                    Rp <?php echo e(number_format($sd->pivot->nominal)); ?>
+                                    :
+                                 Rp <?php echo e(number_format($sd->pivot->nominal, 0, ',', '.')); ?>
 
 
                                 </div>
@@ -59,15 +59,15 @@
                         </td>
                     </tr>
                     <tr>
-                        <th>Pagu Kegiatan</th>
-                        <td>Rp <?php echo e(number_format($data->pagu)); ?></td>
+                        <th>Anggaran Kegiatan (Pagu)</th>
+                        <td>Rp <?php echo e(number_format($data->pagu, 0, ',', '.')); ?></td>
                     </tr>
                     <tr>
                         <th>Realisasi Belanja</th>
 
                         <td>
 
-                            Rp <?php echo e(number_format($realisasi)); ?>
+                            Rp <?php echo e(number_format($realisasi, 0, ',', '.')); ?>
 
 
                         </td>
@@ -76,20 +76,26 @@
                         <th>Pajak</th>
 
                         <td>
-
-                           Rp <?php echo e($data->pajak ?? '-'); ?>
-
+                            <?php echo e($data->pajak
+        ? 'Rp ' . number_format($data->pajak, 0, ',', '.')
+        : '-'); ?>
 
                         </td>
-
                     </tr>
                     <tr>
-                        <th>Sisa Anggaran</th>
-                        <td>Rp <?php echo e(number_format($sisa)); ?></td>
+                        <th>Sisa Anggaran
+                            <br>
+                            <small class="text-muted">
+                                Lebih/(Kurang)
+                            </small>
+                        </th>
+                        <td>
+                            Rp <?php echo e(number_format($sisa, 0, ',', '.')); ?></td>
                     </tr>
                     <tr>
                         <th>Persentase</th>
-                        <td><?php echo e(number_format($persentase, 2)); ?>%</td>
+                        <td>
+                           <?php echo e(number_format($persentase, 2, ',', '.')); ?> %</td>
                     </tr>
 
                     <tr>

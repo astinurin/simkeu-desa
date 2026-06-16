@@ -214,7 +214,7 @@ $totalPersentase =
                 </div>
 
                 <div class="summary-value">
-                    Rp {{ number_format($totalPagu) }}
+                    Rp {{ number_format($totalPagu, 0, ',', '.') }}
                 </div>
 
             </div>
@@ -226,7 +226,7 @@ $totalPersentase =
                 </div>
 
                 <div class="summary-value">
-                    Rp {{ number_format($totalRealisasi) }}
+                    Rp {{ number_format($totalRealisasi, 0, ',', '.') }}
                 </div>
 
             </div>
@@ -238,7 +238,7 @@ $totalPersentase =
                 </div>
 
                 <div class="summary-value">
-                    Rp {{ number_format($totalSisa) }}
+                    Rp {{ number_format($totalSisa, 0, ',', '.'     ) }}
                 </div>
 
             </div> --}}
@@ -270,9 +270,9 @@ $totalPersentase =
                                 <th>No</th>
                                 <th>Tanggal</th>
                                 <th>Kategori Pendapatan</th>
-                                <th>Jenis</th>
+                                <th>Jenis Pendapatan</th>
                                 <th>Tahap</th>
-                                <th>Pagu</th>
+                                <th>Pagu Pendapatan</th>
                                 <th>Realisasi Pendapatan</th>
                                 {{-- <th>Sisa</th> --}}
                                 <th>Persentase</th>
@@ -310,9 +310,9 @@ $totalPersentase =
                                                     <td>{{ $item->kategori_pendapatan }}</td>
                                                     <td>{{ $item->jenis_pendapatan }}</td>
                                                     <td>{{ $item->tahap ?? '-' }}</td>
-                                                    <td>Rp {{ number_format($item->pagu) }}</td>
-                                                    <td>Rp {{ number_format($realisasi) }}</td>
-                                                    {{-- <td>Rp {{ number_format($sisa) }}</td> --}}
+                                                    <td>Rp {{ number_format($item->pagu, 0, ',', '.') }}</td>
+                                                    <td>Rp {{ number_format($realisasi, 0, ',', '.') }}</td>
+                                                    {{-- <td>Rp {{ number_format($sisa, 0, ',', '.') }}</td> --}}
 
                                                     <!-- PERSENTASE -->
                                                     <td class="text-center">
@@ -322,7 +322,7 @@ $totalPersentase =
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         @elseif($persentase >= 50) badge-warning
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         @else badge-danger
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         @endif">
-                                                            {{ number_format($persentase, 2) }} %
+                                                            {{ number_format($persentase, 2, ',', '.') }} %
                                                         </span>
                                                     </td>
 
@@ -369,10 +369,10 @@ $totalPersentase =
                         <tfoot>
                             <tr style="font-weight:bold; background:#f8f9fc;">
                                 <td colspan="5" class="text-center">Total</td>
-                                <td>Rp {{ number_format($totalPagu) }}</td>
-                                <td>Rp {{ number_format($totalRealisasi) }}</td>
-                                {{-- <td>Rp {{ number_format($totalSisa) }}</td> --}}
-                                <td>{{ number_format($totalPersentase, 2) }} %</td>
+                                <td>Rp {{ number_format($totalPagu, 0, ',', '.') }}</td>
+                                <td>Rp {{ number_format($totalRealisasi, 0, ',', '.') }}</td>
+                                {{-- <td>Rp {{ number_format($totalSisa, 0, ',', '.') }}</td> --}}
+                                <td>{{ number_format($totalPersentase, 2, ',', '.') }} %</td>
                                 <td></td>
                             </tr>
                         </tfoot>

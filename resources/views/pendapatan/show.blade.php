@@ -38,34 +38,34 @@
                         <td>{{ $data->jenis_pendapatan }}</td>
                     </tr>
                     <tr>
-    <th>Tahap</th>
-    <td>{{ $data->tahap ?? '-' }}</td>
-</tr>
+                        <th>Tahap</th>
+                        <td>{{ $data->tahap ?? '-' }}</td>
+                    </tr>
 
                     <tr>
                         <th>Pagu Pendapatan</th>
-                        <td>Rp {{ number_format($data->pagu) }}</td>
+                        <td>Rp {{ number_format($data->pagu, 0, ',', '.') }}</td>
                     </tr>
 
                     <tr>
                         <th>Realisasi Pendapatan</th>
-                        <td>Rp {{ number_format($realisasi) }}</td>
+                        <td>Rp {{ number_format($realisasi, 0, ',', '.') }}</td>
                     </tr>
 
                     {{-- <tr>
                         <th>Sisa</th>
-                        <td>Rp {{ number_format($sisa) }}</td>
+                        <td>Rp {{ number_format($sisa, 0, ',', '.' ) }}</td>
                     </tr> --}}
 
                     <tr>
                         <th>Persentase Realisasi</th>
                         <td>
                             <span class="badge 
-                                                                                        @if($persentase >= 80) badge-success
-                                                                                        @elseif($persentase >= 50) badge-warning
-                                                                                        @else badge-danger
-                                                                                        @endif">
-                                {{ number_format($persentase, 2) }} %
+                                                                                            @if($persentase >= 80) badge-success
+                                                                                            @elseif($persentase >= 50) badge-warning
+                                                                                            @else badge-danger
+                                                                                            @endif">
+                                {{ number_format($persentase, 2, ',', '.') }} %
                             </span>
                         </td>
                     </tr>

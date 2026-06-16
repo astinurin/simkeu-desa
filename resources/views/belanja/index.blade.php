@@ -136,10 +136,10 @@
                                 <th>No</th>
                                 <th>Tanggal</th>
                                 <th>Bidang</th>
-                                <th>Jenis Kegiatan</th>
-                                <th>Sumber Dana</th>
-                                <th>Pagu Kegiatan</th>
-                                <th>Pajak</th>
+                                <th>Nama Kegiatan</th>
+                                {{-- <th>Sumber Dana</th> --}}
+                                <th>Anggaran Kegiatan (Pagu)</th>
+                                {{-- <th>Pajak</th> --}}
                                 <th>Realisasi Belanja</th>
                                 <th>Sisa Anggaran</th>
                                 <th>Persentase</th>
@@ -169,7 +169,7 @@
                                     </td>
                                     <td>{{ $item->bidang }}</td>
                                     <td>{{ $item->jenis_kegiatan }}</td>
-                                    <td>
+                                    {{-- <td>
 
                                         @foreach($item->sumberDana as $sd)
 
@@ -181,20 +181,20 @@
 
                                         @endforeach
 
-                                    </td>
-                                    <td>Rp {{ number_format($item->pagu) }}</td>
-                                    <td>
+                                    </td> --}}
+                                    <td>Rp {{ number_format($item->pagu, 0, ',', '.') }}</td>
+                                    {{-- <td>
                                         Rp {{ $item->pajak ?? '-' }}
-                                    </td>
-                                    <td>Rp {{ number_format($realisasi) }}</td>
-                                    <td>Rp {{ number_format($sisa) }}</td>
+                                    </td> --}}
+                                    <td>Rp {{ number_format($realisasi, 0, ',', '.') }}</td>
+                                    <td>Rp {{ number_format($sisa, 0, ',', '.') }}</td>
                                     <td class="text-center">
                                         <span class="badge
                                                                                                                 @if($persentase >= 80) badge-success
                                                                                                                 @elseif($persentase >= 50) badge-warning
                                                                                                                 @else badge-danger
                                                                                                                 @endif">
-                                            {{ number_format($persentase, 2) }} %
+                                            {{ number_format($persentase, 2, ',', '.') }} %
                                         </span>
                                     </td>
                                     <td class="text-center">
@@ -230,7 +230,7 @@
                                 </div>
 
                                 <div class="summary-value">
-                                    Rp {{ number_format($totalPagu) }}
+                                    Rp {{ number_format($totalPagu, 0, ',', '.') }}
                                 </div>
 
                             </div>
@@ -242,7 +242,7 @@
                                 </div>
 
                                 <div class="summary-value">
-                                    Rp {{ number_format($totalRealisasi) }}
+                                    Rp {{ number_format($totalRealisasi, 0, ',', '.') }}
                                 </div>
 
                             </div>
@@ -252,7 +252,7 @@
                         <tfoot>
                             <tr style="font-weight:bold;background:#f8f9fc;">
 
-                                <td colspan="6" class="text-center">
+                                <td colspan="4" class="text-center">
 
                                     Total
 
@@ -260,31 +260,31 @@
 
                                 <td>
 
-                                    Rp {{ number_format($totalPagu) }}
+                                    Rp {{ number_format($totalPagu, 0, ',', '.') }}
+
+                                </td>
+
+                                {{-- <td>
+
+                                    Rp {{ number_format($totalPajak, 0, ',', '.') }}
+
+                                </td> --}}
+
+                                <td>
+
+                                    Rp {{ number_format($totalRealisasi, 0, ',', '.') }}
 
                                 </td>
 
                                 <td>
 
-                                    Rp {{ number_format($totalPajak) }}
+                                    Rp {{ number_format($totalSisa, 0, ',', '.') }}
 
                                 </td>
 
                                 <td>
 
-                                    Rp {{ number_format($totalRealisasi) }}
-
-                                </td>
-
-                                <td>
-
-                                    Rp {{ number_format($totalSisa) }}
-
-                                </td>
-
-                                <td>
-
-                                    {{ number_format($totalPersen, 2) }} %
+                                    {{ number_format($totalPersen, 2, ',', '.') }} %
 
                                 </td>
 

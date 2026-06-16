@@ -136,10 +136,10 @@
                                 <th>No</th>
                                 <th>Tanggal</th>
                                 <th>Bidang</th>
-                                <th>Jenis Kegiatan</th>
-                                <th>Sumber Dana</th>
-                                <th>Pagu Kegiatan</th>
-                                <th>Pajak</th>
+                                <th>Nama Kegiatan</th>
+                                
+                                <th>Anggaran Kegiatan (Pagu)</th>
+                                
                                 <th>Realisasi Belanja</th>
                                 <th>Sisa Anggaran</th>
                                 <th>Persentase</th>
@@ -170,34 +170,18 @@
                                     </td>
                                     <td><?php echo e($item->bidang); ?></td>
                                     <td><?php echo e($item->jenis_kegiatan); ?></td>
-                                    <td>
-
-                                        <?php $__currentLoopData = $item->sumberDana; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $sd): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-
-                                            <span class="badge badge-info mr-1">
-
-                                                <?php echo e($sd->kode); ?>
-
-
-                                            </span>
-
-                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-
-                                    </td>
-                                    <td>Rp <?php echo e(number_format($item->pagu)); ?></td>
-                                    <td>
-                                        Rp <?php echo e($item->pajak ?? '-'); ?>
-
-                                    </td>
-                                    <td>Rp <?php echo e(number_format($realisasi)); ?></td>
-                                    <td>Rp <?php echo e(number_format($sisa)); ?></td>
+                                    
+                                    <td>Rp <?php echo e(number_format($item->pagu, 0, ',', '.')); ?></td>
+                                    
+                                    <td>Rp <?php echo e(number_format($realisasi, 0, ',', '.')); ?></td>
+                                    <td>Rp <?php echo e(number_format($sisa, 0, ',', '.')); ?></td>
                                     <td class="text-center">
                                         <span class="badge
                                                                                                                 <?php if($persentase >= 80): ?> badge-success
                                                                                                                 <?php elseif($persentase >= 50): ?> badge-warning
                                                                                                                 <?php else: ?> badge-danger
                                                                                                                 <?php endif; ?>">
-                                            <?php echo e(number_format($persentase, 2)); ?> %
+                                            <?php echo e(number_format($persentase, 2, ',', '.')); ?> %
                                         </span>
                                     </td>
                                     <td class="text-center">
@@ -233,7 +217,7 @@
                                 </div>
 
                                 <div class="summary-value">
-                                    Rp <?php echo e(number_format($totalPagu)); ?>
+                                    Rp <?php echo e(number_format($totalPagu, 0, ',', '.')); ?>
 
                                 </div>
 
@@ -246,7 +230,7 @@
                                 </div>
 
                                 <div class="summary-value">
-                                    Rp <?php echo e(number_format($totalRealisasi)); ?>
+                                    Rp <?php echo e(number_format($totalRealisasi, 0, ',', '.')); ?>
 
                                 </div>
 
@@ -257,7 +241,7 @@
                         <tfoot>
                             <tr style="font-weight:bold;background:#f8f9fc;">
 
-                                <td colspan="6" class="text-center">
+                                <td colspan="4" class="text-center">
 
                                     Total
 
@@ -265,35 +249,30 @@
 
                                 <td>
 
-                                    Rp <?php echo e(number_format($totalPagu)); ?>
+                                    Rp <?php echo e(number_format($totalPagu, 0, ',', '.')); ?>
+
+
+                                </td>
+
+                                
+
+                                <td>
+
+                                    Rp <?php echo e(number_format($totalRealisasi, 0, ',', '.')); ?>
 
 
                                 </td>
 
                                 <td>
 
-                                    Rp <?php echo e(number_format($totalPajak)); ?>
+                                    Rp <?php echo e(number_format($totalSisa, 0, ',', '.')); ?>
 
 
                                 </td>
 
                                 <td>
 
-                                    Rp <?php echo e(number_format($totalRealisasi)); ?>
-
-
-                                </td>
-
-                                <td>
-
-                                    Rp <?php echo e(number_format($totalSisa)); ?>
-
-
-                                </td>
-
-                                <td>
-
-                                    <?php echo e(number_format($totalPersen, 2)); ?> %
+                                    <?php echo e(number_format($totalPersen, 2, ',', '.')); ?> %
 
                                 </td>
 

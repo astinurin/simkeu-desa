@@ -7,9 +7,22 @@
     ============================================================ */
 
         :root {
-            --blue: #1a56db;
-            --blue-soft: #eff4ff;
-            --blue-mid: #1e3a8a;
+
+<?php if(auth()->user()->role === 'superadmin'): ?>
+
+    --blue:#0f766e;
+    --blue-soft:#ccfbf1;
+    --blue-mid:#115e59;
+
+<?php else: ?>
+
+    --blue:#1a56db;
+    --blue-soft:#eff4ff;
+    --blue-mid:#1e3a8a;
+
+<?php endif; ?>
+
+    --green:#0e9f6e;
             --green: #0e9f6e;
             --green-soft: #f0fdf4;
             --red: #e02424;
@@ -146,7 +159,86 @@
             background: #fff;
             color: var(--blue);
         }
+.db-header-bendahara{
+    background: linear-gradient(
+        140deg,
+        #1e3a8a 0%,
+        #1a56db 55%,
+        #2563eb 100%
+    );
+}
 
+.db-header-superadmin{
+    background: linear-gradient(
+        140deg,
+        #115e59 0%,
+        #0f766e 55%,
+        #14b8a6 100%
+    );
+}
+
+/* =========================
+   TEMA SUPERADMIN (TOSCA)
+========================= */
+
+body.superadmin {
+
+    --blue: #0f766e;
+    --blue-soft: #ccfbf1;
+    --blue-mid: #115e59;
+
+}
+
+/* Header badge */
+body.superadmin .badge-pill{
+    background: rgba(20,184,166,.18);
+    border-color: rgba(20,184,166,.35);
+}
+
+/* Tab aktif */
+body.superadmin .folder-tab.active{
+    background:#0f766e;
+    color:#fff;
+}
+
+/* Tab non aktif */
+body.superadmin .folder-tab{
+    background:#ccfbf1;
+    color:#0f766e;
+}
+
+/* Icon card */
+body.superadmin .s-icon.blue,
+body.superadmin .kpi-icon.blue{
+    background:#ccfbf1;
+    color:#0f766e;
+}
+
+/* Progress pendapatan */
+body.superadmin .progress-bar{
+    background:#0f766e;
+}
+
+/* Tag pendapatan */
+body.superadmin .tag.blue{
+    background:#ccfbf1;
+    color:#0f766e;
+}
+
+/* Card total pendapatan */
+body.superadmin .finance-stat.income{
+    background:#ccfbf1;
+}
+
+/* Tombol putih di header */
+body.superadmin .btn-expense{
+    color:#0f766e;
+}
+
+/* Tombol outline */
+body.superadmin .btn-income{
+    border-color:rgba(255,255,255,.35);
+}
         /* ── KPI CARDS ── */
         .kpi-grid {
             display: grid;
@@ -427,21 +519,22 @@
 
         /* ── CHARTS ── */
         .chart-card {
-            padding: 16px 18px;
+              padding:16px 18px;
+    height:320px;
         }
 
-        .charts-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 16px;
-            margin-bottom: 20px;
-        }
+.charts-grid{
+    display:grid;
+    gap:16px;
+    margin-bottom:20px;
+}
 
-        @media (min-width: 768px) {
-            .charts-grid {
-                grid-template-columns: 1fr 2fr;
-            }
-        }
+@media(min-width:992px){
+    .charts-grid{
+        grid-template-columns:1fr 1fr;
+    }
+}
+
 
         /* ── ACCORDION TABLE ── */
         .acc-head {
@@ -735,14 +828,14 @@
     border:none;
     padding:10px 18px;
     border-radius:999px;
-    background:#eef2ff;
-    color:#1a56db;
+    background:var(--blue-soft);
+    color:var(--blue);
     font-weight:600;
 }
 
 .folder-tab.active{
-    background:#1a56db;
-    color:white;
+    background:var(--blue);
+    color:#fff;
 }
 
 .progress-item{
@@ -773,12 +866,128 @@
     text-align:center;
     color:#9ca3af;
 }
+
+.finance-summary{
+    background:#ffffff;
+    border:1px solid #e5e7eb;
+    border-radius:18px;
+    padding:24px;
+    margin-bottom:20px;
+    box-shadow:0 4px 20px rgba(0,0,0,.05);
+}
+
+.finance-title{
+    margin-bottom:20px;
+}
+
+.finance-title h5{
+    margin:0;
+    font-size:1rem;
+    font-weight:800;
+    color:#1f2937;
+}
+
+.finance-title small{
+    color:#9ca3af;
+}
+
+.finance-stats{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:16px;
+}
+
+.finance-stat{
+    padding:18px;
+    border-radius:14px;
+}
+
+.finance-stat.income{
+    background:#eff6ff;
+}
+
+.finance-stat.expense{
+    background:#f0fdf4;
+}
+
+.finance-stat.remain{
+    background:#fff7ed;
+}
+
+.stat-label{
+    display:block;
+    font-size:.75rem;
+    font-weight:700;
+    color:#6b7280;
+    margin-bottom:8px;
+}
+
+.finance-stat h3{
+    margin:0;
+    font-size:1rem;
+    font-weight:800;
+    color:#111827;
+    word-break:break-word;
+}
+
+.finance-progress{
+    margin-top:20px;
+}
+
+.finance-progress-head{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:8px;
+    font-size:.85rem;
+}
+
+@media(max-width:768px){
+
+    .finance-stats{
+        grid-template-columns:1fr;
+    }
+
+}
+.progress-summary{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+    margin-top:12px;
+}
+
+.progress-summary-item{
+    background:#f8fafc;
+    border:1px solid #e5e7eb;
+    border-radius:10px;
+    padding:10px;
+}
+
+.progress-summary-item small{
+    display:block;
+    color:#6b7280;
+    font-size:.7rem;
+    margin-bottom:4px;
+}
+
+.progress-summary-item strong{
+    display:block;
+    color:#111827;
+    font-size:.8rem;
+    font-weight:700;
+}
+
+@media(max-width:576px){
+    .progress-summary{
+        grid-template-columns:1fr;
+    }
+}
     </style>
 
     
     
     
-    <div class="db-header searchable-card a1">
+    <div class="db-header searchable-card a1
+    <?php echo e(auth()->user()->role === 'superadmin' ? 'db-header-superadmin' : 'db-header-bendahara'); ?>">
         <div style="position:relative;z-index:1;">
             <div class="badge-pill">
                 <i class="fas fa-tachometer-alt"></i> Dashboard Admin
@@ -803,139 +1012,86 @@
         </div>
     </div>
 
-    
-    
-    
-    <div class="kpi-grid searchable-card a2">
-        <div class="kpi-card blue">
-            <div class="kpi-icon blue"><i class="fas fa-wallet"></i></div>
-            <div>
-                <div class="kpi-label">Total Realisasi Pendapatan</div>
-                <div class="kpi-val">Rp <?php echo e(number_format($totalRealisasiPendapatan)); ?></div>
-                
-            </div>
-        </div>
-        <div class="kpi-card green">
-            <div class="kpi-icon green"><i class="fas fa-check-circle"></i></div>
-            <div>
-                <div class="kpi-label">Total Realisasi Belanja</div>
-                <div class="kpi-val">Rp <?php echo e(number_format($totalRealisasiBelanja)); ?></div>
-                
-            </div>
-        </div>
-        <div class="kpi-card blue">
-            <div class="kpi-icon blue"><i class="fas fa-hand-holding-usd"></i></div>
-            <div>
-                <div class="kpi-label">Sisa Anggaran</div>
-                
-                <div class="kpi-note">Rp <?php echo e(number_format($totalSisaAnggaran = $totalRealisasiPendapatan - $totalRealisasiBelanja)); ?></div>
-            </div>
-        </div>
-        <div class="kpi-card green">
-            <div class="kpi-icon green"><i class="fas fa-shopping-cart"></i></div>
-            <div>
-                <div class="kpi-label">Realisasi Belanja</div>
-                <div class="kpi-val"><?php echo e(number_format($persenBelanja, 1)); ?>%</div>
-                <div class="kpi-note">Rp <?php echo e(number_format($totalRealisasiBelanja)); ?></div>
-            </div>
+
+  <div class="folder-tabs">
+
+    <button class="folder-tab active"
+        onclick="showDashboardTab(event,'ringkasan')">
+        Ringkasan
+    </button>
+
+    <button class="folder-tab"
+        onclick="showDashboardTab(event,'pendapatan')">
+        Pendapatan
+    </button>
+
+    <button class="folder-tab"
+        onclick="showDashboardTab(event,'belanja')">
+        Belanja
+    </button>
+
+   
+
+</div>  
+
+<div id="ringkasan" class="dashboard-section">
+    <div class="finance-summary">
+
+    <div class="finance-title">
+        <div>
+            <h5>Ringkasan Keuangan Desa</h5>
+            <small>Tahun Anggaran <?php echo e(date('Y')); ?></small>
         </div>
     </div>
 
-    
-    
-    
-   <div class="charts-grid searchable-card a3">
+    <div class="finance-stats">
 
-    
-    <div class="s-card searchable-card" style="display:flex;flex-direction:column;">
-        <div class="s-head">
-            <div style="display:flex;align-items:center;gap:10px;">
-                <div class="s-icon blue">
-                    <i class="fas fa-chart-pie"></i>
-                </div>
-                <div>
-                    <p class="s-title">Persentase Realisasi</p>
-                    <p class="s-sub">Pendapatan vs Belanja</p>
-                </div>
-            </div>
-        </div>
+        <div class="finance-stat income">
 
-        <div class="chart-card"
-            style="display:flex;flex-direction:column;align-items:center;flex:1;justify-content:center;">
+            <span class="stat-label">
+                Total Pendapatan
+            </span>
 
-            <div style="position:relative;width:170px;height:170px;margin:8px auto 12px;">
-                <canvas id="chartDoughnut"></canvas>
+            <h3>
+                Rp <?php echo e(number_format($totalRealisasiPendapatan,0,',','.')); ?>
 
-                <div
-                    style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none;">
-
-                    <div
-                        style="font-size:.58rem;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:.04em;">
-                        Avg
-                    </div>
-
-                    <div style="font-size:1rem;font-weight:800;color:#1f2937;">
-                        <?php echo e(number_format(($persenPendapatan + $persenBelanja) / 2, 0)); ?>%
-                    </div>
-
-                </div>
-            </div>
-
-            <div style="display:flex;flex-direction:column;gap:6px;width:100%;">
-
-                <div style="display:flex;align-items:center;justify-content:space-between;font-size:.75rem;">
-                    <span style="display:flex;align-items:center;gap:6px;">
-                        <span
-                            style="width:9px;height:9px;border-radius:3px;background:#1a56db;display:inline-block;">
-                        </span>
-                        <span style="color:#4b5563;font-weight:600;">
-                            Pendapatan
-                        </span>
-                    </span>
-
-                    <strong><?php echo e(number_format($persenPendapatan, 1)); ?>%</strong>
-                </div>
-
-                <div style="display:flex;align-items:center;justify-content:space-between;font-size:.75rem;">
-                    <span style="display:flex;align-items:center;gap:6px;">
-                        <span
-                            style="width:9px;height:9px;border-radius:3px;background:#0e9f6e;display:inline-block;">
-                        </span>
-                        <span style="color:#4b5563;font-weight:600;">
-                            Belanja
-                        </span>
-                    </span>
-
-                    <strong><?php echo e(number_format($persenBelanja, 1)); ?>%</strong>
-                </div>
-
-            </div>
+            </h3>
 
         </div>
+
+        <div class="finance-stat expense">
+
+            <span class="stat-label">
+                Total Belanja
+            </span>
+
+            <h3>
+                Rp <?php echo e(number_format($totalRealisasiBelanja,0,',','.')); ?>
+
+            </h3>
+
+        </div>
+
+        <div class="finance-stat remain">
+
+            <span class="stat-label">
+                Total Sisa Anggaran
+            </span>
+
+            <h3>
+                Rp <?php echo e(number_format($totalSisaAnggaran,0,',','.')); ?>
+
+            </h3>
+
+        </div>
+
     </div>
 
     
-    <div class="s-card searchable-card">
-        <div class="s-head">
-            <div style="display:flex;align-items:center;gap:10px;">
-                <div class="s-icon green">
-                    <i class="fas fa-chart-bar"></i>
-                </div>
-                <div>
-                    <p class="s-title">Belanja per Bidang</p>
-                    
-                </div>
-            </div>
-        </div>
-
-        <div class="chart-card">
-            <canvas id="chartBar" style="max-height:185px;"></canvas>
-        </div>
-    </div>
 
 </div>
 
-    
+     
     
     
     <div class="s-card searchable-card a4">
@@ -957,16 +1113,30 @@
                     </span>
                     <?php $pctP = $persenPendapatan;
                     $clsP = $pctP >= 75 ? 'pct-hi' : ($pctP >= 40 ? 'pct-mid' : 'pct-lo'); ?>
-                    <span class="pct-badge <?php echo e($clsP); ?>"><?php echo e(number_format($pctP, 2)); ?>%</span>
+                    <span class="pct-badge <?php echo e($clsP); ?>"><?php echo e(number_format($pctP, 2, ',', '.')); ?>%</span>
                 </div>
                 <div class="progress">
                     <div class="progress-bar" style="width:<?php echo e(min($pctP, 100)); ?>%;background:var(--blue);"></div>
                 </div>
-                <div
-                    style="display:flex;justify-content:space-between;font-size:.67rem;color:var(--gray-400);margin-top:4px;">
-                    <span>Rp <?php echo e(number_format($totalRealisasiPendapatan)); ?> terealisasi</span>
-                    <span>Pagu: Rp <?php echo e(number_format($totalPaguPendapatan)); ?></span>
-                </div>
+               <div class="progress-summary">
+
+    <div class="progress-summary-item">
+        <small>Pagu Pendapatan</small>
+        <strong>
+            Rp <?php echo e(number_format($totalPaguPendapatan, 0, ',', '.')); ?>
+
+        </strong>
+    </div>
+
+    <div class="progress-summary-item">
+        <small>Pendapatan Diterima</small>
+        <strong>
+            Rp <?php echo e(number_format($totalRealisasiPendapatan, 0, ',', '.')); ?>
+
+        </strong>
+    </div>
+
+</div>
             </div>
             <div class="prog-item">
                 <div class="prog-lbl">
@@ -976,94 +1146,138 @@
                     </span>
                     <?php $pctB = $persenBelanja;
                     $clsB = $pctB >= 75 ? 'pct-hi' : ($pctB >= 40 ? 'pct-mid' : 'pct-lo'); ?>
-                    <span class="pct-badge <?php echo e($clsB); ?>"><?php echo e(number_format($pctB, 2)); ?>%</span>
+                    <span class="pct-badge <?php echo e($clsB); ?>"><?php echo e(number_format($pctB, 2, ',', '.')); ?>%</span>
                 </div>
                 <div class="progress">
                     <div class="progress-bar" style="width:<?php echo e(min($pctB, 100)); ?>%;background:var(--green);"></div>
                 </div>
-                <div
-                    style="display:flex;justify-content:space-between;font-size:.67rem;color:var(--gray-400);margin-top:4px;">
-                    <span>Rp <?php echo e(number_format($totalRealisasiBelanja)); ?> terealisasi</span>
-                    <span>Pagu: Rp <?php echo e(number_format($totalPaguBelanja)); ?></span>
-                </div>
-            </div>
-        </div>
+               <div class="progress-summary">
+
+    <div class="progress-summary-item">
+        <small>Anggaran Belanja (Pagu)</small>
+        <strong>
+            Rp <?php echo e(number_format($totalPaguBelanja, 0, ',', '.')); ?>
+
+        </strong>
     </div>
 
-    
-    
-    
-    
-<div class="s-card searchable-card mt-4">
+    <div class="progress-summary-item">
+        <small>Sudah Dibelanjakan</small>
+        <strong>
+            Rp <?php echo e(number_format($totalRealisasiBelanja, 0, ',', '.')); ?>
 
-    <div class="s-head">
-        <div style="display:flex;align-items:center;gap:10px;">
-            <div class="s-icon blue">
-                <i class="fas fa-chart-line"></i>
-            </div>
-            <div>
-                <p class="s-title">
-                    Pemanfaatan Sumber Dana
-                </p>
-                <p class="s-sub">
-                    Persentase dana yang telah digunakan untuk kegiatan belanja
-                </p>
-            </div>
-        </div>
+        </strong>
     </div>
-
-    <?php $__empty_1 = true; $__currentLoopData = $dashboardSumberDana; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
-
-        <div class="progress-item">
-
-            <div class="progress-head">
-
-                <span>
-                    <?php echo e($item['nama']); ?>
-
-                </span>
-
-                <strong>
-                    <?php echo e(number_format($item['persentase'],2)); ?>%
-                </strong>
-
-            </div>
-
-            <div class="progress">
-                <div class="progress-bar"
-                    style="width:<?php echo e(min($item['persentase'],100)); ?>%">
-                </div>
-            </div>
-
-            <small>
-
-                Rp <?php echo e(number_format($item['terpakai'])); ?>
-
-
-                digunakan dari
-
-                Rp <?php echo e(number_format($item['diterima'])); ?>
-
-
-            </small>
-
-        </div>
-
-    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
-
-        <div class="empty-data">
-            Belum ada data sumber dana
-        </div>
-
-    <?php endif; ?>
 
 </div>
-  
-    
-    
-    
+            </div>
+        </div>
+    </div>
+
+    <div class="charts-grid">
 
     
+    <div class="s-card searchable-card">
+
+        <div class="s-head">
+            <div style="display:flex;align-items:center;gap:10px;">
+                <div class="s-icon blue">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+
+                <div>
+                    <p class="s-title">
+                        Realisasi Pendapatan per Jenis
+                    </p>
+
+                    <p class="s-sub">
+                        Pendapatan diterima dan dana yang telah dimanfaatkan
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <?php $__empty_1 = true; $__currentLoopData = $dashboardSumberDana; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+
+            <div class="progress-item">
+
+                <div class="progress-head">
+
+                    <span>
+                        <?php echo e($item['nama']); ?>
+
+                    </span>
+
+                    <strong>
+                        <?php echo e(number_format($item['persentase'],1,',','.')); ?>%
+                    </strong>
+
+                </div>
+
+                <div class="progress">
+                    <div class="progress-bar"
+                        style="width:<?php echo e(min($item['persentase'],100)); ?>%">
+                    </div>
+                </div>
+
+                <small>
+
+                    Rp <?php echo e(number_format($item['terpakai'],0,',','.')); ?>
+
+
+                    digunakan dari
+
+                    Rp <?php echo e(number_format($item['diterima'],0,',','.')); ?>
+
+
+                </small>
+
+            </div>
+
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+
+            <div class="empty-data">
+                Belum ada data pendapatan
+            </div>
+
+        <?php endif; ?>
+
+    </div>
+
+
+    
+    <div class="s-card searchable-card">
+
+        <div class="s-head">
+            <div style="display:flex;align-items:center;gap:10px;">
+                <div class="s-icon green">
+                    <i class="fas fa-chart-bar"></i>
+                </div>
+
+                <div>
+                    <p class="s-title">
+                        Realisasi Belanja per Bidang
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="chart-card">
+            <canvas id="chartBar" ></canvas>
+        </div>
+
+    </div>
+
+</div>
+
+</div>
+
+
+<div id="pendapatan"
+     class="dashboard-section d-none">
+
+    <!-- DETAIL PENDAPATAN -->
+        
     <div class="s-card searchable-card a6">
         <div class="acc-head" id="accPendHead" onclick="toggleAcc('pendapatan')">
             <div style="display:flex;align-items:center;gap:10px;">
@@ -1111,12 +1325,12 @@
                                         <span class="tag blue"><?php echo e($item->kategori_pendapatan); ?></span>
                                         <span class="cell-sub"><?php echo e($item->jenis_pendapatan); ?></span>
                                     </td>
-                                    <td class="col-hide-xs"><span class="num pagu">Rp <?php echo e(number_format($item->pagu)); ?></span>
+                                    <td class="col-hide-xs"><span class="num pagu">Rp <?php echo e(number_format($item->pagu, 0, ',', '.')); ?></span>
                                     </td>
-                                    <td><span class="num real">Rp <?php echo e(number_format($real)); ?></span></td>
+                                    <td><span class="num real">Rp <?php echo e(number_format($real, 0, ',', '.')); ?></span></td>
                                     
                                     <td style="text-align:center;"><span
-                                            class="pct-badge <?php echo e($cls); ?>"><?php echo e(number_format($pct, 1)); ?>%</span></td>
+                                            class="pct-badge <?php echo e($cls); ?>"><?php echo e(number_format($pct, 1, ',', '.' )); ?>%</span></td>
                                 </tr>
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                                 <tr>
@@ -1134,7 +1348,12 @@
         </div>
     </div>
 
-    
+</div>
+
+<div id="belanja"
+     class="dashboard-section d-none">
+
+        
     <div class="s-card searchable-card a7">
         <div class="acc-head" id="accBelHead" onclick="toggleAcc('belanja')">
             <div style="display:flex;align-items:center;gap:10px;">
@@ -1184,12 +1403,12 @@
                                         <span class="tag green"><?php echo e($item->bidang); ?></span>
                                         <span class="cell-sub"><?php echo e($item->jenis_kegiatan); ?></span>
                                     </td>
-                                    <td class="col-hide-xs"><span class="num pagu">Rp <?php echo e(number_format($item->pagu)); ?></span>
+                                    <td class="col-hide-xs"><span class="num pagu">Rp <?php echo e(number_format($item->pagu, 0, ',', '.')); ?></span>
                                     </td>
-                                    <td><span class="num real">Rp <?php echo e(number_format($real)); ?></span></td>
-                                    <td class="col-hide-xs"><span class="num sisa">Rp <?php echo e(number_format($sisa)); ?></span></td>
+                                    <td><span class="num real">Rp <?php echo e(number_format($real, 0, ',', '.')); ?></span></td>
+                                    <td class="col-hide-xs"><span class="num sisa">Rp <?php echo e(number_format($sisa, 0, ',', '.')); ?></span></td>
                                     <td style="text-align:center;"><span
-                                            class="pct-badge <?php echo e($cls); ?>"><?php echo e(number_format($pct, 1)); ?>%</span></td>
+                                            class="pct-badge <?php echo e($cls); ?>"><?php echo e(number_format($pct, 1, ',', '.' )); ?>%</span></td>
                                     <td style="text-align:center;">
                                         <?php if($item->dokumentasi && $item->dokumentasi->isNotEmpty()): ?>
                                             <button class="btn-doc" data-toggle="modal" data-target="#modalDok<?php echo e($item->id); ?>">
@@ -1217,8 +1436,7 @@
             </div>
         </div>
     </div>
-
-    
+        
     <?php $__currentLoopData = $belanja; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
         <?php if($item->dokumentasi && $item->dokumentasi->isNotEmpty()): ?>
             <div class="modal fade" id="modalDok<?php echo e($item->id); ?>" tabindex="-1" role="dialog">
@@ -1245,6 +1463,20 @@
             </div>
         <?php endif; ?>
     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
 
 <?php $__env->stopSection(); ?>
 
@@ -1379,22 +1611,7 @@ if (ctxB) {
 
         });
 
-function showKategori(event,id){
 
-    document
-        .querySelectorAll('.kategori-content')
-        .forEach(el => el.classList.add('d-none'));
-
-    document
-        .getElementById(id)
-        .classList.remove('d-none');
-
-    document
-        .querySelectorAll('.folder-tab')
-        .forEach(el => el.classList.remove('active'));
-
-    event.target.classList.add('active');
-}
 
 // search 
 $('#globalSearch').on('input', function () {
@@ -1420,6 +1637,24 @@ $('#globalSearch').on('input', function () {
     });
 
 });
+
+
+function showDashboardTab(event,id){
+
+    document
+        .querySelectorAll('.dashboard-section')
+        .forEach(el => el.classList.add('d-none'));
+
+    document
+        .getElementById(id)
+        .classList.remove('d-none');
+
+    document
+        .querySelectorAll('.folder-tab')
+        .forEach(el => el.classList.remove('active'));
+
+    event.currentTarget.classList.add('active');
+}
     </script>
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Asti\Kuliah\SMT 8\skripsi\simkeu-desa\resources\views/dashboard.blade.php ENDPATH**/ ?>

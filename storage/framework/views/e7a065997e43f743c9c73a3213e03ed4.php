@@ -94,10 +94,27 @@
         }
 
         /* ── SIDEBAR ── */
-        .sidebar {
-            background: linear-gradient(180deg, #1e3a8a 0%, #1a56db 100%) !important;
-            box-shadow: 4px 0 20px rgba(26, 86, 219, .18) !important;
-        }
+       .sidebar-bendahara{
+    background:linear-gradient(
+        180deg,
+        #1e3a8a 0%,
+        #1a56db 100%
+    ) !important;
+}
+
+.sidebar-superadmin{
+    background:linear-gradient(
+        180deg,
+        #115e59 0%,
+        #0f766e 45%,
+        #14b8a6 100%
+    ) !important;
+}
+
+:root{
+    --primary-bendahara:#1a56db;
+    --primary-superadmin:#0f766e;
+}
 
         .sidebar .nav-item .nav-link {
             color: rgba(255, 255, 255, .72) !important;
@@ -167,11 +184,15 @@
             font-family: 'Plus Jakarta Sans', 'Segoe UI', sans-serif !important;
         }
 
-        .topbar .navbar-search .btn-primary {
-            background: #1a56db !important;
-            border-color: #1a56db !important;
-            border-radius: 0 10px 10px 0 !important;
-        }
+.sidebar-bendahara ~ #content-wrapper .navbar-search .btn-primary{
+    background:#1a56db !important;
+    border-color:#1a56db !important;
+}
+
+.sidebar-superadmin ~ #content-wrapper .navbar-search .btn-primary{
+    background:#0f766e !important;
+    border-color:#0f766e !important;
+}
 
         .topbar .nav-item .nav-link {
             color: #4b5563 !important;
@@ -235,7 +256,13 @@
     <div id="wrapper">
 
         <!-- SIDEBAR  -->
-        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+        <?php
+    $sidebarClass = auth()->user()->role === 'superadmin'
+        ? 'sidebar-superadmin'
+        : 'sidebar-bendahara';
+?>
+       <ul class="navbar-nav sidebar sidebar-dark accordion <?php echo e($sidebarClass); ?>"
+    id="accordionSidebar">
 
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
 

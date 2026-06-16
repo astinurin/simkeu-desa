@@ -45,6 +45,9 @@ class DashboardController extends Controller
         });
 
         $totalSisaBelanja = $totalPaguBelanja - $totalRealisasiBelanja;
+        $totalSisaAnggaran =
+    $totalRealisasiPendapatan -
+    $totalRealisasiBelanja;
 
         $persenBelanja = $totalPaguBelanja > 0
             ? ($totalRealisasiBelanja / $totalPaguBelanja) * 100
@@ -178,7 +181,8 @@ foreach ($dashboardSumberDana as &$item) {
             'chartBelanjaLabels',
             'chartBelanjaData',
 
-            'dashboardSumberDana'   
+            'dashboardSumberDana',
+            'totalSisaAnggaran',
             
         ));
     }

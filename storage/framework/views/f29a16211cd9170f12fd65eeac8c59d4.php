@@ -37,18 +37,18 @@
                         <td><?php echo e($data->jenis_pendapatan); ?></td>
                     </tr>
                     <tr>
-    <th>Tahap</th>
-    <td><?php echo e($data->tahap ?? '-'); ?></td>
-</tr>
+                        <th>Tahap</th>
+                        <td><?php echo e($data->tahap ?? '-'); ?></td>
+                    </tr>
 
                     <tr>
                         <th>Pagu Pendapatan</th>
-                        <td>Rp <?php echo e(number_format($data->pagu)); ?></td>
+                        <td>Rp <?php echo e(number_format($data->pagu, 0, ',', '.')); ?></td>
                     </tr>
 
                     <tr>
                         <th>Realisasi Pendapatan</th>
-                        <td>Rp <?php echo e(number_format($realisasi)); ?></td>
+                        <td>Rp <?php echo e(number_format($realisasi, 0, ',', '.')); ?></td>
                     </tr>
 
                     
@@ -57,11 +57,11 @@
                         <th>Persentase Realisasi</th>
                         <td>
                             <span class="badge 
-                                                                                        <?php if($persentase >= 80): ?> badge-success
-                                                                                        <?php elseif($persentase >= 50): ?> badge-warning
-                                                                                        <?php else: ?> badge-danger
-                                                                                        <?php endif; ?>">
-                                <?php echo e(number_format($persentase, 2)); ?> %
+                                                                                            <?php if($persentase >= 80): ?> badge-success
+                                                                                            <?php elseif($persentase >= 50): ?> badge-warning
+                                                                                            <?php else: ?> badge-danger
+                                                                                            <?php endif; ?>">
+                                <?php echo e(number_format($persentase, 2, ',', '.')); ?> %
                             </span>
                         </td>
                     </tr>
