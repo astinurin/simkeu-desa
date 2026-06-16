@@ -261,13 +261,9 @@
                     </div> --}}
                     <div class="mb-3">
                         <br>
-    <label class="form-label">Tahap</label>
-    <input
-        type="text"
-        name="tahap"
-        class="form-control"
-       value="{{ old('tahap', $data->tahap) }}">
-</div>
+                        <label class="form-label">Tahap</label>
+                        <input type="text" name="tahap" class="form-control" value="{{ old('tahap', $data->tahap) }}">
+                    </div>
                 </div>
                 <div class="folder-content mt-3">
 
@@ -419,15 +415,15 @@
             if (!file) return;
 
             preview.innerHTML = `
-                                                                                                                            <div class="card border-left-secondary shadow-sm">
-                                                                                                                                <div class="card-body d-flex justify-content-between align-items-center">
-                                                                                                                                    <div>
-                                                                                                                                        <i class="fas fa-file"></i>
-                                                                                                                                        <span class="ml-2">${file.name}</span>
+                                                                                                                                <div class="card border-left-secondary shadow-sm">
+                                                                                                                                    <div class="card-body d-flex justify-content-between align-items-center">
+                                                                                                                                        <div>
+                                                                                                                                            <i class="fas fa-file"></i>
+                                                                                                                                            <span class="ml-2">${file.name}</span>
+                                                                                                                                        </div>
                                                                                                                                     </div>
                                                                                                                                 </div>
-                                                                                                                            </div>
-                                                                                                                        `;
+                                                                                                                            `;
         });
     </script>
 

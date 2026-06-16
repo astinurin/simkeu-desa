@@ -69,6 +69,19 @@
             }
 
         }
+
+        .placeholder-kecil::placeholder {
+            font-size: 13px;
+
+            color: #9CA3AF;
+            opacity: .8;
+        }
+
+        .text-muted {
+            font-size: 13px;
+            color: #9CA3AF;
+            opacity: .8;
+        }
     </style>
 <?php $__env->stopSection(); ?>
 <?php $__env->startSection('content'); ?>
@@ -143,7 +156,7 @@
 
                     <div class="form-group">
 
-                        <label>Jenis Kegiatan</label>
+                        <label class="font-weight-bold">Nama Kegiatan</label>
 
                         <input type="text" name="jenis_kegiatan" class="form-control"
                             value="<?php echo e(old('jenis_kegiatan', $data->jenis_kegiatan)); ?>" required>
@@ -154,12 +167,12 @@
 
                         <label class="font-weight-bold">
                             Pilih Sumber Dana
-                        </label>
-                        <p class="text-muted">
+                        </label> <br>
+                        <small class="text-muted">
 
                             (Pilih semua sumber dana yang relevan dengan kegiatan belanja ini)
 
-                        </p>
+                        </small>
 
                         <div class="sumber-dana-grid">
                             <?php
@@ -187,10 +200,8 @@
                                             Nominal <?php echo e($item->kode); ?>
 
                                         </label>
-                                        <input type="number" class="form-control" name="nominal[<?php echo e($item->id); ?>]" min="0"
+                                        <input type="text" class="form-control rupiah" name="nominal[<?php echo e($item->id); ?>]" min="0"
                                             value="<?php echo e(optional(optional($data->sumberDana->find($item->id))->pivot)->nominal); ?>">
-
-
                                     </div>
 
                                 </div>
@@ -202,44 +213,48 @@
                     </div>
 
                     <div class="form-group">
-                        <label>Pagu Kegiatan</label>
-                        <input type="number" name="pagu" id="pagu" class="form-control"
+                        <label class="font-weight-bold">Anggaran Kegiatan (Pagu)</label>
+                        <input type="text" name="pagu" id="pagu" class="form-control rupiah"
                             value="<?php echo e(old('pagu', $data->pagu)); ?>">
                     </div>
 
                     <div class="form-group">
 
-                        <label>
+                        <label class="font-weight-bold">
 
                             Pajak (pbn, pbh, pajak daerah)
 
                         </label>
 
-                        <input type="text" name="pajak" class="form-control" value="<?php echo e(old('pajak', $data->pajak)); ?>">
+                        <input type="text" name="pajak" class="form-control rupiah placeholder-kecil"
+                            value="<?php echo e(old('pajak', $data->pajak)); ?>">
 
                         
 
                     </div>
 
                     <div class="form-group">
-                        <label>Realisasi Belanja</label>
-
-                        <input type="number" name="realisasi_belanja" id="realisasi" class="form-control" value="<?php echo e(old(
-        'realisasi_belanja',
-        optional($data->realisasi)->realisasi
-    )); ?>">
+                        <label class="font-weight-bold">Realisasi Belanja</label> <br>
                         <small class="text-muted">
                             Masukkan total dana yang telah dibelanjakan untuk kegiatan ini.
                         </small>
+                        <input type="text" name="realisasi_belanja" id="realisasi"
+                            class="form-control rupiah placeholder-kecil" value="<?php echo e(old(
+        'realisasi_belanja',
+        optional($data->realisasi)->realisasi
+    )); ?>">
                     </div>
                     <div class="form-group">
-                        <label>Sisa Anggaran</label>
-                        <input type="text" id="sisa_preview" class="form-control" readonly>
+                        <label class="font-weight-bold">Sisa Anggaran</label> <br>
+                         <small class="text-muted">
+                            Lebih/(Kurang)
+                        </small>
+                        <input type="text" id="sisa_preview" class="form-control placeholder-kecil" readonly>
                     </div>
 
                     <div class="form-group">
-                        <label>Persentase Realisasi Belanja</label>
-                        <input type="text" id="persen_preview" class="form-control" readonly>
+                        <label class="font-weight-bold">Persentase Realisasi Belanja</label>
+                        <input type="text" id="persen_preview" class="form-control placeholder-kecil" readonly>
                     </div>
 
                     <div class="form-group">
@@ -255,11 +270,12 @@
 
                                     <?php $__currentLoopData = $data->dokumentasi; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $doc): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
 
-                                        <img src="<?php echo e(asset('storage/' . $doc->file)); ?>" style="
-                                                                                                                                max-width:250px;
-                                                                                                                                margin:10px;
-                                                                                                                                border-radius:10px;
-                                                                                                                            ">
+                                        <img src="<?php echo e(asset('storage/' . $doc->file)); ?>"
+                                            style="
+                                                                                                                                                                                max-width:250px;
+                                                                                                                                                                                margin:10px;
+                                                                                                                                                                                border-radius:10px;
+                                                                                                                                                                            ">
 
                                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
@@ -268,7 +284,7 @@
                             </div>
 
                         <?php endif; ?>
-                        <label>Dokumentasi kegiatan (gambar)</label>
+                        <label class="font-weight-bold">Dokumentasi kegiatan (gambar)</label>
                         <input type="file" name="dokumentasi[]" multiple accept="image/*" class="form-control">
                         <div id="preview" class="mt-2"></div>
                     </div>
@@ -308,10 +324,16 @@
             });
         const pagu = document.getElementById('pagu');
         const realisasi = document.getElementById('realisasi');
+
         function hitung() {
 
-            let p = parseFloat(pagu.value) || 0;
-            let r = parseFloat(realisasi.value) || 0;
+            let p = parseInt(
+                pagu.value.replace(/\D/g, '')
+            ) || 0;
+
+            let r = parseInt(
+                realisasi.value.replace(/\D/g, '')
+            ) || 0;
 
             let sisa = p - r;
 
@@ -323,7 +345,7 @@
                 'Rp ' + sisa.toLocaleString('id-ID');
 
             document.getElementById('persen_preview').value =
-                (p > 0 ? (r / p) * 100 : 0).toFixed(2) + " %";
+                (p > 0 ? (r / p) * 100 : 0).toFixed(2) + ' %';
         }
 
         pagu.oninput = hitung;
@@ -344,9 +366,9 @@
                     r.onload = ev =>
                         preview.innerHTML +=
                         `<img src="${ev.target.result}"
-                    style="max-width:800px;
-                    margin:10px;
-                    border-radius:8px;">`;
+                                    style="max-width:800px;
+                                    margin:10px;
+                                    border-radius:8px;">`;
 
                     r.readAsDataURL(f);
 
@@ -384,14 +406,32 @@
             });
 
 
-        document.addEventListener(
-            'DOMContentLoaded',
-            function () {
+        document.querySelectorAll('.rupiah').forEach(input => {
+
+            // format value lama saat edit dibuka
+            if (input.value) {
+
+                let angka = input.value.replace(/\D/g, '');
+
+                input.value =
+                    'Rp ' + Number(angka).toLocaleString('id-ID');
+            }
+
+            // format saat user mengetik
+            input.addEventListener('input', function () {
+
+                let angka = this.value.replace(/\D/g, '');
+
+                this.value = angka
+                    ? 'Rp ' + Number(angka).toLocaleString('id-ID')
+                    : '';
 
                 hitung();
+            });
 
-            }
-        );
+        });
+
+        hitung();
     </script>
 
 <?php $__env->stopSection(); ?>

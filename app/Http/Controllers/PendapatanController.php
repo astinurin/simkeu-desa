@@ -246,7 +246,7 @@ class PendapatanController extends Controller
             ? ($realisasi / $request->pagu) * 100
             : 0;
 
-        $persentase = 0;
+        // $persentase = 0;
         // 3. SIMPAN KE TABEL REALISASI
         RealisasiPendapatanModel::create([
             'pendapatan_id' => $pendapatan->id,
@@ -341,14 +341,33 @@ class PendapatanController extends Controller
                 $dokumenPath = $path;
             }
         }
-
         $data->update([
             'kategori_pendapatan' => $request->kategori_pendapatan,
             'jenis_pendapatan' => $request->jenis_pendapatan,
+            'tahap' => $request->tahap,
             'pagu' => $request->pagu,
             'tanggal' => $request->tanggal,
             'dokumen' => $dokumenPath,
         ]);
+
+        $realisasi = $request->realisasi ?? 0;
+
+        $sisa = $request->pagu - $realisasi;
+
+        $persentase = $request->pagu > 0
+            ? ($realisasi / $request->pagu) * 100
+            : 0;
+
+        RealisasiPendapatanModel::updateOrCreate(
+            [
+                'pendapatan_id' => $data->id
+            ],
+            [
+                'realisasi' => $realisasi,
+                'sisa' => $sisa,
+                'persentase' => $persentase
+            ]
+        );
 
         return redirect()->route('pendapatan.index')
             ->with('success', 'Data berhasil diupdate');

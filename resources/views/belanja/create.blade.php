@@ -62,13 +62,26 @@
 
             .bidang-tabs {
                 display: grid;
-                grid-template-columns: 1fr;
+                grid-template-columns: 1fr;/
             }
 
             .sumber-dana-grid {
                 grid-template-columns: 1fr;
             }
 
+        }
+
+        .placeholder-kecil::placeholder {
+            font-size: 13px;
+
+            color: #9CA3AF;
+            opacity: .8;
+        }
+
+        .text-muted {
+            font-size: 13px;
+            color: #9CA3AF;
+            opacity: .8;
         }
     </style>
 
@@ -127,7 +140,7 @@
 
                         </div>
 
-                        <div id="bidang-info" class="bidang-info">
+                        <div id="bidang-info" class="bidang-info text-gray-500">
                             Pilih bidang terlebih dahulu
                         </div>
 
@@ -140,9 +153,9 @@
 
                     <div class="form-group">
 
-                        <label>Jenis Kegiatan</label>
+                        <label class="font-weight-bold">Nama Kegiatan</label>
 
-                        <input type="text" name="jenis_kegiatan" class="form-control"
+                        <input type="text" name="jenis_kegiatan" class="form-control placeholder-kecil"
                             placeholder="Contoh: Pembangunan Drainase RT 015 RW 003" required>
 
                     </div>
@@ -151,12 +164,12 @@
 
                         <label class="font-weight-bold">
                             Pilih Sumber Dana
-                        </label>
-                        <p class="text-muted">
+                        </label> <br>
+                        <small class="text-muted">
 
                             (Pilih semua sumber dana yang relevan dengan kegiatan belanja ini)
 
-                        </p>
+                        </small>
 
                         <div class="sumber-dana-grid">
 
@@ -179,7 +192,7 @@
                                             Nominal {{ $item->kode }}
                                         </label>
 
-                                        <input type="number" class="form-control" name="nominal[{{ $item->id }}]" min="0">
+                                        <input type="text" class="form-control rupiah" name="nominal[{{ $item->id }}]" min="0">
 
                                     </div>
 
@@ -192,19 +205,24 @@
                     </div>
 
                     <div class="form-group">
-                        <label>Pagu Kegiatan</label>
-                        <input type="number" name="pagu" id="pagu" class="form-control">
+                        <label class="font-weight-bold">Anggaran Kegiatan (Pagu)</label>
+
+
+                        <input type="text" name="pagu" id="pagu" class="form-control rupiah placeholder-kecil"
+                            placeholder="Rp0">
                     </div>
 
                     <div class="form-group">
 
-                        <label>
+                        <label class="font-weight-bold">
 
                             Pajak (pbn, pbh, pajak daerah)
 
                         </label>
 
-                        <input type="text" name="pajak" class="form-control">
+
+                        <input type="text" name="pajak" class="form-control rupiah placeholder-kecil"
+                            placeholder="Rp0">
 
                         {{-- <small class="text-muted">
 
@@ -215,25 +233,31 @@
                     </div>
 
                     <div class="form-group">
-                        <label>Realisasi Belanja</label>
+                        <label class="font-weight-bold">Realisasi Belanja</label><br>
 
-                        <input type="number" name="realisasi_belanja" id="realisasi" class="form-control">
                         <small class="text-muted">
                             Masukkan total dana yang telah dibelanjakan untuk kegiatan ini.
                         </small>
+                        <input type="text" name="realisasi_belanja" id="realisasi"
+                            class="form-control rupiah placeholder-kecil" placeholder="Contoh: Rp12000000">
+                        {{-- <input type="number" name="realisasi_belanja" id="realisasi" class="form-control"> --}}
+
                     </div>
                     <div class="form-group">
-                        <label>Sisa Anggaran</label>
+                        <label class="font-weight-bold">Sisa Anggaran</label> <br>
+                        <small class="text-muted">
+                            Lebih/(Kurang)
+                        </small>
                         <input type="text" id="sisa_preview" class="form-control" readonly>
                     </div>
 
                     <div class="form-group">
-                        <label>Persentase Realisasi Belanja</label>
+                        <label class="font-weight-bold">Persentase Realisasi Belanja</label>
                         <input type="text" id="persen_preview" class="form-control" readonly>
                     </div>
 
                     <div class="form-group">
-                        <label>Dokumentasi kegiatan (gambar)</label>
+                        <label class="font-weight-bold">Dokumentasi kegiatan (gambar)</label>
                         <input type="file" name="dokumentasi[]" multiple accept="image/*" class="form-control">
                         <div id="preview" class="mt-2"></div>
                     </div>
@@ -249,65 +273,6 @@
     </div>
 
     <script>
-        // const kegiatanMap = {
-
-        //     "Bidang I - Penyelenggaraan Pemerintahan Desa": [
-        //         "Penyediaan Penghasilan Tetap dan Tunjangan Kepala Desa",
-        //         "Penyediaan Penghasilan Tetap dan Tunjangan Perangkat Desa",
-        //         "Penyediaan Operasional Pemerintah Desa (ATK, Honor PKPKD dan PPKD dll)",
-        //         "Penyediaan Tunjangan BPD",
-        //         "Penyediaan Operasional BPD",
-        //         "Penyediaan Insentif/Operasional RT/RW",
-        //         "Penyediaan Operasional Pemerintah Desa yang bersumber dari Dana Desa",
-        //         "Sarana Prasana Kantor Desa",
-        //         "Penyelenggaraan Musdes",
-        //         "Penyusunan RKPDes",
-        //         "Penyusunan Kebijakan Desa",
-        //         "Pemungutan SPPT PBB"
-        //     ],
-
-        //     "Bidang II - Pelaksanaan Pembangunan Desa": [
-        //         "Insentif Guru TPQ dan PAUD",
-        //         "Penyelenggaraan Posyandu",
-        //         "Pembangunan Drainase RT 002 RW 001",
-        //         "Pembangunan Jalan Hotmix RT 011 RW 002",
-        //         "Pembangunan Drainase RT 015 RW 003",
-        //         "Pembangunan Drainase/Gorong-Gorong RT 017 RW 004",
-        //         "Pembangunan Gorong-Gorong dan Pavingisasi",
-        //         "Pembangunan Drainase RT 026 RW 006",
-        //         "Pembangunan Jalan Rabat RT 033 RW 007",
-        //         "Pelaksanaan Kegiatan PKTD",
-        //         "Peningkatan Perekonomian Desa (30%)",
-        //         "Ketahanan Pangan 20%"
-        //     ],
-
-        //     "Bidang III - Pembinaan Kemasyarakatan": [
-        //         "Pembinaan LPMD",
-        //         "Pembinaan KIM",
-        //         "Pembinaan PB PANDAN",
-        //         "Pembinaan SSB PANDAWA",
-        //         "Peningkatan Kapasitas Linmas",
-        //         "Pembinaan Forum Anak Desa (FAD)",
-        //         "Pembinaan Swadeshi",
-        //         "Pembinaan Ilal Ahad",
-        //         "Pembinaan Kelompok Kesenian",
-        //         "Operasional RW",
-        //         "Operasional PKK"
-        //     ],
-
-        //     "Bidang IV - Pemberdayaan Masyarakat": [
-        //         "Pelatihan PKK Desa dan PKK RW",
-        //         "Pelatihan PKK"
-        //     ],
-
-        //     "Bidang V - Penanggulangan Bencana": [
-        //         "BLT DD"
-        //     ]
-
-        // };
-
-        // const bidangSelect = document.getElementById('bidang');
-        // const kegiatanSelect = document.getElementById('kegiatan');
 
         const bidangInfo = document.getElementById('bidang-info');
         const bidangInput = document.getElementById('bidang');
@@ -406,6 +371,25 @@
                             .querySelector('input')
                             .value = '';
                     }
+
+                });
+
+            });
+
+    
+// nambah rp 
+        document.querySelectorAll('.rupiah')
+            .forEach(input => {
+
+                input.addEventListener('input', function () {
+
+                    let angka =
+                        this.value.replace(/\D/g, '');
+
+                    this.value =
+                        angka
+                            ? 'Rp ' + Number(angka).toLocaleString('id-ID')
+                            : '';
 
                 });
 
