@@ -992,7 +992,7 @@ body.superadmin .btn-income{
     {{ auth()->user()->role === 'superadmin' ? 'db-header-superadmin' : 'db-header-bendahara' }}">
         <div style="position:relative;z-index:1;">
             <div class="badge-pill">
-                <i class="fas fa-tachometer-alt"></i> Dashboard Admin
+                <i class="fas fa-tachometer-alt"></i> Dashboard 
             </div>
             <h1>Selamat datang,<br>{{ Auth::user()->name ?? 'Admin' }} 👋</h1>
             <p class="sub">

@@ -41,6 +41,10 @@ class BelanjaController extends Controller
 
     public function store(Request $request)
     {
+        $request->merge([
+            'pagu' => preg_replace('/[^0-9]/', '', $request->pagu),
+            'realisasi_belanja' => preg_replace('/[^0-9]/', '', $request->realisasi_belanja),
+        ]);
         $request->validate([
             'tanggal' => 'nullable|date',
             'bidang' => 'required',
@@ -65,10 +69,14 @@ class BelanjaController extends Controller
 
             $syncData = [];
 
-            foreach ($request->sumber_dana as $id) {
+            foreach ($request->sumber_dana ?? [] as $id) {
 
                 $syncData[$id] = [
-                    'nominal' => $request->nominal[$id] ?? 0
+                    'nominal' => preg_replace(
+                        '/[^0-9]/',
+                        '',
+                        $request->nominal[$id] ?? 0
+                    )
                 ];
             }
 
@@ -77,7 +85,11 @@ class BelanjaController extends Controller
             foreach ($request->sumber_dana ?? [] as $id) {
 
                 $syncData[$id] = [
-                    'nominal' => $request->nominal[$id] ?? 0
+                    'nominal' => preg_replace(
+                        '/[^0-9]/',
+                        '',
+                        $request->nominal[$id] ?? 0
+                    )
                 ];
             }
 
@@ -174,6 +186,10 @@ class BelanjaController extends Controller
 
     public function update(Request $request, $id)
     {
+        $request->merge([
+            'pagu' => preg_replace('/[^0-9]/', '', $request->pagu),
+            'realisasi_belanja' => preg_replace('/[^0-9]/', '', $request->realisasi_belanja),
+        ]);
         $request->validate([
             'tanggal' => 'nullable|date',
             'bidang' => 'required',
@@ -199,10 +215,14 @@ class BelanjaController extends Controller
 
         $syncData = [];
 
-        foreach ($request->sumber_dana ?? [] as $id) {
+        foreach ($request->sumber_dana as $id) {
 
             $syncData[$id] = [
-                'nominal' => $request->nominal[$id] ?? 0
+                'nominal' => preg_replace(
+                    '/[^0-9]/',
+                    '',
+                    $request->nominal[$id] ?? 0
+                )
             ];
         }
 

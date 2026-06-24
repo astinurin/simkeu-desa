@@ -84,8 +84,6 @@
             opacity: .8;
         }
     </style>
-
-
 <?php $__env->stopSection(); ?>
 <?php $__env->startSection('content'); ?>
     <div class="container-fluid">
@@ -168,7 +166,6 @@
                         <div class="sumber-dana-grid">
 
                             <?php $__currentLoopData = $sumberDana; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-
                                 <div class="sumber-item">
 
                                     <label class="sumber-card">
@@ -188,17 +185,31 @@
 
                                         </label>
 
-                                        <input type="text" class="form-control rupiah" name="nominal[<?php echo e($item->id); ?>]" min="0">
+                                        <input type="text" class="form-control rupiah"
+                                            name="nominal[<?php echo e($item->id); ?>]" min="0">
 
                                     </div>
 
                                 </div>
-
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
                         </div>
 
                     </div>
+
+                    <?php if($errors->any()): ?>
+    <div class="alert alert-danger">
+
+        <ul class="mb-0">
+
+            <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <li><?php echo e($error); ?></li>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+
+        </ul>
+
+    </div>
+<?php endif; ?>  
 
                     <div class="form-group">
                         <label class="font-weight-bold">Anggaran Kegiatan (Pagu)</label>
@@ -220,7 +231,7 @@
                         <input type="text" name="pajak" class="form-control rupiah placeholder-kecil"
                             placeholder="Rp0">
 
-                        
+                      
 
                     </div>
 
@@ -265,14 +276,13 @@
     </div>
 
     <script>
-
         const bidangInfo = document.getElementById('bidang-info');
         const bidangInput = document.getElementById('bidang');
 
         document.querySelectorAll('.bidang-tab')
             .forEach(btn => {
 
-                btn.addEventListener('click', function () {
+                btn.addEventListener('click', function() {
 
                     document.querySelectorAll('.bidang-tab')
                         .forEach(x => x.classList.remove('active'));
@@ -308,8 +318,13 @@
 
         function hitung() {
 
-            let p = parseFloat(pagu.value) || 0;
-            let r = parseFloat(realisasi.value) || 0;
+            let p = Number(
+                pagu.value.replace(/\D/g, '')
+            ) || 0;
+
+            let r = Number(
+                realisasi.value.replace(/\D/g, '')
+            ) || 0;
 
             let sisa = p - r;
 
@@ -330,13 +345,14 @@
             preview.innerHTML = '';
             [...e.target.files].forEach(f => {
                 let r = new FileReader();
-                r.onload = ev => preview.innerHTML += `<img src="${ev.target.result}"  style="max-width:800px; margin:10px; border-radius:8px;">`;
+                r.onload = ev => preview.innerHTML +=
+                    `<img src="${ev.target.result}"  style="max-width:800px; margin:10px; border-radius:8px;">`;
                 r.readAsDataURL(f);
             });
         });
 
         // tanggal
-        document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener("DOMContentLoaded", function() {
             const tanggalInput = document.getElementById("tanggal");
             const today = new Date().toISOString().split('T')[0];
             tanggalInput.value = today;
@@ -347,7 +363,7 @@
             .querySelectorAll('.sumber-checkbox')
             .forEach(cb => {
 
-                cb.addEventListener('change', function () {
+                cb.addEventListener('change', function() {
 
                     const target =
                         document.getElementById(
@@ -368,26 +384,25 @@
 
             });
 
-    
-// nambah rp 
+
+        // nambah rp 
         document.querySelectorAll('.rupiah')
             .forEach(input => {
 
-                input.addEventListener('input', function () {
+                input.addEventListener('input', function() {
 
                     let angka =
                         this.value.replace(/\D/g, '');
 
                     this.value =
-                        angka
-                            ? 'Rp ' + Number(angka).toLocaleString('id-ID')
-                            : '';
+                        angka ?
+                        'Rp ' + Number(angka).toLocaleString('id-ID') :
+                        '';
 
                 });
 
             });
     </script>
-
-
 <?php $__env->stopSection(); ?>
+
 <?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Asti\Kuliah\SMT 8\skripsi\simkeu-desa\resources\views/belanja/create.blade.php ENDPATH**/ ?>

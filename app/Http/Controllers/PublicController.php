@@ -60,6 +60,26 @@ class PublicController extends Controller
             : 0;
 
 
+        // =======================
+        // CHART BELANJA PER BIDANG
+        // =======================
+
+        $chartBelanja = BelanjaModel::with('realisasi')
+            ->whereYear('tanggal', $tahun)
+            ->get()
+            ->groupBy('bidang');
+
+        $chartBelanjaLabels = [];
+        $chartBelanjaData = [];
+
+        foreach ($chartBelanja as $bidang => $items) {
+
+            $chartBelanjaLabels[] = $bidang;
+
+            $chartBelanjaData[] = $items->sum(function ($item) {
+                return optional($item->realisasi)->realisasi ?? 0;
+            });
+        }
         return view('public.index', compact(
 
             'tahun',
@@ -75,7 +95,9 @@ class PublicController extends Controller
             'totalPaguBelanja',
             'totalRealisasiBelanja',
             'totalSisaBelanja',
-            'persenBelanja'
+            'persenBelanja',
+            'chartBelanjaLabels',
+            'chartBelanjaData',
         ));
     }
 }

@@ -3,8 +3,8 @@
 <?php $__env->startSection('styles'); ?>
     <style>
         /* ============================================================
-                   SIMKEU DESA — Dashboard Public  (mobile-first)
-                ============================================================ */
+                               SIMKEU DESA — Dashboard Public  (mobile-first)
+                            ============================================================ */
 
         :root {
             --blue: #1a56db;
@@ -338,10 +338,10 @@
 
         /* ── TABLE — full responsive ── */
         /*
-                   Strategi: di mobile (<576px) kita sembunyikan kolom Pagu & Sisa,
-                   tampilkan hanya: No | Kategori/Bidang | Realisasi | %
-                   Kolom yang disembunyikan punya class .col-hide-sm
-                */
+                               Strategi: di mobile (<576px) kita sembunyikan kolom Pagu & Sisa,
+                               tampilkan hanya: No | Kategori/Bidang | Realisasi | %
+                               Kolom yang disembunyikan punya class .col-hide-sm
+                            */
         .dt {
             width: 100%;
             border-collapse: collapse;
@@ -688,20 +688,19 @@
             }
         }
 
-   .bidang-badge{
-    white-space: normal !important;
-    overflow-wrap: break-word;
-    word-break: break-word;
-    display: inline-block;
-    max-width: 100%;
-    text-align:left;
-    line-height:1.4;
-}
+        .bidang-badge {
+            white-space: normal !important;
+            overflow-wrap: break-word;
+            word-break: break-word;
+            display: inline-block;
+            max-width: 100%;
+            text-align: left;
+            line-height: 1.4;
+        }
     </style>
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('content'); ?>
-
     
     <div class="hero a1">
         <div class="hero-icon-bg"><i class="fas fa-university"></i></div>
@@ -777,63 +776,34 @@
         
         <div class="col-12">
             <div class="s-card h-100">
+
                 <div class="s-head" style="flex-direction:row;align-items:center;padding-bottom:0;border-bottom:none;">
+
                     <div class="s-head-top">
-                        <div class="s-icon blue"><i class="fas fa-chart-pie"></i></div>
+
+                        <div class="s-icon green">
+                            <i class="fas fa-chart-bar"></i>
+                        </div>
+
                         <div>
-                            <p class="s-title">Ringkasan Anggaran Desa</p>
-                            <p class="s-sub">Belanja dan sisa anggaran tahun <?php echo e($tahun); ?></p>
+                            <p class="s-title">
+                                Realisasi Belanja Berdasarkan Bidang
+                            </p>
+
+                            <p class="s-sub">
+                                Distribusi realisasi belanja desa tahun <?php echo e($tahun); ?>
+
+                            </p>
                         </div>
+
                     </div>
+
                 </div>
-                <div class="chart-card" style="display:flex;flex-direction:column;align-items:center;">
-                    <div style="position:relative;width:220;height:220;margin:10px auto;">
-                        <canvas id="chartDoughnut"></canvas>
 
-                        
-                    </div>
-                    <div style="display:flex;flex-direction:column;gap:10px;width:100%;max-width:500px;margin-top:10px;">
-
-                        <div style="display:flex;justify-content:space-between;align-items:center;">
-                            <span style="display:flex;align-items:center;">
-                                <span style="
-                    width:12px;
-                    height:12px;
-                    border-radius:50%;
-                    background:#0e9f6e;
-                    display:inline-block;
-                    margin-right:8px;
-                "></span>
-                                Belanja
-                            </span>
-
-                            <strong>
-                                Rp <?php echo e(number_format($totalRealisasiBelanja, 0, ',', '.')); ?>
-
-                            </strong>
-                        </div>
-
-                        <div style="display:flex;justify-content:space-between;align-items:center;">
-                            <span style="display:flex;align-items:center;">
-                                <span style="
-                    width:12px;
-                    height:12px;
-                    border-radius:50%;
-                    background:#bfdbfe;
-                    display:inline-block;
-                    margin-right:8px;
-                "></span>
-                                Sisa Anggaran
-                            </span>
-
-                            <strong>
-                                Rp <?php echo e(number_format($totalSisaPendapatan, 0, ',', '.')); ?>
-
-                            </strong>
-                        </div>
-
-                    </div>
+                <div class="chart-card">
+                    <canvas id="chartBelanjaPublik" style="height:350px;"></canvas>
                 </div>
+
             </div>
         </div>
 
@@ -868,7 +838,6 @@
             <div class="row">
 
                 <?php $__empty_1 = true; $__currentLoopData = $belanja; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
-
                     <?php
                         $realisasi = optional($item->realisasi)->realisasi ?? 0;
                     ?>
@@ -879,13 +848,11 @@
 
                             
                             <?php if($item->dokumentasi && $item->dokumentasi->first()): ?>
-
                                 <img src="<?php echo e(asset('storage/' . $item->dokumentasi->first()->file)); ?>" class="card-img-top"
                                     style="height:220px;object-fit:cover;">
-
                             <?php else: ?>
-
-                                <div style="
+                                <div
+                                    style="
                                                             height:220px;
                                                             display:flex;
                                                             align-items:center;
@@ -897,7 +864,6 @@
                                     <i class="fas fa-image fa-3x"></i>
 
                                 </div>
-
                             <?php endif; ?>
 
                             <div class="card-body">
@@ -953,7 +919,6 @@
                         </div>
 
                     </div>
-
                 <?php endif; ?>
 
             </div>
@@ -992,13 +957,12 @@
         Data ditampilkan secara transparan oleh Pemerintah Desa Pandanlandung &mdash; <?php echo e($tahun); ?>
 
     </div>
-
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('scripts'); ?>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
 
             const paguPend = <?php echo e($totalPaguPendapatan); ?>;
             const realPend = <?php echo e($totalRealisasiPendapatan); ?>;
@@ -1007,28 +971,8 @@
             const realBel = <?php echo e($totalRealisasiBelanja); ?>;
             const sisaBel = <?php echo e($totalSisaBelanja); ?>;
 
-            /* ── DOUGHNUT ── */
-            const ctxD = document.getElementById('chartDoughnut');
-            if (ctxD) {
-                new Chart(ctxD, {
-                    type: 'doughnut',
-                    data: {
-                        labels: ['Realisasi Pendapatan', 'Sisa Pendapatan', 'Realisasi Belanja', 'Sisa Belanja'],
-                        datasets: [{
-                            data: [realPend, sisaPend, realBel, sisaBel],
-                            backgroundColor: ['#1a56db', '#bfdbfe', '#0e9f6e', '#a7f3d0'],
-                            borderWidth: 0, hoverOffset: 6
-                        }]
-                    },
-                    options: {
-                        cutout: '72%',
-                        plugins: {
-                            legend: { display: false },
-                            tooltip: { callbacks: { label: c => '  Rp ' + c.parsed.toLocaleString('id-ID') } }
-                        }
-                    }
-                });
-            }
+
+
 
             /* ── BAR ── */
             const ctxB = document.getElementById('chartBar');
@@ -1044,18 +988,21 @@
                     type: 'bar',
                     data: {
                         labels: ['Pendapatan', 'Belanja'],
-                        datasets: [
-                            {
+                        datasets: [{
                                 label: 'Pagu',
                                 data: [paguPend, paguBel],
                                 backgroundColor: ['#bfdbfe', '#a7f3d0'],
-                                borderRadius: 7, borderSkipped: false, barPercentage: 0.6
+                                borderRadius: 7,
+                                borderSkipped: false,
+                                barPercentage: 0.6
                             },
                             {
                                 label: 'Realisasi',
                                 data: [realPend, realBel],
                                 backgroundColor: ['#1a56db', '#0e9f6e'],
-                                borderRadius: 7, borderSkipped: false, barPercentage: 0.6
+                                borderRadius: 7,
+                                borderSkipped: false,
+                                barPercentage: 0.6
                             }
                         ]
                     },
@@ -1064,22 +1011,107 @@
                         maintainAspectRatio: false,
                         plugins: {
                             legend: {
-                                position: 'top', align: 'end',
-                                labels: { font: { size: 11, weight: '600' }, usePointStyle: true, pointStyleWidth: 8, padding: 14 }
+                                position: 'top',
+                                align: 'end',
+                                labels: {
+                                    font: {
+                                        size: 11,
+                                        weight: '600'
+                                    },
+                                    usePointStyle: true,
+                                    pointStyleWidth: 8,
+                                    padding: 14
+                                }
                             },
-                            tooltip: { callbacks: { label: c => '  ' + c.dataset.label + ': Rp ' + c.parsed.y.toLocaleString('id-ID') } }
+                            tooltip: {
+                                callbacks: {
+                                    label: c => '  ' + c.dataset.label + ': Rp ' + c.parsed.y
+                                        .toLocaleString('id-ID')
+                                }
+                            }
                         },
                         scales: {
-                            x: { grid: { display: false }, ticks: { font: { size: 11, weight: '700' }, color: '#4b5563' } },
+                            x: {
+                                grid: {
+                                    display: false
+                                },
+                                ticks: {
+                                    font: {
+                                        size: 11,
+                                        weight: '700'
+                                    },
+                                    color: '#4b5563'
+                                }
+                            },
                             y: {
-                                grid: { color: '#f3f4f6' }, border: { display: false },
-                                ticks: { font: { size: 10 }, color: '#9ca3af', callback: fmt }
+                                grid: {
+                                    color: '#f3f4f6'
+                                },
+                                border: {
+                                    display: false
+                                },
+                                ticks: {
+                                    font: {
+                                        size: 10
+                                    },
+                                    color: '#9ca3af',
+                                    callback: fmt
+                                }
                             }
                         }
                     }
                 });
             }
         });
+
+        const chartBelanjaLabels = <?php echo json_encode($chartBelanjaLabels, 15, 512) ?>;
+        const chartBelanjaData = <?php echo json_encode($chartBelanjaData, 15, 512) ?>;
+
+        const ctx = document.getElementById('chartBelanjaPublik');
+
+        if (ctx) {
+
+            new Chart(ctx, {
+
+                type: 'bar',
+
+                data: {
+                    labels: chartBelanjaLabels,
+
+                    datasets: [{
+                        label: 'Realisasi Belanja',
+
+                        data: chartBelanjaData,
+
+                        backgroundColor: '#0e9f6e',
+
+                        borderRadius: 7
+                    }]
+                },
+
+                options: {
+
+                    responsive: true,
+
+                    maintainAspectRatio: false,
+
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+
+            });
+
+        }
     </script>
 <?php $__env->stopSection(); ?>
+
 <?php echo $__env->make('layouts.public', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Asti\Kuliah\SMT 8\skripsi\simkeu-desa\resources\views/public/index.blade.php ENDPATH**/ ?>
