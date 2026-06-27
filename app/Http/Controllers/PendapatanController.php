@@ -45,7 +45,7 @@ class PendapatanController extends Controller
 
             $file = $request->file('dokumen');
 
-            // hanya PDF dulu
+            // hanya PDF 
             if ($file->getClientOriginalExtension() !== 'pdf') {
 
                 return response()->json([

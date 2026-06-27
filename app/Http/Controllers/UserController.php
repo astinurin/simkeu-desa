@@ -13,7 +13,7 @@ class UserController extends Controller
     // =========================
     public function index()
     {
-        $users = User::latest()->get();
+        $users = User::where('is_deleted', 0)->latest()->get();
 
         return view('superadmin.index', compact('users'));
     }
@@ -43,6 +43,7 @@ class UserController extends Controller
             'name' => $request->name,
             'password' => Hash::make($request->password),
             'role' => $request->role,
+            'is_deleted' => 0,
         ]);
 
         return redirect()
@@ -56,7 +57,7 @@ class UserController extends Controller
     // =========================
     public function edit($id)
     {
-        $user = User::findOrFail($id);
+        $user = User::where('is_deleted', 0)->findOrFail($id);
 
         return view('superadmin.edit', compact('user'));
     }
@@ -67,7 +68,7 @@ class UserController extends Controller
     // =========================
     public function update(Request $request, $id)
     {
-        $user = User::findOrFail($id);
+        $user = User::where('is_deleted', 0)->findOrFail($id);
 
         $request->validate([
             'name' => 'required|unique:users,name,' . $user->id,
@@ -97,22 +98,23 @@ class UserController extends Controller
     // =========================
     public function destroy($id)
     {
-        $user = User::findOrFail($id);
+        $user = User::where('is_deleted', 0)->findOrFail($id);
 
         // cegah hapus akun sendiri
         if ($user->id == auth()->id()) {
-
             return back()->with(
                 'error',
                 'Tidak bisa menghapus akun sendiri'
             );
         }
 
-        $user->delete();
+        $user->update([
+            'is_deleted' => 1
+        ]);
 
         return back()->with(
             'success',
-            'User berhasil dihapus'
+            'User berhasil dinonaktifkan'
         );
     }
 }

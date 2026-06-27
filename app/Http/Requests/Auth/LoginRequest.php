@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
+use App\Models\User;
 
 class LoginRequest extends FormRequest
 {
@@ -29,19 +30,27 @@ class LoginRequest extends FormRequest
     {
         $this->ensureIsNotRateLimited();
 
-        // ✅ INI YANG PALING PENTING
+        $user = User::where('name', $this->name)->first();
+
+        // cek apakah user nonaktif
+        if ($user && $user->is_deleted == 1) {
+            throw ValidationException::withMessages([
+                'name' => 'Akun sudah tidak aktif.',
+            ]);
+        }
+
         if (! Auth::attempt($this->only('name', 'password'), $this->boolean('remember'))) {
 
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
-                'name' => trans('auth.failed'), // ganti ke name
+                'name' => trans('auth.failed'),
             ]);
         }
 
         RateLimiter::clear($this->throttleKey());
     }
-
+    
     public function ensureIsNotRateLimited(): void
     {
         if (! RateLimiter::tooManyAttempts($this->throttleKey(), 5)) {
@@ -63,6 +72,6 @@ class LoginRequest extends FormRequest
     public function throttleKey(): string
     {
         // ✅ INI JUGA HARUS DIGANTI
-        return Str::transliterate(Str::lower($this->string('name')).'|'.$this->ip());
+        return Str::transliterate(Str::lower($this->string('name')) . '|' . $this->ip());
     }
 }
